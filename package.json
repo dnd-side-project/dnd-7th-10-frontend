@@ -11,7 +11,8 @@
     "prepare": "husky install",
     "prettier": "prettier *.ts",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "postversion": "react-native-version"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [

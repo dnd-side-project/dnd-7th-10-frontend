@@ -9,5 +9,6 @@
     "javascriptreact",
     "typescriptreact",
     "json"
-  ]
+  ],
+  "java.configuration.updateBuildConfiguration": "disabled"
 }

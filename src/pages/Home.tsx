@@ -1,8 +1,8 @@
 import styled from '@emotion/native'
 import React from 'react'
-import FolderList from '../components/FolderList'
-import HomeTop from '../components/HomeTop'
-import SearchBar from '../components/SearchBar'
+import FolderList from '../components/Home/FolderList'
+import HomeTop from '../components/Home/HomeTop'
+import SearchBar from '../components/Home/SearchBar'
 
 const HomeView = styled.View`
   padding: 0 24px;

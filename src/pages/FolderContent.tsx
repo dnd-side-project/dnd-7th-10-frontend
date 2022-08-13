@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from '@emotion/native'
-import FolderCardList from '../components/FolderContent/FolderCardList'
+// import FolderCardList from '../components/FolderContent/FolderCardList'
 import Header, { IIconButton } from '../components/Header'
+import FolderEmpty from '../components/FolderContent/FolderEmpty'
 
 const FolderDescView = styled.View`
   flex: 1;
@@ -24,7 +25,7 @@ const FolderContent = () => {
   return (
     <FolderDescView>
       <Header iconButtons={iconButtons}>디자인 레퍼런스</Header>
-      <FolderCardList />
+      <FolderEmpty />
     </FolderDescView>
   )
 }

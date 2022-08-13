@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from '@emotion/native'
-import Header from '../components/Header'
-import Input from '../components/Input'
+import Header from '../components/Common/Header'
+import Input from '../components/Common/Input'
 import { backgroundWithColor } from '../styles/backgrounds'
-import SectionTitle from '../components/SectionTitle'
-import SectionContent from '../components/SectionContent'
+import SectionTitle from '../components/Common/SectionTitle'
+import SectionContent from '../components/Common/SectionContent'
 import FolderSelectList from '../components/LinkAdd/FolderSelectList'
 import TagGuide from '../components/LinkAdd/TagGuide'
-import TagList from '../components/TagList'
+import TagList from '../components/Common/TagList'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}

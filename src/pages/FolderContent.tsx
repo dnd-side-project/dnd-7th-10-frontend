@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/native'
 // import FolderCardList from '../components/FolderContent/FolderCardList'
-import Header, { IIconButton } from '../components/Header'
+import Header, { IIconButton } from '../components/Common/Header'
 import FolderEmpty from '../components/FolderContent/FolderEmpty'
 
 const FolderDescView = styled.View`

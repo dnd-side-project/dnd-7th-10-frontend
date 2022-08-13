@@ -13,6 +13,7 @@ const HeaderBar = styled.View`
   height: 72px;
   background: white;
   padding: 12px 24px 0;
+  elevation: 4;
 `
 
 const HeaderIcon = styled.Image`
@@ -58,7 +59,7 @@ export interface IHeaderButtonClickHandler {
   (event: GestureResponderEvent): void
 }
 
-interface Props extends PropsWithChildren<HTMLDivElement> {
+interface Props {
   save?: boolean
   onSavePress?: IHeaderButtonClickHandler
   iconButtons?: IIconButton[]
@@ -82,7 +83,12 @@ const IconButtonsWrap = ({ iconButtons }: IconButtonsWrapProps) => (
   </IconButtonsView>
 )
 
-const Header = ({ children, save, iconButtons, onSavePress }: Props) => (
+const Header = ({
+  children,
+  save,
+  iconButtons,
+  onSavePress
+}: PropsWithChildren<Props>) => (
   <HeaderBar>
     <HeaderIcon
       source={require('../assets/images/chevron-left.png')}

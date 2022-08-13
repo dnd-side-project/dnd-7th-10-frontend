@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import styled from '@emotion/native'
 import KakaoLoginButton from '../components/KakaoLoginButton'
+import { backgroundWithColor } from '../styles/backgrounds'
+import { Animated } from 'react-native'
 
 const LoginBox = styled.View`
+  ${backgroundWithColor('main_1')}
   width: 100%;
   flex: 1;
-  background: #ff5f28;
   align-items: center;
   justify-content: center;
 `
@@ -32,21 +34,24 @@ const LoginTextSlogan = styled.Image`
 `
 
 const TeamLogo = styled.Image`
-  bottom: 30px;
+  bottom: 128px;
   position: absolute;
   width: 34px;
   height: 16px;
 `
 
-const KakaoLoginWrap = styled.View`
+const KakaoLoginWrap = styled(Animated.View)`
   position: absolute;
-  bottom: 76px;
+  bottom: 52px;
   align-self: stretch;
   flex-direction: row;
   margin-horizontal: 22px;
 `
 
 const Login = () => {
+  const [needLogin] = useState<boolean>(false)
+  const kakaoOpacity = useRef(new Animated.Value(0)).current
+
   return (
     <LoginBox>
       <LoginImageLogo
@@ -65,9 +70,12 @@ const Login = () => {
         source={require('../assets/images/team_logo.png')}
         resizeMode="contain"
       />
-      <KakaoLoginWrap>
-        <KakaoLoginButton />
-      </KakaoLoginWrap>
+
+      {needLogin && (
+        <KakaoLoginWrap style={{ opacity: kakaoOpacity }}>
+          <KakaoLoginButton />
+        </KakaoLoginWrap>
+      )}
     </LoginBox>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
+import { GestureResponderEvent } from 'react-native'
 
 const KakaoTouch = styled.TouchableOpacity`
   width: 100%;
@@ -25,9 +26,13 @@ const KakaoIcon = styled.Image`
   height: 23px;
 `
 
-const KakaoLoginButton = () => {
+interface Props {
+  onPress?: (e: GestureResponderEvent) => void
+}
+
+const KakaoLoginButton = ({ onPress }: Props) => {
   return (
-    <KakaoTouch activeOpacity={0.8}>
+    <KakaoTouch activeOpacity={0.9} onPress={onPress}>
       <KakaoButton>
         <KakaoIcon
           source={require('../assets/images/kakao_login_large_wide.png')}

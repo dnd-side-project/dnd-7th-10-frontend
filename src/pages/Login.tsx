@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import styled from '@emotion/native'
-import KakaoLoginButton from '../components/KakaoLoginButton'
+import KakaoLoginButton from '../components/Login/KakaoLoginButton'
 import { backgroundWithColor } from '../styles/backgrounds'
 import { Animated } from 'react-native'
 

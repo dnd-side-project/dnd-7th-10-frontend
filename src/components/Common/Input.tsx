@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from '@emotion/native'
-import { ColorPalette } from '../styles/variable'
-import { backgroundWithColor } from '../styles/backgrounds'
-import { fontWithColorFamily } from '../styles/fonts'
+import { ColorPalette } from '../../styles/variable'
+import { backgroundWithColor } from '../../styles/backgrounds'
+import { fontWithColorFamily } from '../../styles/fonts'
 
 interface InputViewProps {
   focused: boolean

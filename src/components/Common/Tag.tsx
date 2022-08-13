@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import styled from '@emotion/native'
-import { fontWithColorFamily } from '../styles/fonts'
-import { backgroundWithColor } from '../styles/backgrounds'
-import { flexWithAlign } from '../styles/flexbox'
+import { fontWithColorFamily } from '../../styles/fonts'
+import { backgroundWithColor } from '../../styles/backgrounds'
+import { flexWithAlign } from '../../styles/flexbox'
 
 function getTagBackground(props: TagViewProps) {
   if (props.selected) {

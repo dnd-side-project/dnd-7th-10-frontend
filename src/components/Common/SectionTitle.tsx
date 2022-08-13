@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/native'
-import { fontWithColorFamily } from '../styles/fonts'
-import { flexWithAlign } from '../styles/flexbox'
+import { fontWithColorFamily } from '../../styles/fonts'
+import { flexWithAlign } from '../../styles/flexbox'
 
 const SectionTitleView = styled.View`
   ${flexWithAlign('center', 'space-between', 'row')}

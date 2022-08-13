@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import styled from '@emotion/native'
-import { flexWithAlign } from '../styles/flexbox'
-import { fontWithColorFamily } from '../styles/fonts'
+import { flexWithAlign } from '../../styles/flexbox'
+import { fontWithColorFamily } from '../../styles/fonts'
 import {
   GestureResponderEvent,
   ImageSourcePropType,

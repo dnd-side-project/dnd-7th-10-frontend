@@ -7,6 +7,7 @@
     "ios": "react-native run-ios",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.json",
     "lint:fix": "yarn lint --fix",
+    "lint:staged": "eslint --fix --quiet",
     "prepare": "husky install",
     "prettier": "prettier *.ts",
     "start": "react-native start",
@@ -14,7 +15,7 @@
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
-      "yarn lint:fix"
+      "yarn lint:staged"
     ]
   },
   "jest": {

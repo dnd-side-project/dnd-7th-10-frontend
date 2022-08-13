@@ -1,18 +1,26 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import styled from '@emotion/native'
 
 const HeaderBar = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 40px;
-  padding: 10px;
+  padding-top: 12px;
+  height: 72px;
+  align-items: center;
+  background: white;
 `
-// const HeaderTitle = styled.Text`
-//     text-align: left;
-//     flex: 1;
-//     margin-left: 20px;
+
+const HeaderText = styled.Text`
+  color: #394a66;
+`
 // `
 
-const Header = () => <HeaderBar />
+interface Props extends PropsWithChildren<HTMLDivElement> {}
+
+const Header = ({ children }: Props) => (
+  <HeaderBar>
+    <HeaderText>{children}</HeaderText>
+  </HeaderBar>
+)
 
 export default Header

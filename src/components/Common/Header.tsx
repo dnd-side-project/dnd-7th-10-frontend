@@ -91,7 +91,7 @@ const Header = ({
 }: PropsWithChildren<Props>) => (
   <HeaderBar>
     <HeaderIcon
-      source={require('../assets/images/chevron-left.png')}
+      source={require('../../assets/images/chevron-left.png')}
       resizeMode="contain"
     />
     <HeaderText>{children}</HeaderText>

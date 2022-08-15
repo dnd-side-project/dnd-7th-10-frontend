@@ -30,7 +30,7 @@ const SectionTitle = ({ title, plus }: Props) => {
       <SectionTitleText>{title}</SectionTitleText>
       {plus && (
         <SectionTitleIcon
-          source={require('../assets/images/plus.png')}
+          source={require('../../assets/images/plus.png')}
           resizeMode="contain"
         />
       )}

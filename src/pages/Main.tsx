@@ -14,6 +14,7 @@ const Main = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Reminding" component={FolderContent} />
+      <Tab.Screen name="LinkAdd" component={Home} />
     </Tab.Navigator>
   )
 }

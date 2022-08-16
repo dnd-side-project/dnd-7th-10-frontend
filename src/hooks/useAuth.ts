@@ -1,7 +1,6 @@
 import jwtDecode from 'jwt-decode'
 import { useRecoilState } from 'recoil'
 import api from '../lib/api'
-import keychain from '../lib/keychain'
 import { authAtom } from '../recoil/auth'
 
 interface IAuthResponse {
@@ -32,30 +31,22 @@ export default function useAuth() {
           if (response.status === 200) {
             const { accessToken, refreshToken } = response.data
             const { username } = jwtDecode<IJwtStructure>(accessToken)
-            keychain
-              .setToken(accessToken, refreshToken)
-              .then(() => {
-                setAuth({
-                  user: {
-                    username
-                  },
-                  authKey: {
-                    accessToken,
-                    refreshToken
-                  }
-                })
-                resolve({
-                  success: true
-                })
-                console.log('successfully saved')
-              })
-              .catch(() => {
-                console.error('keychain login failed')
-                reject({
-                  success: false,
-                  code: 0
-                })
-              })
+
+            api.setToken!(accessToken)
+
+            setAuth({
+              user: {
+                username
+              },
+              authKey: {
+                accessToken,
+                refreshToken
+              }
+            })
+            resolve({
+              success: true
+            })
+            console.log('successfully saved')
           }
         })
         .catch(error => {

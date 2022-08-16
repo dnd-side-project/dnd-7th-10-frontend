@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
-import MemoTop from '../components/MemoTop'
+import MemoTop from './MemoTop'
 import Memo from './Memo'
 
 const MemoContentView = styled.View`

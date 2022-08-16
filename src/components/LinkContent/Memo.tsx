@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
-import { ColorPalette, FontFamily } from '../styles/variable'
+import { ColorPalette, FontFamily } from '../../styles/variable'
 
 const MemoContent = styled.View`
   padding: 12px;

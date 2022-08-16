@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { Text, Image } from 'react-native'
-import { ColorPalette } from '../styles/variable'
-import { FontFamily } from '../styles/variable'
+import { ColorPalette } from '../../styles/variable'
+import { FontFamily } from '../../styles/variable'
 
 const LinkView = styled.View``
 

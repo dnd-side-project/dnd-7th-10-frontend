@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/native'
-import { ColorPalette, FontFamily } from '../styles/variable'
+import { ColorPalette, FontFamily } from '../../styles/variable'
 
 const TagComponent = styled.View`
   width: 100px;

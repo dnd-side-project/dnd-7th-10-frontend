@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
-import Tag from '../components/Tag'
+import Tag from './Tag'
 
 const TagsView = styled.View`
   display: flex;

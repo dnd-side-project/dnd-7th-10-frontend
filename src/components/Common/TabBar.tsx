@@ -23,6 +23,7 @@ const TabBarView = styled.View`
   align-items: stretch;
   height: 88px;
   ${backgroundWithColor('gray_1')}
+  elevation: 4;
 `
 
 interface TabBarTextProps {
@@ -70,12 +71,39 @@ const tabInfos: ITabInfos = {
   Reminding: {
     name: '리마인딩',
     Icon: SVG.Reminding
+  },
+  LinkAdd: {
+    name: '링크추가',
+    Icon: SVG.Add
   }
 }
 
 const TabButtonView = styled.View`
   ${flexWithAlign('center', 'center')}
   top: 20px;
+`
+
+const TabFloating = styled.View`
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  margin: -34px 50% 0;
+`
+
+const TabFloatingTouchable = styled.TouchableOpacity`
+  width: 68px;
+  height: 68px;
+  margin-left: -34px;
+  border-radius: 34px;
+`
+
+const TabFloatingView = styled.View`
+  ${backgroundWithColor('main_1')}
+  ${flexWithAlign('center', 'center')}
+  width: 68px;
+  height: 68px;
+  border-radius: 34px;
+  elevation: 4;
 `
 
 const TabButton = ({
@@ -104,24 +132,36 @@ const TabButton = ({
   const tabInfoKey: keyof BottomParamList = route.name
   const tabInfo = tabInfos[tabInfoKey]
   return (
-    <TouchableOpacity
-      accessibilityRole="button"
-      accessibilityState={isFocused ? { selected: true } : {}}
-      accessibilityLabel={options.tabBarAccessibilityLabel}
-      testID={options.tabBarTestID}
-      onPress={onPress}
-      style={{ flex: 1 }}
-    >
-      <TabButtonView>
-        {
-          <tabInfo.Icon
-            style={tabIconStyle}
-            stroke={isFocused ? ColorPalette.gray_7 : ColorPalette.gray_4}
-          />
-        }
-        {<TabBarText focused={isFocused}>{tabInfo.name}</TabBarText>}
-      </TabButtonView>
-    </TouchableOpacity>
+    <>
+      {route.name === 'LinkAdd' ? (
+        <TabFloating>
+          <TabFloatingTouchable accessibilityRole="button">
+            <TabFloatingView>
+              <SVG.Add />
+            </TabFloatingView>
+          </TabFloatingTouchable>
+        </TabFloating>
+      ) : (
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityState={isFocused ? { selected: true } : {}}
+          accessibilityLabel={options.tabBarAccessibilityLabel}
+          testID={options.tabBarTestID}
+          onPress={onPress}
+          style={{ flex: 1 }}
+        >
+          <TabButtonView>
+            {
+              <tabInfo.Icon
+                style={tabIconStyle}
+                stroke={isFocused ? ColorPalette.gray_7 : ColorPalette.gray_4}
+              />
+            }
+            {<TabBarText focused={isFocused}>{tabInfo.name}</TabBarText>}
+          </TabButtonView>
+        </TouchableOpacity>
+      )}
+    </>
   )
 }
 

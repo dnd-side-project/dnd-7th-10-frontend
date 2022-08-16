@@ -6,6 +6,8 @@ import SearchBar from '../components/Home/SearchBar'
 
 const HomeView = styled.View`
   padding: 0 24px;
+  background: white;
+  flex: 1;
 `
 
 const Home = () => {

@@ -5,15 +5,17 @@ import { fontWithColorFamily } from '../../styles/fonts'
 import {
   GestureResponderEvent,
   ImageSourcePropType,
+  StyleSheet,
   TouchableOpacity
 } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const HeaderBar = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
-  height: 72px;
+  height: 60px;
   background: white;
-  padding: 12px 24px 0;
-  elevation: 4;
+  padding: 0 24px;
+  elevation: 12;
 `
 
 const HeaderIcon = styled.Image`
@@ -83,25 +85,47 @@ const IconButtonsWrap = ({ iconButtons }: IconButtonsWrapProps) => (
   </IconButtonsView>
 )
 
+const styles = StyleSheet.create({
+  shadow: {
+    shadowOffset: { width: 10, height: 10 },
+    shadowColor: 'black',
+    shadowOpacity: 1,
+    elevation: 3,
+    zIndex: 999
+  }
+})
+
+const backButtonInsets = { top: 8, bottom: 8, left: 16, right: 16 }
+
 const Header = ({
   children,
   save,
   iconButtons,
   onSavePress
-}: PropsWithChildren<Props>) => (
-  <HeaderBar>
-    <HeaderIcon
-      source={require('../../assets/images/chevron-left.png')}
-      resizeMode="contain"
-    />
-    <HeaderText>{children}</HeaderText>
-    {save && (
-      <SaveButton hitSlop={SaveButtonInsets} onPress={onSavePress}>
-        <SaveButtonText>저장</SaveButtonText>
-      </SaveButton>
-    )}
-    {iconButtons && <IconButtonsWrap iconButtons={iconButtons} />}
-  </HeaderBar>
-)
+}: PropsWithChildren<Props>) => {
+  const navigation = useNavigation()
+
+  const onBackPress = () => {
+    navigation.goBack()
+  }
+
+  return (
+    <HeaderBar style={styles.shadow}>
+      <TouchableOpacity onPress={onBackPress} hitSlop={backButtonInsets}>
+        <HeaderIcon
+          source={require('../../assets/images/chevron-left.png')}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+      <HeaderText>{children}</HeaderText>
+      {save && (
+        <SaveButton hitSlop={SaveButtonInsets} onPress={onSavePress}>
+          <SaveButtonText>저장</SaveButtonText>
+        </SaveButton>
+      )}
+      {iconButtons && <IconButtonsWrap iconButtons={iconButtons} />}
+    </HeaderBar>
+  )
+}
 
 export default Header

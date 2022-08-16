@@ -1,8 +1,13 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { fontWithColorFamily } from '../../styles/fonts'
+import { IFolderColor } from './FolderColorList'
 
-const FolderColorItemView = styled.View``
+const FolderColorItemView = styled.View`
+  width: 108px;
+  height: 90px;
+  margin-bottom: 20px;
+`
 
 const FolderColorImage = styled.Image`
   width: 108px;
@@ -27,20 +32,23 @@ const FolderSelectedImage = styled.Image`
 
 interface Props {
   selected?: boolean
+  folderColor: IFolderColor
 }
 
-const FolderColorItem = ({ selected }: Props) => {
+const FolderColorItem = ({ selected, folderColor }: Props) => {
   return (
     <FolderColorItemView>
-      <FolderColorImage
-        source={require('../../assets/images/folder_navy.png')}
-      />
-      <FolderColorText>Navy</FolderColorText>
-      {selected && (
-        <FolderSelectedImage
-          source={require('../../assets/images/folder_selected.png')}
-          resizeMode="contain"
-        />
+      {!folderColor.fake && folderColor?.source && (
+        <>
+          <FolderColorImage source={folderColor?.source} />
+          <FolderColorText>{folderColor?.name}</FolderColorText>
+          {selected && (
+            <FolderSelectedImage
+              source={require('../../assets/images/folder_selected.png')}
+              resizeMode="contain"
+            />
+          )}
+        </>
       )}
     </FolderColorItemView>
   )

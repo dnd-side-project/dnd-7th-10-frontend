@@ -1,6 +1,8 @@
 import styled from '@emotion/native'
 import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
+import { ToastProvider } from 'react-native-toast-notifications'
+import { RecoilRoot } from 'recoil'
 import Router from './src/pages/Router'
 
 const SafeArea = styled.SafeAreaView`
@@ -11,9 +13,13 @@ const SafeArea = styled.SafeAreaView`
 const App = () => {
   return (
     <SafeArea>
-      <NavigationContainer>
-        <Router />
-      </NavigationContainer>
+      <RecoilRoot>
+        <ToastProvider>
+          <NavigationContainer>
+            <Router />
+          </NavigationContainer>
+        </ToastProvider>
+      </RecoilRoot>
     </SafeArea>
   )
 }

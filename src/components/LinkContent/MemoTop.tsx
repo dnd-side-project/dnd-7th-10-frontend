@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
-import { ColorPalette, FontFamily } from '../styles/variable'
+import { ColorPalette, FontFamily } from '../../styles/variable'
 
 const MemoTopView = styled.View`
   width: 100%;
@@ -10,14 +10,14 @@ const MemoTopView = styled.View`
 `
 
 const MemoTitle = styled.Text`
-  font-family: ${FontFamily['Regular']};
+  font-family: ${FontFamily.Regular};
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
   line-height: 21px;
   display: flex;
   align-items: flex-end;
-  color: ${ColorPalette['gray_8']};
+  color: ${ColorPalette.gray_8};
 `
 
 const MemoBtn = styled.TouchableOpacity``
@@ -32,10 +32,7 @@ const MemoTop = () => {
     <MemoTopView>
       <MemoTitle>메모</MemoTitle>
       <MemoBtn>
-        <MemoIcon
-          source={require('../assets/images/icon_+.png')}
-          style={{ width: 24, height: 24 }}
-        />
+        <MemoIcon source={require('../assets/images/icon_+.png')} />
       </MemoBtn>
     </MemoTopView>
   )

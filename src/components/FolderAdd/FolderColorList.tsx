@@ -62,7 +62,7 @@ const FolderColorList = ({ onColorChange }: Props) => {
   return (
     <FolderColorListView>
       {folderColors.map((folderColor, index) => (
-        <TouchableOpacity onPress={() => onPress(index)}>
+        <TouchableOpacity onPress={() => onPress(index)} key={folderColor.name}>
           <FolderColorItem
             key={folderColor.name}
             selected={index === selected}

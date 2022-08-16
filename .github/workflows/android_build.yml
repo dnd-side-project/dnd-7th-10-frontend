@@ -56,16 +56,26 @@ jobs:
       - name: Build Android App Bundle
         run: |
           cd android && ./gradlew bundleRelease --no-daemon
+          
+      - name: Listing outputs
+        run: ls android/app/build/outputs
+
+      - name: Listing bundle
+        run: ls android/app/build/outputs/bundle
+
+      - name: Listing aab/release
+        run: ls android/app/build/outputs/bundle/release
 
       - name: Sign App Bundle
         id: sign_app
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/release
+          releaseDirectory: android/app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
           alias: ${{ secrets.ANDROID_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
 
       ## Distribute  App to google play alpha track
       - name: Upload App to Google Play

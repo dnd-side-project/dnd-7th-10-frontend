@@ -45,7 +45,8 @@ const KakaoLoginWrap = styled(Animated.View)`
   bottom: 52px;
   align-self: stretch;
   flex-direction: row;
-  margin-horizontal: 22px;
+  margin-left: 22px;
+  margin-right: 22px;
 `
 
 const Login = () => {

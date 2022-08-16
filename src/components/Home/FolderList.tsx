@@ -18,27 +18,27 @@ const FolderList = () => {
     {
       count: 13,
       name: '하이',
-      source: require('../assets/images/folder_1.png')
+      source: require('../../assets/images/folder_1.png')
     },
     {
       count: 23,
       name: '바이',
-      source: require('../assets/images/folder_2.png')
+      source: require('../../assets/images/folder_2.png')
     },
     {
       count: 3,
       name: '기본',
-      source: require('../assets/images/folder_3.png')
+      source: require('../../assets/images/folder_3.png')
     },
     {
       count: 43,
       name: '바이1',
-      source: require('../assets/images/folder_4.png')
+      source: require('../../assets/images/folder_4.png')
     },
     {
       count: 53,
       name: '기본2',
-      source: require('../assets/images/folder_5.png')
+      source: require('../../assets/images/folder_5.png')
     }
   ]
 
@@ -46,7 +46,7 @@ const FolderList = () => {
     <FolderListScrollView>
       <FolderListView>
         {folders.map(folder => (
-          <FolderItem folder={folder} />
+          <FolderItem folder={folder} key={folder.name} />
         ))}
         <FolderAdd />
       </FolderListView>

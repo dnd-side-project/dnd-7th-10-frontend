@@ -27,7 +27,7 @@ const SearchBar = () => {
   return (
     <SearchBarView>
       <SearchBarTextInput />
-      <SearchIcon source={require('../assets/images/icon_search.png')} />
+      <SearchIcon source={require('../../assets/images/icon_search.png')} />
     </SearchBarView>
   )
 }

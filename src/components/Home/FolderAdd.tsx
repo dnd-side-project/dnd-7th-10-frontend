@@ -9,7 +9,9 @@ const FolderAddImage = styled.Image`
 
 const FolderAdd = () => {
   return (
-    <FolderAddImage source={require('../assets/images/folder_add_light.png')} />
+    <FolderAddImage
+      source={require('../../assets/images/folder_add_light.png')}
+    />
   )
 }
 

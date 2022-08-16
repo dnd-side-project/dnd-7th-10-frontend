@@ -27,7 +27,7 @@ const api = (() => {
       Pragma: 'no-cache',
       Expires: 0
     },
-    baseURL: 'https://linkkle.me/api',
+    baseURL: 'https://linkkle.me/api/',
     cancelToken: cancelTokenSource.token
   })
 

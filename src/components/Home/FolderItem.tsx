@@ -1,6 +1,7 @@
 import styled from '@emotion/native'
 import React from 'react'
-import { ImageSourcePropType } from 'react-native'
+import { useRecoilValue } from 'recoil'
+import { foldersFamily } from '../../recoil/folders'
 
 const FolderView = styled.View`
   max-width: 156px;
@@ -28,22 +29,21 @@ const FolderNameText = styled.Text`
   margin-top: 8px;
 `
 
-export interface Folder {
-  count: number
-  name: string
-  source: ImageSourcePropType
-}
-
 interface Props {
-  folder: Folder
+  folderId: string
 }
 
-const FolderItem = ({ folder }: Props) => {
+const FolderItem = ({ folderId }: Props) => {
+  const folder = useRecoilValue(foldersFamily(folderId))
+
   return (
     <FolderView>
-      <FolderImage source={folder.source} resizeMode="contain" />
-      <FolderCountText>{folder.count}</FolderCountText>
-      <FolderNameText>{folder.name}</FolderNameText>
+      <FolderImage
+        source={require('../../assets/images/folder_1.png')}
+        resizeMode="contain"
+      />
+      <FolderCountText>{folder.articleCount}</FolderCountText>
+      <FolderNameText>{folder.folderTitle}</FolderNameText>
     </FolderView>
   )
 }

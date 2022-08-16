@@ -46,12 +46,10 @@ export default function useAuth() {
             resolve({
               success: true
             })
-            console.log('successfully saved')
           }
         })
         .catch(error => {
           console.error('failed')
-          console.log(error.response.data)
           reject({
             success: false,
             code: error.response.status

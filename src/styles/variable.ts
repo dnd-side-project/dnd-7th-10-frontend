@@ -27,7 +27,25 @@ export const ColorPalette = {
   main_2: 'rgba(255,82,22,0.3)',
   system_blue: '#2792FF',
   system_red: '#FF4F55',
-  background_1: '#F4F5F9'
+  background_1: '#F4F5F9',
+  White: '#FFFFFF',
+  background_2: '#F7FAFC',
+  BlueGray_1: '#EEF5FA',
+  LinkkleLightBlueGray: '#DEEBF5',
+  BlueGray_2: '#D6E1ED',
+  BlueGray_3: '#93ABC6',
+  LinkkleBlueGray: '#5E7294',
+  BlueGray_4: '#394A66',
+  LinkkleDarkBlueGray: '#26344A',
+  BlueGray_5: '#18253E',
+  BlueGray_6: '#151D29',
+  LinkkleOrange: '#FF5216',
+  LinkkleLightOrange_2: '#FFAA73',
+  LinkkleLightOrange_1: '#FFE9D0',
+  Background_1: '#F4F5F9',
+  Background_2: '#F7FAFC',
+  Function_Red: '#FF4F55',
+  Function_Blue: '#2792FF'
 }
 
 export type IColorPalette = keyof typeof ColorPalette

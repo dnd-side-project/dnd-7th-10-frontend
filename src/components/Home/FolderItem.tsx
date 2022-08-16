@@ -2,6 +2,7 @@ import styled from '@emotion/native'
 import React from 'react'
 import { useRecoilValue } from 'recoil'
 import { foldersFamily } from '../../recoil/folders'
+import { IFolderColor } from '../FolderAdd/FolderColorList'
 
 const FolderView = styled.View`
   max-width: 156px;
@@ -29,6 +30,33 @@ const FolderNameText = styled.Text`
   margin-top: 8px;
 `
 
+export const folderCoverColors: IFolderColor[] = [
+  {
+    name: 'Navy',
+    source: require('../../assets/images/folder_cover_navy.png')
+  },
+  {
+    name: 'Sky',
+    source: require('../../assets/images/folder_cover_sky.png')
+  },
+  {
+    name: 'Pink',
+    source: require('../../assets/images/folder_cover_pink.png')
+  },
+  {
+    name: 'Yellow',
+    source: require('../../assets/images/folder_cover_yellow.png')
+  },
+  {
+    name: 'Orange',
+    source: require('../../assets/images/folder_cover_orange.png')
+  },
+  {
+    name: 'fake',
+    fake: true
+  }
+]
+
 interface Props {
   folderId: string
 }
@@ -36,12 +64,13 @@ interface Props {
 const FolderItem = ({ folderId }: Props) => {
   const folder = useRecoilValue(foldersFamily(folderId))
 
+  const folderImage =
+    (folderCoverColors.find(({ name }) => name === folder.folderColor) || {})
+      .source || folderCoverColors[0].source!
+
   return (
     <FolderView>
-      <FolderImage
-        source={require('../../assets/images/folder_1.png')}
-        resizeMode="contain"
-      />
+      <FolderImage source={folderImage} resizeMode="contain" />
       <FolderCountText>{folder.articleCount}</FolderCountText>
       <FolderNameText>{folder.folderTitle}</FolderNameText>
     </FolderView>

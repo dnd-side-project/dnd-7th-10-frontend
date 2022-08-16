@@ -5,15 +5,16 @@ import { fontWithColorFamily } from '../../styles/fonts'
 import {
   GestureResponderEvent,
   ImageSourcePropType,
+  StyleSheet,
   TouchableOpacity
 } from 'react-native'
 
 const HeaderBar = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
-  height: 72px;
+  height: 60px;
   background: white;
-  padding: 12px 24px 0;
-  elevation: 4;
+  padding: 0 24px;
+  elevation: 12;
 `
 
 const HeaderIcon = styled.Image`
@@ -83,13 +84,23 @@ const IconButtonsWrap = ({ iconButtons }: IconButtonsWrapProps) => (
   </IconButtonsView>
 )
 
+const styles = StyleSheet.create({
+  shadow: {
+    shadowOffset: { width: 10, height: 10 },
+    shadowColor: 'black',
+    shadowOpacity: 1,
+    elevation: 3,
+    zIndex: 999
+  }
+})
+
 const Header = ({
   children,
   save,
   iconButtons,
   onSavePress
 }: PropsWithChildren<Props>) => (
-  <HeaderBar>
+  <HeaderBar style={styles.shadow}>
     <HeaderIcon
       source={require('../../assets/images/chevron-left.png')}
       resizeMode="contain"

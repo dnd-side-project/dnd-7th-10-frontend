@@ -46,7 +46,7 @@ const FolderList = () => {
     <FolderListScrollView>
       <FolderListView>
         {folders.map(folder => (
-          <FolderItem folder={folder} />
+          <FolderItem folder={folder} key={folder.name} />
         ))}
         <FolderAdd />
       </FolderListView>

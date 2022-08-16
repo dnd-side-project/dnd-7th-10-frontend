@@ -3,7 +3,7 @@ import styled from '@emotion/native'
 import KakaoLoginButton from '../components/Login/KakaoLoginButton'
 import { backgroundWithColor } from '../styles/backgrounds'
 import { Animated } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
 
 const LoginBox = styled.View`
@@ -68,7 +68,7 @@ const Login = () => {
   }, [kakaoOpacity])
 
   const onKakaoPress = () => {
-    navigation.navigate('Main')
+    navigation.dispatch(StackActions.replace('Main'))
   }
 
   return (

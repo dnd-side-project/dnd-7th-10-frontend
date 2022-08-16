@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const HeaderBar = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
@@ -94,25 +95,37 @@ const styles = StyleSheet.create({
   }
 })
 
+const backButtonInsets = { top: 8, bottom: 8, left: 16, right: 16 }
+
 const Header = ({
   children,
   save,
   iconButtons,
   onSavePress
-}: PropsWithChildren<Props>) => (
-  <HeaderBar style={styles.shadow}>
-    <HeaderIcon
-      source={require('../../assets/images/chevron-left.png')}
-      resizeMode="contain"
-    />
-    <HeaderText>{children}</HeaderText>
-    {save && (
-      <SaveButton hitSlop={SaveButtonInsets} onPress={onSavePress}>
-        <SaveButtonText>저장</SaveButtonText>
-      </SaveButton>
-    )}
-    {iconButtons && <IconButtonsWrap iconButtons={iconButtons} />}
-  </HeaderBar>
-)
+}: PropsWithChildren<Props>) => {
+  const navigation = useNavigation()
+
+  const onBackPress = () => {
+    navigation.goBack()
+  }
+
+  return (
+    <HeaderBar style={styles.shadow}>
+      <TouchableOpacity onPress={onBackPress} hitSlop={backButtonInsets}>
+        <HeaderIcon
+          source={require('../../assets/images/chevron-left.png')}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+      <HeaderText>{children}</HeaderText>
+      {save && (
+        <SaveButton hitSlop={SaveButtonInsets} onPress={onSavePress}>
+          <SaveButtonText>저장</SaveButtonText>
+        </SaveButton>
+      )}
+      {iconButtons && <IconButtonsWrap iconButtons={iconButtons} />}
+    </HeaderBar>
+  )
+}
 
 export default Header

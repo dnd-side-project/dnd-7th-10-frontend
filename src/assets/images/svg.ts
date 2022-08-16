@@ -10,6 +10,7 @@ import Search from './search.svg'
 import Warning from './warning.svg'
 import Folder from './folder.svg'
 import Reminding from './reminding.svg'
+import Add from './add.svg'
 
 const SVG = {
   Bell,
@@ -23,7 +24,8 @@ const SVG = {
   Search,
   Warning,
   Folder,
-  Reminding
+  Reminding,
+  Add
 }
 
 export default SVG

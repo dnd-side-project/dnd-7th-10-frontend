@@ -1,9 +1,9 @@
 name: Android Workflow
 
 on: 
-  workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    branches:
+      - "production"
 
 jobs:
   android-build:
@@ -71,7 +71,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON_TEXT }}
-          packageName: com.test.test
+          packageName: me.linkkle.app
           releaseFiles: android/app/build/outputs/bundle/release/*.aab
           track: alpha
           status: completed

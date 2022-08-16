@@ -24,7 +24,12 @@ const InputTextInput = styled.TextInput`
   padding: 16px 0;
 `
 
-const Input = () => {
+interface Props {
+  value?: string
+  onChangeText?: (text: string) => void
+}
+
+const Input = ({ value, onChangeText }: Props) => {
   const [focused, setFocused] = useState<boolean>(false)
 
   const handleFocusOn = () => setFocused(true)
@@ -35,6 +40,8 @@ const Input = () => {
       <InputTextInput
         onFocus={handleFocusOn}
         onBlur={handleFocusOff}
+        value={value}
+        onChangeText={onChangeText}
         placeholder="링크를 입력해주세요"
         placeholderTextColor={ColorPalette.gray_5}
       />

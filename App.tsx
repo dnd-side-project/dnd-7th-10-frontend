@@ -1,6 +1,7 @@
 import styled from '@emotion/native'
 import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
+import { RecoilRoot } from 'recoil'
 import Router from './src/pages/Router'
 
 const SafeArea = styled.SafeAreaView`
@@ -11,9 +12,11 @@ const SafeArea = styled.SafeAreaView`
 const App = () => {
   return (
     <SafeArea>
-      <NavigationContainer>
-        <Router />
-      </NavigationContainer>
+      <RecoilRoot>
+        <NavigationContainer>
+          <Router />
+        </NavigationContainer>
+      </RecoilRoot>
     </SafeArea>
   )
 }

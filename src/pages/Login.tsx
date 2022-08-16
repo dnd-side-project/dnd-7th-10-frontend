@@ -5,6 +5,7 @@ import { backgroundWithColor } from '../styles/backgrounds'
 import { Animated } from 'react-native'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
+import useAuth from '../hooks/useAuth'
 
 const LoginBox = styled.View`
   ${backgroundWithColor('main_1')}
@@ -56,15 +57,28 @@ const Login = () => {
   const kakaoOpacity = useRef(new Animated.Value(0)).current
   const navigation = useNavigation<RouterNavigationProps>()
 
+  const { auth, login } = useAuth()
+
   useEffect(() => {
+    if (!auth.user) {
+      login('linkkle', 'linkkle2022!')
+    }
+    if (auth.user) {
+      console.warn('hi, ' + auth.user.username)
+      navigation.dispatch(StackActions.replace('Main'))
+    }
+  }, [auth, login, navigation])
+
+  useEffect(() => {
+    console.log('start login..')
     setTimeout(() => {
       setNeedLogin(true)
       Animated.timing(kakaoOpacity, {
         toValue: 1,
         duration: 200,
         useNativeDriver: true
-      }).start()
-    }, 1500)
+      })
+    }, 15000)
   }, [kakaoOpacity])
 
   const onKakaoPress = () => {

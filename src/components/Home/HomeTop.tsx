@@ -23,10 +23,10 @@ const HomeTop = () => {
   return (
     <HomeTopView>
       <LogoImage
-        source={require('../assets/images/logo_colored.png')}
+        source={require('../../assets/images/logo_colored.png')}
         resizeMode="contain"
       />
-      <MypageIcon source={require('../assets/images/icon_mypage.png')} />
+      <MypageIcon source={require('../../assets/images/icon_mypage.png')} />
     </HomeTopView>
   )
 }

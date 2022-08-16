@@ -35,7 +35,7 @@ const KakaoLoginButton = ({ onPress }: Props) => {
     <KakaoTouch activeOpacity={0.9} onPress={onPress}>
       <KakaoButton>
         <KakaoIcon
-          source={require('../assets/images/kakao_login_large_wide.png')}
+          source={require('../../assets/images/kakao_login_large_wide.png')}
         />
         <KakaoText>카카오로 시작하기</KakaoText>
       </KakaoButton>

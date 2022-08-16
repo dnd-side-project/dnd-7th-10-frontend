@@ -1,8 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/native'
 import KakaoLoginButton from '../components/Login/KakaoLoginButton'
 import { backgroundWithColor } from '../styles/backgrounds'
 import { Animated } from 'react-native'
+import { StackActions, useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from './Router'
 
 const LoginBox = styled.View`
   ${backgroundWithColor('main_1')}
@@ -45,12 +47,29 @@ const KakaoLoginWrap = styled(Animated.View)`
   bottom: 52px;
   align-self: stretch;
   flex-direction: row;
-  margin-horizontal: 22px;
+  margin-left: 22px;
+  margin-right: 22px;
 `
 
 const Login = () => {
-  const [needLogin] = useState<boolean>(false)
+  const [needLogin, setNeedLogin] = useState<boolean>(false)
   const kakaoOpacity = useRef(new Animated.Value(0)).current
+  const navigation = useNavigation<RouterNavigationProps>()
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNeedLogin(true)
+      Animated.timing(kakaoOpacity, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true
+      }).start()
+    }, 1500)
+  }, [kakaoOpacity])
+
+  const onKakaoPress = () => {
+    navigation.dispatch(StackActions.replace('Main'))
+  }
 
   return (
     <LoginBox>
@@ -73,7 +92,7 @@ const Login = () => {
 
       {needLogin && (
         <KakaoLoginWrap style={{ opacity: kakaoOpacity }}>
-          <KakaoLoginButton />
+          <KakaoLoginButton onPress={onKakaoPress} />
         </KakaoLoginWrap>
       )}
     </LoginBox>

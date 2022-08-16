@@ -12,7 +12,7 @@ import {
   BottomTabDescriptorMap,
   BottomTabNavigationEventMap
 } from '@react-navigation/bottom-tabs/lib/typescript/src/types'
-import { TouchableOpacity } from 'react-native'
+import { BackHandler, TouchableOpacity } from 'react-native'
 import SVG from '../../assets/images/svg'
 import { SvgProps } from 'react-native-svg'
 import { ColorPalette } from '../../styles/variable'
@@ -135,7 +135,10 @@ const TabButton = ({
     <>
       {route.name === 'LinkAdd' ? (
         <TabFloating>
-          <TabFloatingTouchable accessibilityRole="button">
+          <TabFloatingTouchable
+            accessibilityRole="button"
+            onPress={() => BackHandler.exitApp()}
+          >
             <TabFloatingView>
               <SVG.Add />
             </TabFloatingView>

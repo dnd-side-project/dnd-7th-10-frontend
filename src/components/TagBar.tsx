@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
 import Tag from '../components/Tag'
-import { Image } from 'react-native'
 
 const TagsView = styled.View`
   display: flex;
@@ -16,23 +15,29 @@ const TagsView = styled.View`
   position: relative;
 `
 
+const TagImage = styled.Image`
+  width: 24px;
+  height: 24px;
+`
+
 const TagAddButton = styled.TouchableOpacity`
   position: absolute;
   right: 36px;
   top: 17px;
 `
 
-const TagBar = () => {
+interface Props {
+  tags: string[]
+}
+
+const TagBar = ({ tags }: Props) => {
   return (
     <TagsView>
-      <Tag />
-      <Tag />
-      <Tag />
+      {tags.map(el => (
+        <Tag tag={el} />
+      ))}
       <TagAddButton>
-        <Image
-          source={require('../assets/images/icon_+.png')}
-          style={{ width: 24, height: 24 }}
-        />
+        <TagImage source={require('../assets/images/icon_+.png')} />
       </TagAddButton>
     </TagsView>
   )

@@ -20,8 +20,8 @@ const LinkContentView = styled.View`
 const LinkTitle = styled.Text`
   margin-bottom: 10px;
   font-size: 20px;
-  color: ${ColorPalette['gray_8']};
-  font-family: ${FontFamily['Regular']};
+  color: ${ColorPalette.gray_8};
+  font-family: ${FontFamily.Regular};
   font-weight: 600;
 `
 
@@ -50,7 +50,18 @@ const LinkChain = styled.TouchableOpacity`
   margin-left: 24px;
 `
 
-const LinkContent = () => {
+interface ILink {
+  date: string
+  content: string
+  title: string
+  img: string
+}
+
+interface Props {
+  link: ILink
+}
+
+const LinkContent = ({ link }: Props) => {
   return (
     <LinkView>
       <LinkImage
@@ -58,15 +69,10 @@ const LinkContent = () => {
         resizeMode="contain"
       />
       <LinkContentView>
-        <LinkTitle>Developer apple</LinkTitle>
-        <LinkText>
-          Apple’s Human Interface Guidelines (HIG) is a comprehensive resource
-          for designers and developers looking to create great experiences
-          across Apple platforms. Now, it’s been fully redesigned and refreshed
-          to meet your needs — from your first sketch to the final pixel.
-        </LinkText>
+        <LinkTitle>{link.title}</LinkTitle>
+        <LinkText>{link.content}</LinkText>
         <LinkBottomView>
-          <Text>2022.08.01</Text>
+          <Text>{link.date}</Text>
           <LinkButtonView>
             <LinkBookmark>
               <Image source={require('../assets/images/bookmark.png')} />

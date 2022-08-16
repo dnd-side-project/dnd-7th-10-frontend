@@ -36,6 +36,8 @@ const MemoImage = styled.Image`
 interface Props {
   content: string
 }
+//destructoring을 하고 있는 거기 때문에 {content:string}은 불가능
+//{}객체 형태로
 
 const Memo = ({ content }: Props) => {
   return (

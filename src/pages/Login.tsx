@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/native'
 import KakaoLoginButton from '../components/Login/KakaoLoginButton'
 import { backgroundWithColor } from '../styles/backgrounds'
@@ -49,8 +49,19 @@ const KakaoLoginWrap = styled(Animated.View)`
 `
 
 const Login = () => {
-  const [needLogin] = useState<boolean>(false)
+  const [needLogin, setNeedLogin] = useState<boolean>(false)
   const kakaoOpacity = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNeedLogin(true)
+      Animated.timing(kakaoOpacity, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true
+      }).start()
+    }, 1500)
+  }, [kakaoOpacity])
 
   return (
     <LoginBox>

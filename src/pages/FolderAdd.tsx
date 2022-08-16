@@ -30,7 +30,7 @@ interface IFolderPost {
 
 const FolderAdd = () => {
   const [folderTitle, setFolderTitle] = useState<string>('')
-  const [folderColor] = useState<string>('navy')
+  const [folderColor, setFolderColor] = useState<string>('navy')
   const [, fetchFolders] = useFolderList()
   const navigation = useNavigation()
 
@@ -62,7 +62,7 @@ const FolderAdd = () => {
         </SectionContent>
         <SectionTitle title="폴더 컬러 선택" />
         <SectionContent>
-          <FolderColorList />
+          <FolderColorList onColorChange={setFolderColor} />
         </SectionContent>
       </FolderAddContent>
       <BottomButton>

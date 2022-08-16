@@ -1,9 +1,17 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import Login from './Login'
 import Main from './Main'
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<RouterParamList>()
+
+export interface RouterParamList extends ParamListBase {
+  Login: undefined
+  Main: undefined
+}
+
+export type RouterNavigationProps = NavigationProp<RouterParamList>
 
 const Router = () => {
   return (

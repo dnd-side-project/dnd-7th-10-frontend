@@ -16,8 +16,8 @@ const InputView = styled.View<InputViewProps>`
     props.focused ? ColorPalette.gray_6 : ColorPalette.gray_3};
   border-radius: 4px;
   padding: ${props => (props.small ? '0 8px' : '0 20px')};
-  line-height: ${props => (props.small ? '48px' : '56px')};
-  height: ${props => (props.small ? '48px' : '56px')};
+  line-height: ${props => (props.small ? '44px' : '56px')};
+  height: ${props => (props.small ? '44px' : '56px')};
   justify-content: center;
 `
 

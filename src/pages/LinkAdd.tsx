@@ -24,7 +24,7 @@ const LinkAddContentView = styled.View`
   flex: 1;
 `
 
-const LinkAddPage = () => {
+const LinkAdd = () => {
   return (
     <LinkAddPageView>
       <Header>링크추가</Header>
@@ -49,4 +49,4 @@ const LinkAddPage = () => {
   )
 }
 
-export default LinkAddPage
+export default LinkAdd

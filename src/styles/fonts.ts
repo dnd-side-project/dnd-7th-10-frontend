@@ -28,4 +28,18 @@ function fontWithColorFamily(
   `
 }
 
-export { fontWithColor, fontWithFamily, fontWithColorFamily }
+function fontWithFull(
+  fontFamilyName: IFontFamily,
+  size: number,
+  lineHeight: number,
+  letterSpacing: number
+) {
+  return css`
+    ${fontWithFamily(fontFamilyName)}
+    font-size: ${size + 'px'};
+    line-height: ${lineHeight + 'px'};
+    letter-spacing: ${letterSpacing + 'px'};
+  `
+}
+
+export { fontWithColor, fontWithFamily, fontWithColorFamily, fontWithFull }

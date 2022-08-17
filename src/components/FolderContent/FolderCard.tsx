@@ -1,5 +1,5 @@
 import styled from '@emotion/native'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { IArticle } from '../../recoil/folders'
 import { backgroundWithColor, shadow } from '../../styles/backgrounds'
 import { fontWithColorFamily } from '../../styles/fonts'
@@ -50,11 +50,18 @@ interface Props {
 }
 
 const FolderCard = ({ article }: Props) => {
+  const linkImage = useMemo(() => {
+    if (article.openGraph.linkImage.startsWith('//')) {
+      return `https:${article.openGraph.linkImage}`
+    }
+    return article.openGraph.linkImage || 'https://via.placeholder.com/1200x630'
+  }, [article])
+
   return (
     <FolderCardView style={shadow}>
       <FolderCardImage
         source={{
-          uri: article.openGraph.linkImage
+          uri: linkImage
         }}
         resizeMode="cover"
       />

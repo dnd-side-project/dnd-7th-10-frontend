@@ -6,17 +6,19 @@ import {
   NavigationHelpers,
   ParamListBase,
   RouteProp,
-  TabNavigationState
+  TabNavigationState,
+  useNavigation
 } from '@react-navigation/native'
 import {
   BottomTabDescriptorMap,
   BottomTabNavigationEventMap
 } from '@react-navigation/bottom-tabs/lib/typescript/src/types'
-import { BackHandler, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import SVG from '../../assets/images/svg'
 import { SvgProps } from 'react-native-svg'
 import { ColorPalette } from '../../styles/variable'
 import { flexWithAlign } from '../../styles/flexbox'
+import { RouterNavigationProps } from '../../pages/Router'
 
 const TabBarView = styled.View`
   flex-direction: row;
@@ -113,6 +115,7 @@ const TabButton = ({
   descriptors,
   navigation
 }: TabButtonProps) => {
+  const routerNavigation = useNavigation<RouterNavigationProps>()
   const { options } = descriptors[route.key]
 
   const isFocused = state.index === index
@@ -129,6 +132,11 @@ const TabButton = ({
       navigation.navigate(route.name, { name: route.name, merge: true })
     }
   }
+
+  const onLinkAddPress = () => {
+    routerNavigation.navigate('LinkAdd')
+  }
+
   const tabInfoKey: keyof BottomParamList = route.name
   const tabInfo = tabInfos[tabInfoKey]
   return (
@@ -137,7 +145,7 @@ const TabButton = ({
         <TabFloating>
           <TabFloatingTouchable
             accessibilityRole="button"
-            onPress={() => BackHandler.exitApp()}
+            onPress={onLinkAddPress}
           >
             <TabFloatingView>
               <SVG.Add />

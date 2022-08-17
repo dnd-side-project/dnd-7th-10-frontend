@@ -1,4 +1,4 @@
-import { fontWithFull } from './fonts'
+import { css } from '@emotion/native'
 
 export const FontFamily = {
   Black: 'Pretendard-Black',
@@ -68,3 +68,17 @@ export const ColorPalette = {
 }
 
 export type IColorPalette = keyof typeof ColorPalette
+
+export function fontWithFull(
+  fontFamilyName: IFontFamily,
+  size: number,
+  lineHeight: number,
+  letterSpacing: number
+) {
+  return css`
+    font-family: ${FontFamily[fontFamilyName]};
+    font-size: ${size + 'px'};
+    line-height: ${lineHeight + 'px'};
+    letter-spacing: ${letterSpacing + 'px'};
+  `
+}

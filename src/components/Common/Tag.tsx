@@ -61,9 +61,9 @@ const tagRemoveButtonInsets = { top: 10, bottom: 10, left: 10, right: 10 }
 const Tag = ({ text, remove, selected, fixed }: Props) => {
   const getTagIcon = useCallback(() => {
     if (selected || fixed) {
-      return require('../assets/images/tag_remove_white.png')
+      return require('../../assets/images/tag_remove_white.png')
     }
-    return require('../assets/images/tag_remove.png')
+    return require('../../assets/images/tag_remove.png')
   }, [selected, fixed])
 
   return (

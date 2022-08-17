@@ -21,6 +21,7 @@ const HeaderBar = styled.View`
 const HeaderIcon = styled.Image`
   width: 24px;
   height: 24px;
+  margin-right: 12px;
 `
 
 const HeaderIconButton = styled(HeaderIcon)`
@@ -30,7 +31,6 @@ const HeaderIconButton = styled(HeaderIcon)`
 const HeaderText = styled.Text`
   ${fontWithColorFamily('gray_7', 'SemiBold')}
   font-size: 20px;
-  margin-left: 12px;
 `
 
 const SaveButton = styled.TouchableOpacity`
@@ -65,6 +65,7 @@ interface Props {
   save?: boolean
   onSavePress?: IHeaderButtonClickHandler
   iconButtons?: IIconButton[]
+  hideBack?: boolean
 }
 
 interface IconButtonsWrapProps {
@@ -101,7 +102,8 @@ const Header = ({
   children,
   save,
   iconButtons,
-  onSavePress
+  onSavePress,
+  hideBack
 }: PropsWithChildren<Props>) => {
   const navigation = useNavigation()
 
@@ -111,12 +113,14 @@ const Header = ({
 
   return (
     <HeaderBar style={styles.shadow}>
-      <TouchableOpacity onPress={onBackPress} hitSlop={backButtonInsets}>
-        <HeaderIcon
-          source={require('../../assets/images/chevron-left.png')}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
+      {!hideBack && (
+        <TouchableOpacity onPress={onBackPress} hitSlop={backButtonInsets}>
+          <HeaderIcon
+            source={require('../../assets/images/chevron-left.png')}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      )}
       <HeaderText>{children}</HeaderText>
       {save && (
         <SaveButton hitSlop={SaveButtonInsets} onPress={onSavePress}>

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from '@emotion/native'
 import FolderCard from './FolderCard'
 import { backgroundWithColor } from '../../styles/backgrounds'
-import FolderEmpty from './FolderEmpty'
+import Empty from '../Common/Empty'
 import { useRecoilValue } from 'recoil'
 import { foldersDetailFamily } from '../../recoil/folders'
 
@@ -41,7 +41,7 @@ const FolderCardList = ({ folderId }: Props) => {
           </FolderCardView>
         </FolderCardScrollView>
       ) : (
-        <FolderEmpty />
+        <Empty button />
       )}
     </>
   )

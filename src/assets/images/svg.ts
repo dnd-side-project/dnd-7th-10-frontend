@@ -15,6 +15,8 @@ import RightArrow from './right_arrow.svg'
 import LeftArrow from './left_arrow.svg'
 import Refresh from './refresh.svg'
 import Exit from './exit.svg'
+import Bookmark from './bookmark.svg'
+import BookmarkFilled from './bookmark_filled.svg'
 
 const SVG = {
   Bell,
@@ -33,7 +35,9 @@ const SVG = {
   RightArrow,
   LeftArrow,
   Refresh,
-  Exit
+  Exit,
+  Bookmark,
+  BookmarkFilled
 }
 
 export default SVG

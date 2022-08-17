@@ -1,5 +1,8 @@
 import styled from '@emotion/native'
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
+import { TouchableOpacity } from 'react-native'
+import { RouterNavigationProps } from '../../pages/Router'
 import FolderAdd from './FolderAdd'
 import FolderItem from './FolderItem'
 import useFolderList from './FolderList.hook'
@@ -16,13 +19,23 @@ const FolderListView = styled.View`
 `
 
 const FolderList = () => {
+  const navigation = useNavigation<RouterNavigationProps>()
   const [folderIds] = useFolderList()
+
+  const onFolderPress = (folderId: string) => {
+    navigation.navigate('FolderContent', { folderId })
+  }
 
   return (
     <FolderListScrollView>
       <FolderListView>
-        {folderIds.map(folder => (
-          <FolderItem key={folder} folderId={folder} />
+        {folderIds.map(folderId => (
+          <TouchableOpacity
+            key={folderId}
+            onPress={() => onFolderPress(folderId)}
+          >
+            <FolderItem folderId={folderId} />
+          </TouchableOpacity>
         ))}
         <FolderAdd />
       </FolderListView>

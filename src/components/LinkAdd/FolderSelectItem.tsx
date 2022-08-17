@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/native'
 import { fontWithColorFamily } from '../../styles/fonts'
+import { useRecoilValue } from 'recoil'
+import { foldersFamily } from '../../recoil/folders'
+import { folderColors } from '../FolderAdd/FolderColorList'
 
 const FolderSelectItemView = styled.View`
   width: 108px;
@@ -28,16 +31,23 @@ const FolderSelectedImage = styled.Image`
 
 interface Props {
   selected?: boolean
+  folderId: string
 }
 
-const FolderSelectItem = ({ selected }: Props) => {
+const FolderSelectItem = ({ folderId, selected }: Props) => {
+  const folder = useRecoilValue(foldersFamily(folderId))
+
+  const folderSource = useMemo(() => {
+    const source =
+      (folderColors.find(({ name }) => name === folder.folderColor) || {})
+        .source || folderColors[0].source!
+    return source
+  }, [folder])
+
   return (
     <FolderSelectItemView>
-      <FolderSelectItemImage
-        source={require('../../assets/images/folder_navy.png')}
-        resizeMode="stretch"
-      />
-      <FolderSelectItemText>기본 폴더</FolderSelectItemText>
+      <FolderSelectItemImage source={folderSource} resizeMode="stretch" />
+      <FolderSelectItemText>{folder.folderTitle}</FolderSelectItemText>
       {selected && (
         <FolderSelectedImage
           source={require('../../assets/images/folder_selected.png')}

@@ -17,7 +17,7 @@ const NoticeText = styled.Text`
   ${Typo.Heading1_600}
   ${fontWithColor('BlueGray_4')}
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `
 
 const NoticeAccentText = styled.Text`

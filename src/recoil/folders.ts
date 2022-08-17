@@ -1,10 +1,17 @@
-import { atom, selector, selectorFamily } from 'recoil'
+import { atom, atomFamily, selector, selectorFamily } from 'recoil'
 
-export interface IFolder {
+export interface IFolderBase {
   folderId: string
   folderTitle: string
   folderColor: string
+}
+
+export interface IFolder extends IFolderBase {
   articleCount: number
+}
+
+export interface IFolderDetail extends IFolderBase {
+  articles: any[]
 }
 
 export const foldersAtom = atom<IFolder[]>({
@@ -40,4 +47,14 @@ export const foldersFamily = selectorFamily<IFolder, string>({
         articleCount: 0
       }
     }
+})
+
+export const foldersDetailFamily = atomFamily<IFolderDetail, string>({
+  key: 'folderDetailFamily',
+  default: folderId => ({
+    folderId,
+    folderTitle: '',
+    folderColor: 'Navy',
+    articles: []
+  })
 })

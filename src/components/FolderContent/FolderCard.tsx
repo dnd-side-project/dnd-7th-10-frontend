@@ -1,13 +1,12 @@
 import styled from '@emotion/native'
 import React from 'react'
-import { backgroundWithColor } from '../../styles/backgrounds'
+import { IArticle } from '../../recoil/folders'
+import { backgroundWithColor, shadow } from '../../styles/backgrounds'
 import { fontWithColorFamily } from '../../styles/fonts'
 
 const FolderCardView = styled.View`
   ${backgroundWithColor('gray_1')}
   border-radius: 8px;
-  elevation: 6;
-  shadow-opacity: 0.8;
   margin-bottom: 12px;
 `
 
@@ -46,19 +45,23 @@ const ContentTag = styled.Text`
   margin-right: 8px;
 `
 
-const FolderCard = () => {
+interface Props {
+  article: IArticle
+}
+
+const FolderCard = ({ article }: Props) => {
   return (
-    <FolderCardView>
+    <FolderCardView style={shadow}>
       <FolderCardImage
         source={{
-          uri: 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile7.uf.tistory.com%2Fimage%2F24283C3858F778CA2EFABE'
+          uri: article.openGraph.linkImage
         }}
         resizeMode="cover"
       />
       <FolderCardContent>
-        <ContentTitle>Developer Apple</ContentTitle>
+        <ContentTitle>{article.openGraph.linkTitle}</ContentTitle>
         <ContentDescription numberOfLines={1}>
-          Apple's Human Interface Guidelines (HIG) is a compre...
+          {article.openGraph.linkDescription}
         </ContentDescription>
         <ContentTagView>
           <ContentTag>UI/UX</ContentTag>

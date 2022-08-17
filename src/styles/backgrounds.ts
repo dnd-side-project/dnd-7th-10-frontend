@@ -7,4 +7,12 @@ function backgroundWithColor(colorName: IColorPalette) {
   `
 }
 
-export { backgroundWithColor }
+const shadow = {
+  shadowOffset: { width: 10, height: 10 },
+  shadowColor: 'black',
+  shadowOpacity: 1,
+  elevation: 3,
+  zIndex: 999
+}
+
+export { backgroundWithColor, shadow }

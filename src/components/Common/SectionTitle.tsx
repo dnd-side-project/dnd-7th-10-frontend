@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/native'
 import { fontWithColorFamily } from '../../styles/fonts'
 import { flexWithAlign } from '../../styles/flexbox'
+import { TouchableOpacity } from 'react-native'
 
 const SectionTitleView = styled.View`
   ${flexWithAlign('center', 'space-between', 'row')}
@@ -22,17 +23,22 @@ const SectionTitleIcon = styled.Image`
 interface Props {
   title: string
   plus?: boolean
+  onPlusPress?: () => void
 }
 
-const SectionTitle = ({ title, plus }: Props) => {
+const plusButtonInsets = { top: 6, bottom: 6, left: 6, right: 6 }
+
+const SectionTitle = ({ title, plus, onPlusPress }: Props) => {
   return (
     <SectionTitleView>
       <SectionTitleText>{title}</SectionTitleText>
       {plus && (
-        <SectionTitleIcon
-          source={require('../../assets/images/plus.png')}
-          resizeMode="contain"
-        />
+        <TouchableOpacity onPress={onPlusPress} hitSlop={plusButtonInsets}>
+          <SectionTitleIcon
+            source={require('../../assets/images/plus.png')}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       )}
     </SectionTitleView>
   )

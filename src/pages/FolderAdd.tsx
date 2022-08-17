@@ -24,6 +24,7 @@ const FolderAddList = styled.ScrollView`
 const FolderAddContent = styled.View`
   ${backgroundWithColor('gray_1')}
   padding: 0 24px;
+  height: 100%;
   flex: 1;
 `
 
@@ -32,6 +33,8 @@ interface IFolderPost {
   folderId: string
   folderTitle: string
 }
+
+const contentContainer = { flexGrow: 1 }
 
 const FolderAdd = () => {
   const [folderTitle, setFolderTitle] = useState<string>('')
@@ -64,7 +67,7 @@ const FolderAdd = () => {
   return (
     <FolderAddView>
       <Header>폴더 생성하기</Header>
-      <FolderAddList>
+      <FolderAddList contentContainerStyle={contentContainer}>
         <FolderAddContent>
           <SectionTitle title="폴더 명" />
           <SectionContent>

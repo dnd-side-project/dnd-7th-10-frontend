@@ -34,7 +34,13 @@ const FolderEmptyButtonText = styled.Text`
   text-align: center;
 `
 
-const FolderEmpty = () => {
+interface Props {
+  button?: boolean
+  onButtonPress?: () => void
+  text?: string
+}
+
+const Empty = ({ button, onButtonPress, text }: Props) => {
   return (
     <FolderEmptyView>
       <FolderEmptyIcon
@@ -42,13 +48,15 @@ const FolderEmpty = () => {
         resizeMode="contain"
       />
       <FolderEmptyText>
-        폴더에 저장한 링크가 없어요!{'\n'}링크들을 모아볼까요?
+        {text || "폴더에 저장한 링크가 없어요!{'\n'}링크들을 모아볼까요?"}
       </FolderEmptyText>
-      <FolderEmptyButton>
-        <FolderEmptyButtonText>링크 저장하기</FolderEmptyButtonText>
-      </FolderEmptyButton>
+      {button && (
+        <FolderEmptyButton onPress={onButtonPress}>
+          <FolderEmptyButtonText>링크 저장하기</FolderEmptyButtonText>
+        </FolderEmptyButton>
+      )}
     </FolderEmptyView>
   )
 }
 
-export default FolderEmpty
+export default Empty

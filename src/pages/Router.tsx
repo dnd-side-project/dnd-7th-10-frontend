@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import Modal from '../components/Common/Modal'
 import FolderAdd from './FolderAdd'
+import FolderContent from './FolderContent'
 import LinkAdd from './LinkAdd'
 import Login from './Login'
 import Main from './Main'
@@ -12,8 +13,11 @@ const Stack = createNativeStackNavigator<RouterParamList>()
 export interface RouterParamList extends ParamListBase {
   Login: undefined
   Main: undefined
-  FolderAdd: undefined
   LinkAdd: undefined
+  FolderAdd: undefined
+  FolderContent: {
+    folderId: string
+  }
 }
 
 export type RouterNavigationProps = NavigationProp<RouterParamList>
@@ -26,6 +30,7 @@ const Router = () => {
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="FolderAdd" component={FolderAdd} />
         <Stack.Screen name="LinkAdd" component={LinkAdd} />
+        <Stack.Screen name="FolderContent" component={FolderContent} />
       </Stack.Navigator>
       <Modal />
     </>

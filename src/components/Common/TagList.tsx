@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from '@emotion/native'
 import Tag from './Tag'
+import { ITag } from '../../recoil/tags'
+import { TouchableOpacity } from 'react-native'
 
 const TagListView = styled.View`
   flex-wrap: wrap;
@@ -8,12 +10,33 @@ const TagListView = styled.View`
   margin-right: -10px;
 `
 
-const TagList = () => {
+interface Props {
+  tags: ITag[]
+  remove?: boolean
+  selectedIds?: string[]
+  onTagPress?: (tagId: string, selected: boolean) => void
+}
+
+const TagList = ({ tags, remove, selectedIds, onTagPress }: Props) => {
+  function onTagPressCallback(tagId: string, selected: boolean) {
+    if (onTagPress) {
+      onTagPress(tagId, selected)
+    }
+  }
+
   return (
     <TagListView>
-      {new Array(50).fill(0).map((e, i) => (
-        <Tag remove key={`${i}+23`} text={`tag.${i}`} />
-      ))}
+      {tags.map(tag => {
+        const selected = (selectedIds || []).includes(tag.tagId)
+        return (
+          <TouchableOpacity
+            key={tag.tagId}
+            onPress={() => onTagPressCallback(tag.tagId, selected)}
+          >
+            <Tag remove={remove} text={tag.tagName} selected={selected} />
+          </TouchableOpacity>
+        )
+      })}
     </TagListView>
   )
 }

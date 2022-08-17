@@ -14,13 +14,20 @@ const FolderSelectListView = styled.View`
 
 const FolderTouchable = styled.TouchableOpacity``
 
-const FolderSelectList = () => {
+interface Props {
+  onChange?: (value: string) => void
+}
+
+const FolderSelectList = ({ onChange }: Props) => {
   const [selected, setSelected] = useState<number>(-1)
   const [folderIds] = useFolderList()
 
   const onPress = (index: number) => {
     if (index < folderIds.length) {
       setSelected(index)
+      if (onChange) {
+        onChange(folderIds[index])
+      }
     }
   }
 

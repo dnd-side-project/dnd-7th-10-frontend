@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/native'
 import FolderCard from './FolderCard'
 import { backgroundWithColor } from '../../styles/backgrounds'
+import FolderEmpty from './FolderEmpty'
+import { useRecoilValue } from 'recoil'
+import { foldersDetailFamily } from '../../recoil/folders'
 
 const FolderCardScrollView = styled.ScrollView`
   ${backgroundWithColor('background_1')}
@@ -13,16 +16,34 @@ const FolderCardView = styled.View`
   padding: 24px;
 `
 
-const FolderCardList = () => {
+interface Props {
+  folderId: string
+}
+
+const FolderCardList = ({ folderId }: Props) => {
+  const folderDetail = useRecoilValue(foldersDetailFamily(folderId))
+
+  const articles = useMemo(() => {
+    if (folderDetail && folderDetail.articles) {
+      return folderDetail.articles
+    }
+    return []
+  }, [folderDetail])
+
   return (
-    <FolderCardScrollView>
-      <FolderCardView>
-        <FolderCard />
-        <FolderCard />
-        <FolderCard />
-        <FolderCard />
-      </FolderCardView>
-    </FolderCardScrollView>
+    <>
+      {articles.length > 0 ? (
+        <FolderCardScrollView>
+          <FolderCardView>
+            {articles.map(article => (
+              <FolderCard key={article.id} article={article} />
+            ))}
+          </FolderCardView>
+        </FolderCardScrollView>
+      ) : (
+        <FolderEmpty />
+      )}
+    </>
   )
 }
 

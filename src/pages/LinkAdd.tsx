@@ -12,6 +12,10 @@ import { useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
 import BottomButton from '../components/Common/BottomButton'
 import Button from '../components/Common/Button'
+import useTagList from '../hooks/useTagList'
+import api from '../lib/api'
+import { IArticle } from '../recoil/folders'
+import useFolderList from '../components/Home/FolderList.hook'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -48,10 +52,31 @@ const LinkAddInputView = styled.View<InputViewProps>`
 const LinkAdd = () => {
   const navigation = useNavigation<RouterNavigationProps>()
   const [isInputShow, setIsInputShow] = useState<boolean>(false)
+  const { isTagLoading, tags } = useTagList()
+  const [, fetchFolders] = useFolderList()
 
-  const isCreatable = useMemo(() => true, [])
+  const [linkUrl, setLinkUrl] = useState<string>('')
+  const [folderId, setFolderId] = useState<string>('')
+  const [tagIds, setTagIds] = useState<string[]>([])
 
-  const onPress = () => {}
+  const isCreatable = useMemo(
+    () => linkUrl.length > 0 && folderId !== '',
+    [linkUrl, folderId]
+  )
+
+  const onPress = () => {
+    api
+      .post<IArticle>('/article', { folderId, linkUrl, tagIds })
+      .then(response => {
+        if (response.status === 200) {
+          fetchFolders()
+          navigation.goBack()
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
 
   const onTagAddPress = () => {
     setIsInputShow(true)
@@ -65,6 +90,16 @@ const LinkAdd = () => {
     navigation.navigate('FolderAdd')
   }
 
+  const onTagPress = (tagId: string) => {
+    const index = tagIds.indexOf(tagId)
+    if (index > -1) {
+      tagIds.splice(index, 1)
+      setTagIds([...tagIds])
+    } else {
+      setTagIds([...tagIds, tagId])
+    }
+  }
+
   return (
     <LinkAddPageView>
       <Header>링크추가</Header>
@@ -72,7 +107,7 @@ const LinkAdd = () => {
         <LinkAddContentView>
           <SectionTitle title="링크 URL" />
           <SectionContent>
-            <Input />
+            <Input value={linkUrl} onChangeText={setLinkUrl} />
           </SectionContent>
           <SectionTitle
             title="저장할 폴더 선택"
@@ -80,12 +115,19 @@ const LinkAdd = () => {
             onPlusPress={onFolderAddPress}
           />
           <SectionContent>
-            <FolderSelectList />
+            <FolderSelectList onChange={setFolderId} />
           </SectionContent>
           <SectionTitle title="태그 선택" plus onPlusPress={onTagAddPress} />
           <SectionContent>
             <TagGuide />
-            <TagList />
+            {!isTagLoading && (
+              <TagList
+                remove={isInputShow}
+                tags={tags}
+                selectedIds={tagIds}
+                onTagPress={onTagPress}
+              />
+            )}
           </SectionContent>
         </LinkAddContentView>
         <BottomButton>

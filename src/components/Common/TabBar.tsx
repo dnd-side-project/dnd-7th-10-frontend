@@ -146,6 +146,7 @@ const TabButton = ({
           <TabFloatingTouchable
             accessibilityRole="button"
             onPress={onLinkAddPress}
+            activeOpacity={0.9}
           >
             <TabFloatingView>
               <SVG.Add />

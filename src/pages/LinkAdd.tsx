@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import Input from '../components/Common/Input'
@@ -10,6 +10,8 @@ import TagGuide from '../components/LinkAdd/TagGuide'
 import TagList from '../components/Common/TagList'
 import { useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
+import BottomButton from '../components/Common/BottomButton'
+import Button from '../components/Common/Button'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -26,8 +28,38 @@ const LinkAddContentView = styled.View`
   flex: 1;
 `
 
+interface InputViewProps {
+  disabled: boolean
+}
+
+const LinkAddInputView = styled.View<InputViewProps>`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: white;
+  z-index: 999;
+  justify-content: center;
+  padding: 0 24px;
+  display: ${props => (props.disabled ? 'none' : 'flex')};
+`
+
 const LinkAdd = () => {
   const navigation = useNavigation<RouterNavigationProps>()
+  const [isInputShow, setIsInputShow] = useState<boolean>(false)
+
+  const isCreatable = useMemo(() => true, [])
+
+  const onPress = () => {}
+
+  const onTagAddPress = () => {
+    setIsInputShow(true)
+  }
+
+  const onTagClosePress = () => {
+    setIsInputShow(false)
+  }
 
   const onFolderAddPress = () => {
     navigation.navigate('FolderAdd')
@@ -50,13 +82,21 @@ const LinkAdd = () => {
           <SectionContent>
             <FolderSelectList />
           </SectionContent>
-          <SectionTitle title="태그 선택" plus />
+          <SectionTitle title="태그 선택" plus onPlusPress={onTagAddPress} />
           <SectionContent>
             <TagGuide />
             <TagList />
           </SectionContent>
         </LinkAddContentView>
+        <BottomButton>
+          <Button disabled={!isCreatable} onPress={onPress}>
+            링크를 담을 폴더 생성하기
+          </Button>
+        </BottomButton>
       </LinkContentScroll>
+      <LinkAddInputView disabled={!isInputShow}>
+        <Input small disabled={!isInputShow} onEnterPress={onTagClosePress} />
+      </LinkAddInputView>
     </LinkAddPageView>
   )
 }

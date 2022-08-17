@@ -1,3 +1,5 @@
+import { css } from '@emotion/native'
+
 export const FontFamily = {
   Black: 'Pretendard-Black',
   Bold: 'Pretendard-Bold',
@@ -11,6 +13,23 @@ export const FontFamily = {
 }
 
 export type IFontFamily = keyof typeof FontFamily
+
+export const Typo = {
+  Heading1_600: fontWithFull('SemiBold', 24, 36, -0.6),
+  Heading2_600: fontWithFull('SemiBold', 20, 30, -0.6),
+  Heading3_600: fontWithFull('SemiBold', 18, 27, -0.6),
+  Heading4_600: fontWithFull('SemiBold', 16, 24, -0.6),
+  Body1_600: fontWithFull('Regular', 18, 27, -0.6),
+  Body2_600: fontWithFull('Regular', 16, 24, -0.6),
+  Body3_600: fontWithFull('Regular', 14, 21, -0.6),
+  Detail1_400: fontWithFull('SemiBold', 14, 14, -0.6),
+  Detail2_400: fontWithFull('Regular', 12, 13, -0.6),
+  Button_600: fontWithFull('SemiBold', 15, 16, -0.6),
+  Alarm1_600: fontWithFull('SemiBold', 32, 33, -0.6),
+  Alarm2_600: fontWithFull('SemiBold', 48, 53, -0.6)
+}
+
+export type ITypo = keyof typeof Typo
 
 export const ColorPalette = {
   gray_1: '#ffffff',
@@ -49,3 +68,17 @@ export const ColorPalette = {
 }
 
 export type IColorPalette = keyof typeof ColorPalette
+
+export function fontWithFull(
+  fontFamilyName: IFontFamily,
+  size: number,
+  lineHeight: number,
+  letterSpacing: number
+) {
+  return css`
+    font-family: ${FontFamily[fontFamilyName]};
+    font-size: ${size + 'px'};
+    line-height: ${lineHeight + 'px'};
+    letter-spacing: ${letterSpacing + 'px'};
+  `
+}

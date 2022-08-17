@@ -8,6 +8,8 @@ import SectionContent from '../components/Common/SectionContent'
 import FolderSelectList from '../components/LinkAdd/FolderSelectList'
 import TagGuide from '../components/LinkAdd/TagGuide'
 import TagList from '../components/Common/TagList'
+import { useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from './Router'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -25,6 +27,12 @@ const LinkAddContentView = styled.View`
 `
 
 const LinkAdd = () => {
+  const navigation = useNavigation<RouterNavigationProps>()
+
+  const onFolderAddPress = () => {
+    navigation.navigate('FolderAdd')
+  }
+
   return (
     <LinkAddPageView>
       <Header>링크추가</Header>
@@ -34,7 +42,11 @@ const LinkAdd = () => {
           <SectionContent>
             <Input />
           </SectionContent>
-          <SectionTitle title="저장할 폴더 선택" plus />
+          <SectionTitle
+            title="저장할 폴더 선택"
+            plus
+            onPlusPress={onFolderAddPress}
+          />
           <SectionContent>
             <FolderSelectList />
           </SectionContent>

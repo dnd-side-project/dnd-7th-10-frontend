@@ -10,8 +10,23 @@ export interface IFolder extends IFolderBase {
   articleCount: number
 }
 
+export interface IArticle {
+  id: string
+  remindId: string | null
+  linkUrl: string
+  openGraph: {
+    linkTitle: string
+    linkDescription: string
+    linkImage: string
+  }
+  memos: any[]
+  registerDate: string
+  modifiedDate: string
+  bookmark: boolean
+}
+
 export interface IFolderDetail extends IFolderBase {
-  articles: any[]
+  articles: IArticle[]
 }
 
 export const foldersAtom = atom<IFolder[]>({
@@ -47,6 +62,42 @@ export const foldersFamily = selectorFamily<IFolder, string>({
         articleCount: 0
       }
     }
+})
+
+// export const folderArticleFamily = selectorFamily<IArticle | null, string>({
+//   key: 'folderArticleFamily',
+//   get:
+//     articleId =>
+//     ({ get }) => {
+//       const folder = get(foldersDetailFamily(articleId))
+//       if (folder && folder.articles.length > 0) {
+//         console.log('folder got', folder)
+//         const article = folder.articles.find(({ id }) => id === articleId)
+//         console.log(article)
+//         if (article) {
+//           return article
+//         }
+//       }
+//       return null
+//     }
+// })
+
+export const folderArticleFamily = atomFamily<IArticle, string>({
+  key: 'folderArticleFamily',
+  default: articleId => ({
+    id: articleId,
+    remindId: null,
+    linkUrl: '',
+    openGraph: {
+      linkDescription: '',
+      linkImage: '',
+      linkTitle: ''
+    },
+    memos: [],
+    registerDate: '',
+    modifiedDate: '',
+    bookmark: false
+  })
 })
 
 export const foldersDetailFamily = atomFamily<IFolderDetail, string>({

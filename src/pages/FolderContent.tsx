@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/native'
 // import FolderCardList from '../components/FolderContent/FolderCardList'
 import Header, { IIconButton } from '../components/Common/Header'
-import FolderEmpty from '../components/FolderContent/FolderEmpty'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RouterParamList } from './Router'
+import useFolderDetail from '../hooks/useFolderDetail'
+import FolderCardList from '../components/FolderContent/FolderCardList'
 
 const FolderDescView = styled.View`
   flex: 1;
 `
 
-const FolderContent = () => {
+const FolderContent = ({
+  route
+}: NativeStackScreenProps<RouterParamList, 'FolderContent'>) => {
   const iconButtons: IIconButton[] = [
     {
       name: 'search',
@@ -22,10 +27,28 @@ const FolderContent = () => {
     }
   ]
 
+  const { folderId } = route.params
+
+  const {
+    isLoading,
+    isError,
+    recoilValue: folderDetail
+  } = useFolderDetail(folderId, true)
+
+  const folderTitle = useMemo(() => {
+    if (isLoading) {
+      return '...'
+    }
+    if (isError) {
+      return '폴더를 불러올 수 없습니다.'
+    }
+    return folderDetail.folderTitle
+  }, [isLoading, isError, folderDetail])
+
   return (
     <FolderDescView>
-      <Header iconButtons={iconButtons}>디자인 레퍼런스</Header>
-      <FolderEmpty />
+      <Header iconButtons={iconButtons}>{folderTitle}</Header>
+      {!isLoading && <FolderCardList folderId={folderId} />}
     </FolderDescView>
   )
 }

@@ -3,7 +3,7 @@ import styled from '@emotion/native'
 import { ColorPalette } from '../../styles/variable'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import { fontWithColorFamily } from '../../styles/fonts'
-import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
+// import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 
 interface InputViewProps {
   focused: boolean
@@ -47,9 +47,10 @@ const Input = ({
   const handleFocusOff = () => setFocused(false)
 
   const onKeyPress = useCallback(
-    (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
-      const { key } = e.nativeEvent
-      console.log(key)
+    // (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+    () => {
+      // const { key } = e.nativeEvent
+      //
     },
     []
   )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import styled from '@emotion/native'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import ButtonGroup from './ButtonGroup'
@@ -8,8 +8,9 @@ import { flexWithAlign } from '../../styles/flexbox'
 import { Typo } from '../../styles/variable'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
 import { IModalState, modalStateAtom } from '../../recoil/modal'
+import { Animated } from 'react-native'
 
-const ModalBackgroundView = styled.View`
+const ModalBackgroundView = styled(Animated.View)`
   background: rgba(21, 29, 41, 0.7);
   position: absolute;
   left: 0;
@@ -56,21 +57,49 @@ const Modal = () => {
     onCancelPress
   } = useRecoilValue<IModalState>(modalStateAtom)
 
+  const opacity = useRef(new Animated.Value(0)).current
   const resetModal = useResetRecoilState(modalStateAtom)
+
+  const fadeIn = useCallback(() => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true
+    }).start()
+  }, [opacity])
+
+  const fadeOut = () => {
+    // Will change fadeAnim value to 0 in 3 seconds
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true
+    }).start()
+  }
+
+  useEffect(() => {
+    if (isModalOpen) {
+      fadeIn()
+    }
+  }, [isModalOpen, fadeIn])
 
   function onPressWithCallback(callback?: () => void) {
     return () => {
-      resetModal()
-      if (callback) {
-        callback()
-      }
+      setTimeout(() => {
+        resetModal()
+        if (callback) {
+          callback()
+        }
+      }, 190)
+      fadeOut()
     }
   }
 
   return (
     <>
       {isModalOpen && (
-        <ModalBackgroundView>
+        <ModalBackgroundView style={{ opacity }}>
           <ModalContainerView>
             <ModalAlertImage
               source={require('../../assets/images/alert-circle.png')}

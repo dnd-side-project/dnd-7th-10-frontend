@@ -11,6 +11,10 @@ import Warning from './warning.svg'
 import Folder from './folder.svg'
 import Reminding from './reminding.svg'
 import Add from './add.svg'
+import RightArrow from './right_arrow.svg'
+import LeftArrow from './left_arrow.svg'
+import Refresh from './refresh.svg'
+import Exit from './exit.svg'
 
 const SVG = {
   Bell,
@@ -25,7 +29,11 @@ const SVG = {
   Warning,
   Folder,
   Reminding,
-  Add
+  Add,
+  RightArrow,
+  LeftArrow,
+  Refresh,
+  Exit
 }
 
 export default SVG

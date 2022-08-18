@@ -6,6 +6,7 @@ import { fontWithColor } from '../../styles/fonts'
 import SVG from '../../assets/images/svg'
 import { flexWithAlign } from '../../styles/flexbox'
 import Empty from '../Common/Empty'
+import RemindItem from './RemindItem'
 
 const SetupContentView = styled.View`
   ${backgroundWithColor('White')}
@@ -32,7 +33,26 @@ const SetupEmptyWrapper = styled.View`
   margin-bottom: 60px;
 `
 
+const RemindList = styled.View`
+  padding: 24px 6px;
+`
+
 const addButtonInsets = { top: 8, bottom: 8, left: 8, right: 8 }
+
+const articles = [
+  {
+    articleName: 'Developer apple',
+    folderName: '디자인 레퍼런스'
+  },
+  {
+    articleName: 'Hello world',
+    folderName: '디자인 레퍼런스'
+  },
+  {
+    articleName: 'Noo,,',
+    folderName: '디자인 레퍼런스'
+  }
+]
 
 const SetupContent = () => {
   return (
@@ -43,14 +63,28 @@ const SetupContent = () => {
           <SVG.AddLight stroke={ColorPalette.LinkkleBlueGray} width="24" />
         </SetupPlusTouchable>
       </SetupTitleView>
-      <SetupEmptyWrapper>
-        <Empty
-          background="White"
-          text={'링크가 설정되지 않았어요!\n리마인딩 받을 링크를 추가해보세요.'}
-          button
-          buttonText="링크 모으기"
-        />
-      </SetupEmptyWrapper>
+      {false ? (
+        <SetupEmptyWrapper>
+          <Empty
+            background="White"
+            text={
+              '링크가 설정되지 않았어요!\n리마인딩 받을 링크를 추가해보세요.'
+            }
+            button
+            buttonText="링크 모으기"
+          />
+        </SetupEmptyWrapper>
+      ) : (
+        <RemindList>
+          {articles.map(article => (
+            <RemindItem
+              key={article.articleName}
+              folderName={article.folderName}
+              articleName={article.articleName}
+            />
+          ))}
+        </RemindList>
+      )}
     </SetupContentView>
   )
 }

@@ -41,7 +41,7 @@ const FolderCardList = ({ folderId }: Props) => {
           </FolderCardView>
         </FolderCardScrollView>
       ) : (
-        <Empty button />
+        <Empty icon button />
       )}
     </>
   )

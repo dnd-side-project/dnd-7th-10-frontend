@@ -23,6 +23,7 @@ const RemindingNotice = () => {
         <NoticeContent />
       ) : (
         <Empty
+          icon
           text={'북마크한 링크들이 없어요!\n리마인딩할 링크들을 모아볼까요?'}
         />
       )}

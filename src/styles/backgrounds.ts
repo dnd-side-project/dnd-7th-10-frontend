@@ -15,4 +15,12 @@ const shadow = {
   zIndex: 999
 }
 
-export { backgroundWithColor, shadow }
+const shadowShallow = {
+  shadowOffset: { width: 5, height: 5 },
+  shadowColor: 'black',
+  shadowOpacity: 0.5,
+  elevation: 2,
+  zIndex: 999
+}
+
+export { backgroundWithColor, shadow, shadowShallow }

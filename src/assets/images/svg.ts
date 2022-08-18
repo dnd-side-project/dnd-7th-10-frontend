@@ -18,6 +18,7 @@ import Exit from './exit.svg'
 import Bookmark from './bookmark.svg'
 import BookmarkFilled from './bookmark_filled.svg'
 import AddLight from './add_light.svg'
+import ChevronRight from './chevron-right.svg'
 
 const SVG = {
   Bell,
@@ -39,7 +40,8 @@ const SVG = {
   Exit,
   Bookmark,
   BookmarkFilled,
-  AddLight
+  AddLight,
+  ChevronRight
 }
 
 export default SVG

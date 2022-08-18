@@ -3,9 +3,14 @@ import styled from '@emotion/native'
 import { fontWithColorFamily } from '../../styles/fonts'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import { flexWithAlign } from '../../styles/flexbox'
+import { IColorPalette } from '../../styles/variable'
 
-const FolderEmptyView = styled.View`
-  ${backgroundWithColor('background_1')}
+interface EmptyViewProps {
+  background?: IColorPalette
+}
+
+const FolderEmptyView = styled.View<EmptyViewProps>`
+  ${props => backgroundWithColor(props.background || 'background_1')}
   ${flexWithAlign('center', 'center')}
   flex:1;
 `
@@ -38,21 +43,35 @@ interface Props {
   button?: boolean
   onButtonPress?: () => void
   text?: string
+  buttonText?: string
+  icon?: boolean
+  background?: IColorPalette
 }
 
-const Empty = ({ button, onButtonPress, text }: Props) => {
+const Empty = ({
+  button,
+  onButtonPress,
+  text,
+  buttonText,
+  icon,
+  background
+}: Props) => {
   return (
-    <FolderEmptyView>
-      <FolderEmptyIcon
-        source={require('../../assets/images/link.png')}
-        resizeMode="contain"
-      />
+    <FolderEmptyView background={background}>
+      {icon && (
+        <FolderEmptyIcon
+          source={require('../../assets/images/link.png')}
+          resizeMode="contain"
+        />
+      )}
       <FolderEmptyText>
-        {text || "폴더에 저장한 링크가 없어요!{'\n'}링크들을 모아볼까요?"}
+        {text || '폴더에 저장한 링크가 없어요!\n링크들을 모아볼까요?'}
       </FolderEmptyText>
       {button && (
         <FolderEmptyButton onPress={onButtonPress}>
-          <FolderEmptyButtonText>링크 저장하기</FolderEmptyButtonText>
+          <FolderEmptyButtonText>
+            {buttonText || '링크 저장하기'}
+          </FolderEmptyButtonText>
         </FolderEmptyButton>
       )}
     </FolderEmptyView>

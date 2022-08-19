@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from '@emotion/native'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import { backgroundWithColor } from '../../styles/backgrounds'
+import { backgroundWithColor, shadowShallow } from '../../styles/backgrounds'
 import {
   NavigationHelpers,
   ParamListBase,
@@ -13,7 +13,6 @@ import {
   BottomTabDescriptorMap,
   BottomTabNavigationEventMap
 } from '@react-navigation/bottom-tabs/lib/typescript/src/types'
-import { TouchableOpacity } from 'react-native'
 import SVG from '../../assets/images/svg'
 import { SvgProps } from 'react-native-svg'
 import { ColorPalette } from '../../styles/variable'
@@ -25,7 +24,6 @@ const TabBarView = styled.View`
   align-items: stretch;
   height: 88px;
   ${backgroundWithColor('gray_1')}
-  elevation: 4;
 `
 
 interface TabBarTextProps {
@@ -80,6 +78,10 @@ const tabInfos: ITabInfos = {
   }
 }
 
+const TabButtonTouchable = styled.TouchableOpacity`
+  flex: 1;
+`
+
 const TabButtonView = styled.View`
   ${flexWithAlign('center', 'center')}
   top: 20px;
@@ -105,7 +107,6 @@ const TabFloatingView = styled.View`
   width: 68px;
   height: 68px;
   border-radius: 34px;
-  elevation: 4;
 `
 
 const TabButton = ({
@@ -148,19 +149,18 @@ const TabButton = ({
             onPress={onLinkAddPress}
             activeOpacity={0.9}
           >
-            <TabFloatingView>
-              <SVG.Add />
+            <TabFloatingView style={shadowShallow}>
+              <SVG.Add stroke={ColorPalette.White} />
             </TabFloatingView>
           </TabFloatingTouchable>
         </TabFloating>
       ) : (
-        <TouchableOpacity
+        <TabButtonTouchable
           accessibilityRole="button"
           accessibilityState={isFocused ? { selected: true } : {}}
           accessibilityLabel={options.tabBarAccessibilityLabel}
           testID={options.tabBarTestID}
           onPress={onPress}
-          style={{ flex: 1 }}
         >
           <TabButtonView>
             {
@@ -171,7 +171,7 @@ const TabButton = ({
             }
             {<TabBarText focused={isFocused}>{tabInfo.name}</TabBarText>}
           </TabButtonView>
-        </TouchableOpacity>
+        </TabButtonTouchable>
       )}
     </>
   )
@@ -179,7 +179,7 @@ const TabButton = ({
 
 const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   return (
-    <TabBarView>
+    <TabBarView style={shadowShallow}>
       {state.routes.map((route, index) => (
         <TabButton
           key={route.name}

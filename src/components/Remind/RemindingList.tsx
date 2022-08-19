@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
-import LinkCard from '../Remind/LinkCard'
+import LinkCard from './LinkCard'
 import { ILink } from './LinkCard'
 
 const RemindingListView = styled.View``

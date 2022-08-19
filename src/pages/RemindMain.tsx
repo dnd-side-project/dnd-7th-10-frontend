@@ -3,9 +3,8 @@ import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import { IIconButton } from '../components/Common/Header'
 import RemindingList from '../components/Remind/RemindingList'
-// import Notice from '../components/Remind/Notice'
-// import MemoCollection from '../components/Remind/MemoCollection'
-// import { article as list } from '../assets/data/article'
+import Notice from '../components/Remind/Notice'
+import MemoCollection from '../components/Remind/MemoCollection'
 import { ILink } from '../components/Remind/LinkCard'
 const RemindingView = styled.View``
 
@@ -85,8 +84,8 @@ const RemindMain = () => {
     <RemindingView>
       <Header iconButtons={iconButtons}>리마인딩</Header>
       <RemindingList list={list} />
-      {/* <Notice />
-      <MemoCollection /> */}
+      <Notice />
+      <MemoCollection />
     </RemindingView>
   )
 }

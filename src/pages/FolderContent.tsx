@@ -37,7 +37,7 @@ const FolderContent = ({
 
   const folderTitle = useMemo(() => {
     if (isLoading) {
-      return '...'
+      return ''
     }
     if (isError) {
       return '폴더를 불러올 수 없습니다.'

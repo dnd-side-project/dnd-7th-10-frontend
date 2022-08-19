@@ -4,6 +4,7 @@ import { fontWithColorFamily } from '../../styles/fonts'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import { flexWithAlign } from '../../styles/flexbox'
 import { IColorPalette } from '../../styles/variable'
+import { ImageSourcePropType } from 'react-native'
 
 interface EmptyViewProps {
   background?: IColorPalette
@@ -46,6 +47,7 @@ interface Props {
   buttonText?: string
   icon?: boolean
   background?: IColorPalette
+  source?: ImageSourcePropType
 }
 
 const Empty = ({
@@ -54,13 +56,14 @@ const Empty = ({
   text,
   buttonText,
   icon,
-  background
+  background,
+  source
 }: Props) => {
   return (
     <FolderEmptyView background={background}>
       {icon && (
         <FolderEmptyIcon
-          source={require('../../assets/images/link.png')}
+          source={source || require('../../assets/images/link.png')}
           resizeMode="contain"
         />
       )}

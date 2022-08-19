@@ -14,9 +14,25 @@ const SetupPickerDivide = styled.View`
   height: 8px;
 `
 
-const SetupPicker = () => {
+interface Props {
+  onChange?: (value: boolean) => void
+}
+
+const SetupPicker = ({ onChange }: Props) => {
+  const onStart = () => {
+    if (onChange) {
+      onChange(true)
+    }
+  }
+
+  const onEnd = () => {
+    if (onChange) {
+      onChange(false)
+    }
+  }
+
   return (
-    <SetupPickerView>
+    <SetupPickerView onTouchStart={onStart} onTouchEnd={onEnd}>
       <TimePicker />
       <SetupPickerDivide />
       <DayPicker />

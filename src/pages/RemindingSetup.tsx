@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import SetupTop from '../components/RemindingSetup/SetupTop'
@@ -18,13 +18,14 @@ const RemindingSetupScrollView = styled.ScrollView`
 const RemindingSetupContent = styled.View``
 
 const RemindingSetup = () => {
+  const [scrollLock, setScrollLock] = useState<boolean>(false)
   return (
     <RemindingSetupView>
       <Header save>알림 설정</Header>
-      <RemindingSetupScrollView>
+      <RemindingSetupScrollView scrollEnabled={!scrollLock}>
         <RemindingSetupContent>
           <SetupTop />
-          <SetupPicker />
+          <SetupPicker onChange={setScrollLock} />
           <SetupContent />
         </RemindingSetupContent>
       </RemindingSetupScrollView>

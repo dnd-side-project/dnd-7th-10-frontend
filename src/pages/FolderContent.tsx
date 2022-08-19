@@ -6,6 +6,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
 import useFolderDetail from '../hooks/useFolderDetail'
 import FolderCardList from '../components/FolderContent/FolderCardList'
+import useHeaderEvent from '../hooks/useHeaderEvent'
 
 const FolderDescView = styled.View`
   flex: 1;
@@ -17,14 +18,12 @@ const FolderContent = ({
 }: NativeStackScreenProps<RouterParamList, 'FolderContent'>) => {
   const iconButtons: IIconButton[] = [
     {
-      name: 'search',
-      source: require('../assets/images/search.png'),
-      onPress: () => console.log('h')
+      name: 'folder-content-search',
+      source: require('../assets/images/search.png')
     },
     {
-      name: 'link',
-      source: require('../assets/images/link.png'),
-      onPress: () => console.log('h')
+      name: 'folder-content-link',
+      source: require('../assets/images/link.png')
     }
   ]
 
@@ -49,7 +48,6 @@ const FolderContent = ({
 
   const onFocus = useCallback(() => {
     refresh()
-    console.log('called')
   }, [refresh])
 
   useEffect(() => {
@@ -58,6 +56,24 @@ const FolderContent = ({
       navigation.removeListener('focus', onFocus)
     }
   }, [onFocus, navigation])
+
+  const onClick = useCallback(
+    (name: string) => {
+      if (name === 'folder-content-link') {
+        navigation.navigate('LinkAdd', { folderId })
+      }
+    },
+    [navigation, folderId]
+  )
+
+  const { addEventListener, removeEventListener } = useHeaderEvent()
+
+  useEffect(() => {
+    addEventListener(onClick)
+    return () => {
+      removeEventListener(onClick)
+    }
+  }, [addEventListener, removeEventListener, onClick])
 
   return (
     <FolderDescView>

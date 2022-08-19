@@ -7,27 +7,27 @@ import { fontWithColor } from '../../styles/fonts'
 import { flexWithAlign } from '../../styles/flexbox'
 import SVG from '../../assets/images/svg'
 
-const defaultSource = { uri: 'https://via.placeholder.com/1200x630' }
+export const defaultSource = { uri: 'https://via.placeholder.com/1200x630' }
 
-const CardView = styled.View`
+export const CardView = styled.View`
   align-self: stretch;
   align-items: stretch;
   border-radius: 8px;
   overflow: hidden;
 `
 
-const CardCoverImage = styled.Image`
+export const CardCoverImage = styled.Image`
   height: 140px;
 `
 
-const CardCoverOverlay = styled.View`
+export const CardCoverOverlay = styled.View`
   background: rgba(0, 0, 0, 0.2);
   height: 140px;
   position: absolute;
   top: 0;
 `
 
-const CardContent = styled.View`
+export const CardContent = styled.View`
   ${backgroundWithColor('White')}
   padding: 10px 16px 16px;
 `
@@ -43,7 +43,7 @@ const CardDescriptionText = styled.Text`
   margin-top: 10px;
 `
 
-const CardTagList = styled.View`
+export const CardTagList = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
   flex-wrap: wrap;
   overflow: hidden;
@@ -51,7 +51,7 @@ const CardTagList = styled.View`
   margin-top: 16px;
 `
 
-const CardTag = styled.Text`
+export const CardTag = styled.Text`
   ${backgroundWithColor('LinkkleBlueGray')}
   ${Typo.Detail1_400}
   ${fontWithColor('White')}
@@ -118,7 +118,7 @@ const Card = ({
       <CardCoverImage source={source || defaultSource} resizeMode="cover" />
       <CardCoverOverlay />
       {favicon && <CardFavicon source={favicon} resizeMode="contain" />}
-      {bookmark && (
+      {(bookmark || bookmarked) && (
         <BookmarkTouchable hitSlop={iconButtonInsets}>
           {bookmarked ? (
             <SVG.BookmarkFilled stroke={ColorPalette.White} />

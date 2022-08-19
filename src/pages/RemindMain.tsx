@@ -6,6 +6,8 @@ import RemindingList from '../components/Remind/RemindingList'
 import Notice from '../components/Remind/Notice'
 import MemoCollection from '../components/Remind/MemoCollection'
 import { ILink } from '../components/Remind/LinkCard'
+import { ScrollView } from 'react-native'
+
 const RemindingView = styled.View`
   background-color: #f5f5f5;
 `
@@ -141,13 +143,17 @@ const list: ILink[] = [
   }
 ]
 
+// const linkList = list.filter(el => el.bookmark === true)
+
 const RemindMain = () => {
   return (
     <RemindingView>
-      <Header iconButtons={iconButtons}>리마인딩</Header>
-      <RemindingList list={list} />
-      <Notice />
-      <MemoCollection />
+      <ScrollView scrollEnabled={true}>
+        <Header iconButtons={iconButtons}>리마인딩</Header>
+        <RemindingList list={list} />
+        <Notice />
+        <MemoCollection />
+      </ScrollView>
     </RemindingView>
   )
 }

@@ -121,7 +121,7 @@ const Header = ({
           />
         </TouchableOpacity>
       )}
-      <HeaderText>{children}</HeaderText>
+      <HeaderText numberOfLines={1}>{children}</HeaderText>
       {save && (
         <SaveButton hitSlop={SaveButtonInsets} onPress={onSavePress}>
           <SaveButtonText>저장</SaveButtonText>

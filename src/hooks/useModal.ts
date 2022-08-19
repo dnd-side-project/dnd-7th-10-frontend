@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil'
-import { IModalState, modalStateAtom } from '../recoil/modal'
+import { IModalState, modalStateAtom } from '../recoil/global'
 
 export default function useModal() {
   const [{ isModalOpen }, setModalState] =

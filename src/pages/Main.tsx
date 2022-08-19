@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import TabBar from '../components/Common/TabBar'
-import FolderContent from './FolderContent'
+// import FolderContent from './FolderContent'
+import RemindMain from './RemindMain'
 import Home from './Home'
 
 const Tab = createBottomTabNavigator()
@@ -13,7 +14,7 @@ const Main = () => {
       tabBar={props => <TabBar {...props} />}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Reminding" component={FolderContent} />
+      <Tab.Screen name="Reminding" component={RemindMain} />
       <Tab.Screen name="LinkAdd" component={Home} />
     </Tab.Navigator>
   )

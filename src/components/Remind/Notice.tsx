@@ -8,6 +8,7 @@ const NoticeView = styled.View`
   background-color: #ffffff;
   width: 414px;
   height: 276px;
+  margin-bottom: 4px;
 `
 const TopView = styled.View`
   flex-direction: row;

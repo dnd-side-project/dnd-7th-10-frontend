@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import styled from '@emotion/native'
 // import FolderCardList from '../components/FolderContent/FolderCardList'
 import Header, { IIconButton } from '../components/Common/Header'
@@ -12,7 +12,8 @@ const FolderDescView = styled.View`
 `
 
 const FolderContent = ({
-  route
+  route,
+  navigation
 }: NativeStackScreenProps<RouterParamList, 'FolderContent'>) => {
   const iconButtons: IIconButton[] = [
     {
@@ -32,7 +33,8 @@ const FolderContent = ({
   const {
     isLoading,
     isError,
-    recoilValue: folderDetail
+    recoilValue: folderDetail,
+    refresh
   } = useFolderDetail(folderId, true)
 
   const folderTitle = useMemo(() => {
@@ -44,6 +46,18 @@ const FolderContent = ({
     }
     return folderDetail.folderTitle
   }, [isLoading, isError, folderDetail])
+
+  const onFocus = useCallback(() => {
+    refresh()
+    console.log('called')
+  }, [refresh])
+
+  useEffect(() => {
+    navigation.addListener('focus', onFocus)
+    return () => {
+      navigation.removeListener('focus', onFocus)
+    }
+  }, [onFocus, navigation])
 
   return (
     <FolderDescView>

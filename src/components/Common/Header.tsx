@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useCallback } from 'react'
 import styled from '@emotion/native'
 import { flexWithAlign } from '../../styles/flexbox'
 import { fontWithColorFamily } from '../../styles/fonts'
@@ -9,6 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import useHeaderEvent from '../../hooks/useHeaderEvent'
 
 const HeaderBar = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
@@ -54,7 +55,6 @@ const IconButtonInsets = { top: 16, bottom: 16, left: 4, right: 4 }
 export interface IIconButton {
   name: string
   source: ImageSourcePropType
-  onPress: IHeaderButtonClickHandler
 }
 
 export interface IHeaderButtonClickHandler {
@@ -70,21 +70,27 @@ interface Props {
 
 interface IconButtonsWrapProps {
   iconButtons: IIconButton[]
+  onIconPress: (name: string) => void
 }
 
-const IconButtonsWrap = ({ iconButtons }: IconButtonsWrapProps) => (
-  <IconButtonsView>
-    {iconButtons?.map(iconButton => (
-      <TouchableOpacity
-        key={iconButton.name}
-        hitSlop={IconButtonInsets}
-        onPress={iconButton.onPress}
-      >
-        <HeaderIconButton source={iconButton.source} resizeMode="contain" />
-      </TouchableOpacity>
-    ))}
-  </IconButtonsView>
-)
+const IconButtonsWrap = ({
+  iconButtons,
+  onIconPress
+}: IconButtonsWrapProps) => {
+  return (
+    <IconButtonsView>
+      {iconButtons?.map(iconButton => (
+        <TouchableOpacity
+          key={iconButton.name}
+          hitSlop={IconButtonInsets}
+          onPress={() => onIconPress(iconButton.name)}
+        >
+          <HeaderIconButton source={iconButton.source} resizeMode="contain" />
+        </TouchableOpacity>
+      ))}
+    </IconButtonsView>
+  )
+}
 
 const styles = StyleSheet.create({
   shadow: {
@@ -106,10 +112,18 @@ const Header = ({
   hideBack
 }: PropsWithChildren<Props>) => {
   const navigation = useNavigation()
+  const { handlers } = useHeaderEvent()
 
   const onBackPress = () => {
     navigation.goBack()
   }
+
+  const onIconPress = useCallback(
+    (name: string) => {
+      handlers.forEach(handler => handler(name))
+    },
+    [handlers]
+  )
 
   return (
     <HeaderBar style={styles.shadow}>
@@ -127,7 +141,9 @@ const Header = ({
           <SaveButtonText>저장</SaveButtonText>
         </SaveButton>
       )}
-      {iconButtons && <IconButtonsWrap iconButtons={iconButtons} />}
+      {iconButtons && (
+        <IconButtonsWrap onIconPress={onIconPress} iconButtons={iconButtons} />
+      )}
     </HeaderBar>
   )
 }

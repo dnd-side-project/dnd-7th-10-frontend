@@ -86,6 +86,7 @@ const Select = ({ options }: Props) => {
   return (
     <SelectView>
       <SelectScroll
+        nestedScrollEnabled
         showsVerticalScrollIndicator={false}
         ref={scrollView}
         contentContainerStyle={containerStyle}

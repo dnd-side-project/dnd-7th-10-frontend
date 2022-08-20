@@ -48,7 +48,7 @@ export const foldersFamily = selectorFamily<IFolder, string>({
   get:
     folderId =>
     ({ get }) => {
-      const folders = get(foldersAtom)
+      const folders = get(foldersAtom) || []
       const folder = folders.find(
         ({ folderId: _folderId }) => _folderId === folderId
       )
@@ -57,7 +57,7 @@ export const foldersFamily = selectorFamily<IFolder, string>({
       }
       return {
         folderId,
-        folderTitle: '잘못된 폴더',
+        folderTitle: '폴더를 찾을 수 없습니다.',
         folderColor: '0',
         articleCount: 0
       }

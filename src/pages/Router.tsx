@@ -6,6 +6,7 @@ import FolderAdd from './FolderAdd'
 import FolderContent from './FolderContent'
 import LinkAdd from './LinkAdd'
 import Login from './Login'
+import RemindMain from './RemindMain'
 import Main from './Main'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
@@ -31,6 +32,7 @@ const Router = () => {
         <Stack.Screen name="FolderAdd" component={FolderAdd} />
         <Stack.Screen name="LinkAdd" component={LinkAdd} />
         <Stack.Screen name="FolderContent" component={FolderContent} />
+        <Stack.Screen name="RemindMain" component={RemindMain} />
       </Stack.Navigator>
       <Modal />
     </>

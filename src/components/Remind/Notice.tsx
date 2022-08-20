@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
 import AlarmCard from './AlarmCard'
-import SVG from '../../assets/images/svg'
 import { ColorPalette, Typo } from '../../styles/variable'
 
 const NoticeView = styled.View`
@@ -39,12 +38,21 @@ const AlarmCardBar = styled.View`
   top: 72px;
 `
 
+const AddIcon = styled.Image`
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  left: 366px;
+  top: 24px;
+  border-radius: 0px;
+`
+
 const Notice = () => {
   return (
     <NoticeView>
       <TopView>
         <TopText>리마인딩 알림</TopText>
-        <SVG.Add />
+        <AddIcon source={require('../../assets/images/plus.png')} />
       </TopView>
       <AlarmCardBar>
         <AlarmCard />

@@ -37,14 +37,50 @@ const MemoView = styled.View`
   align-items: flex-start;
 `
 
+const RightArrow = styled.Image`
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 366px;
+  top: 24px;
+`
+
+const memos = [
+  {
+    content: 'string',
+    id: 'string',
+    modifiedDate: '2022-08-20T06:38:01.351Z',
+    registerDate: '2022-08-20T06:38:01.351Z',
+    article: {
+      linkDescription: 'string',
+      linkImage: 'https://via.placeholder.com/16x16',
+      linkTitle: 'string'
+    },
+    folder: 'string'
+  },
+  {
+    content: 'string',
+    id: 'string',
+    modifiedDate: '2022-08-19T06:38:01.351Z',
+    registerDate: '2022-08-20T06:38:01.351Z',
+    article: {
+      linkDescription: 'string',
+      linkImage: 'https://via.placeholder.com/16x16',
+      linkTitle: 'string'
+    },
+    folder: 'string'
+  }
+]
+
 const MemoCollection = () => {
   return (
     <MemoCollectionView>
       <TopText>최근 작성한 메모</TopText>
+      <RightArrow source={require('../../assets/images/icon_more.png')} />
       <MemoView>
-        <MemoCard />
-        <MemoCard />
-        <MemoCard />
+        {memos.map(memo => (
+          <MemoCard memo={memo} />
+        ))}
       </MemoView>
     </MemoCollectionView>
   )

@@ -78,19 +78,50 @@ const UrlTitle = styled.Text`
   color: ${ColorPalette.BlueGray_4}
 `
 
-const MemoCollection = () => {
+const MemoIcon = styled.Image`
+  position: absolute;
+  left: 8%;
+  right: 80%;
+  top: 5.33%;
+  bottom: 86.67%;
+  height: 24px;
+  width: 24px;
+  left: 16px;
+  top: 16px;
+  border-radius: 0px;
+`
+
+interface IMemo {
+  content: string
+  id: string
+  modifiedDate: string
+  registerDate: string
+  article: {
+    linkDescription: string
+    linkImage: string
+    linkTitle: string
+  }
+  folder: string
+}
+
+interface Props {
+  memo: IMemo
+}
+
+const MemoCard = ({ memo }: Props) => {
+  const { content, modifiedDate, folder, article } = memo
+  const date = modifiedDate.split('T')[0]
+  const { linkImage, linkTitle } = article
   return (
     <MemoCardView>
-      <MemoCardDate>2022.08.21</MemoCardDate>
-      <MemoCardText>
-        Apple’s Human Interface Guidelines (HIG) is a comprehensive resource for
-        designers and developers looking to create.
-      </MemoCardText>
-      <BottomImg source={{ uri: 'https://via.placeholder.com/16x16' }} />
-      <UrlFolder>디자인 레퍼런스</UrlFolder>
-      <UrlTitle>Developer apple</UrlTitle>
+      <MemoIcon source={require('../../assets/images/memo.png')} />
+      <MemoCardDate>{date}</MemoCardDate>
+      <MemoCardText>{content}</MemoCardText>
+      <BottomImg source={{ uri: linkImage }} />
+      <UrlFolder>{folder}</UrlFolder>
+      <UrlTitle>{linkTitle}</UrlTitle>
     </MemoCardView>
   )
 }
 
-export default MemoCollection
+export default MemoCard

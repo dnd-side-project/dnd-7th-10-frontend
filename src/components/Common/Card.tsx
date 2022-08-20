@@ -15,7 +15,6 @@ export const CardView = styled.View`
   border-radius: 8px;
   overflow: hidden;
 `
-
 export const CardCoverImage = styled.Image`
   height: 140px;
 `

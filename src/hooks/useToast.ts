@@ -43,6 +43,14 @@ export function createCheckToast(message: string, offset: number = 0): IToast {
   }
 }
 
+export function createToast(message: string, offset: number = 0): IToast {
+  return {
+    message,
+    offset,
+    variant: 'blue'
+  }
+}
+
 export default function useToast() {
   const setToast = useSetRecoilState<IToast[]>(toastsAtom)
 

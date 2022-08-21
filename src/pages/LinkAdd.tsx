@@ -146,6 +146,9 @@ const LinkAdd = ({
       setTagIds([...tagIds, tagId])
     } else {
       // cannot over 3
+      showToast(
+        createWarnToast('태그 선택은 최대 3개입니다.', ToastOffset.BottomTab)
+      )
     }
   }
 

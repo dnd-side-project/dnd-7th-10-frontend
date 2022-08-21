@@ -2,6 +2,7 @@ import jwtDecode from 'jwt-decode'
 import { useRecoilState } from 'recoil'
 import api from '../lib/api'
 import { authAtom } from '../recoil/auth'
+import useToast, { createWarnToast } from './useToast'
 
 interface IAuthResponse {
   header: string
@@ -22,6 +23,7 @@ export interface LoginResult {
 
 export default function useAuth() {
   const [auth, setAuth] = useRecoilState(authAtom)
+  const showToast = useToast()
 
   async function login(name: string, password: string) {
     return new Promise<LoginResult>((resolve, reject) => {
@@ -49,7 +51,7 @@ export default function useAuth() {
           }
         })
         .catch(error => {
-          console.error('failed')
+          showToast(createWarnToast('로그인 할 수 없습니다.'))
           reject({
             success: false,
             code: error.response ? error.response.status : 0

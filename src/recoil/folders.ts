@@ -98,7 +98,8 @@ export const folderArticleFamily = atomFamily<IArticle, string>({
     memos: [],
     registerDate: '',
     modifiedDate: '',
-    bookmark: false
+    bookmark: false,
+    tags: []
   })
 })
 

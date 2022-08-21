@@ -18,6 +18,7 @@ import { IArticle } from '../recoil/folders'
 import useFolderList from '../components/Home/FolderList.hook'
 import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types'
 import { ITag } from '../recoil/tags'
+import useToast, { createWarnToast, ToastOffset } from '../hooks/useToast'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -67,6 +68,8 @@ const LinkAdd = ({
   const [folderId, setFolderId] = useState<string>('')
   const [tagIds, setTagIds] = useState<string[]>([])
 
+  const showToast = useToast()
+
   const isCreatable = useMemo(
     () => linkUrl.length > 0 && folderId !== '',
     [linkUrl, folderId]
@@ -104,9 +107,16 @@ const LinkAdd = ({
   const onTagClosePress = () => {
     const trimmedTagName = tagName.trim()
     if (tagName.length === 0) {
+      showToast(createWarnToast('태그를 입력하세요', ToastOffset.TagInput))
       return
     }
     if (tagName.length > 20) {
+      showToast(
+        createWarnToast(
+          '글자 수는 20자 이하로 설정해주세요.',
+          ToastOffset.TagInput
+        )
+      )
       return
     }
     api
@@ -115,6 +125,7 @@ const LinkAdd = ({
         if (response.status === 200) {
           setIsInputShow(false)
           fetchTagList()
+          setTagName('')
         }
       })
       .catch(error => {
@@ -135,6 +146,9 @@ const LinkAdd = ({
       setTagIds([...tagIds, tagId])
     } else {
       // cannot over 3
+      showToast(
+        createWarnToast('태그 선택은 최대 3개입니다.', ToastOffset.BottomTab)
+      )
     }
   }
 

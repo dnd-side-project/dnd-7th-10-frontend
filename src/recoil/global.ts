@@ -1,4 +1,5 @@
 import { atom } from 'recoil'
+import { VariantType } from '../components/Common/Toast'
 
 export interface IModalState {
   isModalOpen: boolean
@@ -22,3 +23,17 @@ export const modalStateAtom = atom<IModalState>({
 export interface IHeaderMenuHandler {
   (name: string): void
 }
+
+export interface IToast {
+  id?: number
+  check?: boolean
+  warn?: boolean
+  message: string
+  variant?: VariantType
+  offset?: number
+}
+
+export const toastsAtom = atom<IToast[]>({
+  key: 'toast',
+  default: []
+})

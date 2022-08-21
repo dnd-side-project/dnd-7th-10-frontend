@@ -22,7 +22,7 @@ const ToastContainer = () => {
           warn={toast.warn}
           check={toast.check}
           variant={toast.variant}
-          offset={toast.offset}
+          offset={toast.offset || 24}
         >
           {toast.message}
         </Toast>

@@ -15,12 +15,25 @@ interface Props {
   remove?: boolean
   selectedIds?: string[]
   onTagPress?: (tagId: string, selected: boolean) => void
+  onRemovePress?: (tagId: string) => void
 }
 
-const TagList = ({ tags, remove, selectedIds, onTagPress }: Props) => {
+const TagList = ({
+  tags,
+  remove,
+  selectedIds,
+  onTagPress,
+  onRemovePress
+}: Props) => {
   function onTagPressCallback(tagId: string, selected: boolean) {
     if (onTagPress) {
       onTagPress(tagId, selected)
+    }
+  }
+
+  function onTagRemovePress(tagId: string) {
+    if (onRemovePress) {
+      onRemovePress(tagId)
     }
   }
 
@@ -33,7 +46,12 @@ const TagList = ({ tags, remove, selectedIds, onTagPress }: Props) => {
             key={tag.tagId}
             onPress={() => onTagPressCallback(tag.tagId, selected)}
           >
-            <Tag remove={remove} text={tag.tagName} selected={selected} />
+            <Tag
+              remove={remove}
+              text={tag.tagName}
+              selected={selected}
+              onRemovePress={() => onTagRemovePress(tag.tagId)}
+            />
           </TouchableOpacity>
         )
       })}

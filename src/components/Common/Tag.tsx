@@ -54,11 +54,12 @@ const TagRemoveIcon = styled.Image`
 interface Props extends TagViewProps {
   text: string
   remove?: boolean
+  onRemovePress?: () => void
 }
 
 const tagRemoveButtonInsets = { top: 10, bottom: 10, left: 10, right: 10 }
 
-const Tag = ({ text, remove, selected, fixed }: Props) => {
+const Tag = ({ text, remove, selected, fixed, onRemovePress }: Props) => {
   const getTagIcon = useCallback(() => {
     if (selected || fixed) {
       return require('../../assets/images/tag_remove_white.png')
@@ -72,7 +73,10 @@ const Tag = ({ text, remove, selected, fixed }: Props) => {
         {text}
       </TagText>
       {remove && (
-        <TagRemoveButton hitSlop={tagRemoveButtonInsets}>
+        <TagRemoveButton
+          hitSlop={tagRemoveButtonInsets}
+          onPress={onRemovePress}
+        >
           <TagRemoveIcon source={getTagIcon()} resizeMode="contain" />
         </TagRemoveButton>
       )}

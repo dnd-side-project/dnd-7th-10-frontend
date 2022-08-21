@@ -52,7 +52,7 @@ export default function useAuth() {
           console.error('failed')
           reject({
             success: false,
-            code: error.response.status
+            code: error.response ? error.response.status : 0
           })
         })
     })

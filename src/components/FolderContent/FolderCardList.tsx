@@ -5,6 +5,8 @@ import { backgroundWithColor } from '../../styles/backgrounds'
 import Empty from '../Common/Empty'
 import { useRecoilValue } from 'recoil'
 import { foldersDetailFamily } from '../../recoil/folders'
+import { useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from '../../pages/Router'
 
 const FolderCardScrollView = styled.ScrollView`
   ${backgroundWithColor('background_1')}
@@ -22,6 +24,7 @@ interface Props {
 
 const FolderCardList = ({ folderId }: Props) => {
   const folderDetail = useRecoilValue(foldersDetailFamily(folderId))
+  const navigation = useNavigation<RouterNavigationProps>()
 
   const articles = useMemo(() => {
     if (folderDetail && folderDetail.articles) {
@@ -29,6 +32,10 @@ const FolderCardList = ({ folderId }: Props) => {
     }
     return []
   }, [folderDetail])
+
+  const onButtonPress = () => {
+    navigation.navigate('LinkAdd', { folderId })
+  }
 
   return (
     <>
@@ -41,7 +48,7 @@ const FolderCardList = ({ folderId }: Props) => {
           </FolderCardView>
         </FolderCardScrollView>
       ) : (
-        <Empty icon button />
+        <Empty icon button onButtonPress={onButtonPress} />
       )}
     </>
   )

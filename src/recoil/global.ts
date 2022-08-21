@@ -18,3 +18,7 @@ export const modalStateAtom = atom<IModalState>({
     description: ''
   }
 })
+
+export interface IHeaderMenuHandler {
+  (name: string): void
+}

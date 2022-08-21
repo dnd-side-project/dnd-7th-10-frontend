@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import Input from '../components/Common/Input'
@@ -9,13 +9,14 @@ import FolderSelectList from '../components/LinkAdd/FolderSelectList'
 import TagGuide from '../components/LinkAdd/TagGuide'
 import TagList from '../components/Common/TagList'
 import { useNavigation } from '@react-navigation/native'
-import { RouterNavigationProps } from './Router'
+import { RouterNavigationProps, RouterParamList } from './Router'
 import BottomButton from '../components/Common/BottomButton'
 import Button from '../components/Common/Button'
 import useTagList from '../hooks/useTagList'
 import api from '../lib/api'
 import { IArticle } from '../recoil/folders'
 import useFolderList from '../components/Home/FolderList.hook'
+import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -49,7 +50,9 @@ const LinkAddInputView = styled.View<InputViewProps>`
   display: ${props => (props.disabled ? 'none' : 'flex')};
 `
 
-const LinkAdd = () => {
+const LinkAdd = ({
+  route
+}: NativeStackScreenProps<RouterParamList, 'LinkAdd'>) => {
   const navigation = useNavigation<RouterNavigationProps>()
   const [isInputShow, setIsInputShow] = useState<boolean>(false)
   const { isTagLoading, tags } = useTagList()
@@ -63,6 +66,12 @@ const LinkAdd = () => {
     () => linkUrl.length > 0 && folderId !== '',
     [linkUrl, folderId]
   )
+
+  useEffect(() => {
+    if (route.params && route.params.folderId) {
+      setFolderId(route.params.folderId)
+    }
+  }, [route])
 
   const onPress = () => {
     api
@@ -115,7 +124,7 @@ const LinkAdd = () => {
             onPlusPress={onFolderAddPress}
           />
           <SectionContent>
-            <FolderSelectList onChange={setFolderId} />
+            <FolderSelectList folderId={folderId} onChange={setFolderId} />
           </SectionContent>
           <SectionTitle title="태그 선택" plus onPlusPress={onTagAddPress} />
           <SectionContent>

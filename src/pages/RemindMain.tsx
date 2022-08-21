@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import { IIconButton } from '../components/Common/Header'
@@ -6,7 +6,11 @@ import RemindingList from '../components/Remind/RemindingList'
 import Notice from '../components/Remind/Notice'
 import MemoCollection from '../components/Remind/MemoCollection'
 import { ILink } from '../components/Remind/LinkCard'
+import { IMemo } from '../components/Remind/MemoCard'
 import { ScrollView } from 'react-native'
+import api from '../lib/api'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { RouterNavigationProps } from './Router'
 
 const RemindingView = styled.View`
   background-color: #f5f5f5;
@@ -15,144 +19,98 @@ const RemindingView = styled.View`
 const iconButtons: IIconButton[] = [
   {
     name: 'alarm',
-    source: require('../assets/images/bell.png'),
-    onPress: () => console.log('bell')
+    source: require('../assets/images/bell.png')
   }
 ]
 
-const list: ILink[] = [
-  {
-    id: '3e8cafdd-8d09-4093-9db0-55d10693d1d6',
-    remindId: null,
-    linkUrl: 'www.daum.net',
-    openGraph: {
-      linkTitle: 'Daum',
-      linkDescription: '나의 관심 콘텐츠를 가장 즐겁게 볼 수 있는 Daum',
-      linkImage:
-        'https://i1.daumcdn.net/svc/image/U03/common_icon/5587C4E4012FCD0001'
-    },
-    memos: [
-      {
-        registerDate: '2022-08-18T15:44:58.814622',
-        modifiedDate: '2022-08-18T15:44:58.814622',
-        id: '9286012c-acec-44c2-bd32-9627e9679ec2',
-        content: 'dummyMemo5'
-      },
-      {
-        registerDate: '2022-08-18T15:44:50.902259',
-        modifiedDate: '2022-08-18T15:44:50.902259',
-        id: 'ec657ff5-9fef-4658-8e34-bbea001ff259',
-        content: 'dummyMemo'
-      },
-      {
-        registerDate: '2022-08-18T15:44:57.583064',
-        modifiedDate: '2022-08-18T15:44:57.583064',
-        id: 'fdeb5884-e60b-4629-8673-55bdb7fbd964',
-        content: 'dummyMemo3'
-      },
-      {
-        registerDate: '2022-08-18T15:44:58.168391',
-        modifiedDate: '2022-08-18T15:44:58.168391',
-        id: '533e25aa-0496-4824-97a8-f02205e9cb7c',
-        content: 'dummyMemo4'
-      },
-      {
-        registerDate: '2022-08-18T15:44:56.793462',
-        modifiedDate: '2022-08-18T15:44:56.793462',
-        id: 'f3185821-afc0-4e20-8f7f-92030a4c82bb',
-        content: 'dummyMemo2'
-      }
-    ],
-    tags: [
-      {
-        tagId: '8101cc15-41a4-4ce9-a480-db3fc32a4b3d',
-        tagName: 'dummyTag1'
-      },
-      {
-        tagId: 'e2cdeab6-5332-4fd1-8031-23f37b52acba',
-        tagName: 'dummyTag2'
-      },
-      {
-        tagId: '076bdc5a-d9a2-48ed-b9a2-5f4d5b81540d',
-        tagName: 'dummyTag3'
-      }
-    ],
-    registerDate: '2022-08-18T09:31:44.27536',
-    modifiedDate: '2022-08-18T09:31:44.27536',
-    bookmark: false
-  },
-  {
-    id: '3e8cafdd-8d09-4093-9db0-55d10693d1d6',
-    remindId: null,
-    linkUrl: 'www.daum.net',
-    openGraph: {
-      linkTitle: 'Daum',
-      linkDescription: '나의 관심 콘텐츠를 가장 즐겁게 볼 수 있는 Daum',
-      linkImage:
-        'https://i1.daumcdn.net/svc/image/U03/common_icon/5587C4E4012FCD0001'
-    },
-    memos: [
-      {
-        registerDate: '2022-08-18T15:44:58.814622',
-        modifiedDate: '2022-08-18T15:44:58.814622',
-        id: '9286012c-acec-44c2-bd32-9627e9679ec2',
-        content: 'dummyMemo5'
-      },
-      {
-        registerDate: '2022-08-18T15:44:50.902259',
-        modifiedDate: '2022-08-18T15:44:50.902259',
-        id: 'ec657ff5-9fef-4658-8e34-bbea001ff259',
-        content: 'dummyMemo'
-      },
-      {
-        registerDate: '2022-08-18T15:44:57.583064',
-        modifiedDate: '2022-08-18T15:44:57.583064',
-        id: 'fdeb5884-e60b-4629-8673-55bdb7fbd964',
-        content: 'dummyMemo3'
-      },
-      {
-        registerDate: '2022-08-18T15:44:58.168391',
-        modifiedDate: '2022-08-18T15:44:58.168391',
-        id: '533e25aa-0496-4824-97a8-f02205e9cb7c',
-        content: 'dummyMemo4'
-      },
-      {
-        registerDate: '2022-08-18T15:44:56.793462',
-        modifiedDate: '2022-08-18T15:44:56.793462',
-        id: 'f3185821-afc0-4e20-8f7f-92030a4c82bb',
-        content: 'dummyMemo2'
-      }
-    ],
-    tags: [
-      {
-        tagId: '8101cc15-41a4-4ce9-a480-db3fc32a4b3d',
-        tagName: 'dummyTag1'
-      },
-      {
-        tagId: 'e2cdeab6-5332-4fd1-8031-23f37b52acba',
-        tagName: 'dummyTag2'
-      },
-      {
-        tagId: '076bdc5a-d9a2-48ed-b9a2-5f4d5b81540d',
-        tagName: 'dummyTag3'
-      }
-    ],
-    registerDate: '2022-08-18T09:31:44.27536',
-    modifiedDate: '2022-08-18T09:31:44.27536',
-    bookmark: false
-  }
-]
+interface LinkList extends Array<ILink> {}
+interface MemoList extends Array<IMemo> {}
 
-// const linkList = list.filter(el => el.bookmark === true)
+// const memos = [
+//   {
+//     id: '62c8f540-5dea-484b-969e-2ec47f7271be',
+//     content: 'string',
+//     registerDate: '2022-08-21T17:15:00.506413',
+//     modifiedDate: '2022-08-21T17:15:00.506413',
+//     openGraph: {
+//       linkTitle: 'Google',
+//       linkDescription: '',
+//       linkImage: ''
+//     },
+//     folderTitle: '기본 폴더'
+//   },
+//   {
+//     id: '0a7293bf-c227-4e29-afcc-5b7b98d20888',
+//     content: 'content1',
+//     registerDate: '2022-08-21T17:15:07.648693',
+//     modifiedDate: '2022-08-21T17:15:07.648693',
+//     openGraph: {
+//       linkTitle: 'Google',
+//       linkDescription: '',
+//       linkImage: ''
+//     },
+//     folderTitle: '기본 폴더'
+//   }
+// ]
 
 const RemindMain = () => {
+  const navigation = useNavigation<RouterNavigationProps>()
+  const route = useRoute()
+  const [list, setList] = useState<LinkList>()
+  const [memos, setMemos] = useState<MemoList>()
+
+  const getArticles = () => {
+    api
+      .get<LinkList>('/articles')
+      .then(response => {
+        if (response.status === 200) {
+          let resArr = Array.from(response.data)
+          setList(resArr)
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
+  const getMemos = () => {
+    api
+      .get<MemoList>('/memos')
+      .then(response => {
+        if (response.status === 200) {
+          console.log(typeof response.data)
+          let resArr = Array.from(response.data)
+          console.log(Array.isArray(resArr))
+          setMemos(resArr)
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
+  useEffect(() => {
+    if (route.name === 'Reminding') {
+      getArticles()
+      getMemos()
+    }
+  }, [route.name])
+
+  const onNoticePress = () => {
+    navigation.navigate('Notice')
+  }
+
+  const onMemoPress = () => {
+    navigation.navigate('MemoCollection')
+  }
+
   return (
     <RemindingView>
       <ScrollView scrollEnabled={true}>
         <Header iconButtons={iconButtons}>리마인딩</Header>
-        <RemindingList list={list} />
-        <Notice />
-        <MemoCollection />
+        {list && <RemindingList list={list} />}
+        <Notice onPress={onNoticePress} />
+        {memos && <MemoCollection onPress={onMemoPress} memos={memos} />}
       </ScrollView>
     </RemindingView>
   )

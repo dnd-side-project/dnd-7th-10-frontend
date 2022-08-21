@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import Input from '../components/Common/Input'
-import { backgroundWithColor } from '../styles/backgrounds'
+import { backgroundWithColor, shadow } from '../styles/backgrounds'
 import SectionTitle from '../components/Common/SectionTitle'
 import SectionContent from '../components/Common/SectionContent'
 import FolderSelectList from '../components/LinkAdd/FolderSelectList'
@@ -17,6 +17,7 @@ import api from '../lib/api'
 import { IArticle } from '../recoil/folders'
 import useFolderList from '../components/Home/FolderList.hook'
 import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types'
+import { ITag } from '../recoil/tags'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -48,16 +49,20 @@ const LinkAddInputView = styled.View<InputViewProps>`
   justify-content: center;
   padding: 0 24px;
   display: ${props => (props.disabled ? 'none' : 'flex')};
+  elevation: 4;
 `
+
+const containerStyle = { flexGrow: 1 }
 
 const LinkAdd = ({
   route
 }: NativeStackScreenProps<RouterParamList, 'LinkAdd'>) => {
   const navigation = useNavigation<RouterNavigationProps>()
   const [isInputShow, setIsInputShow] = useState<boolean>(false)
-  const { isTagLoading, tags } = useTagList()
+  const [isTagLoading, tags, fetchTagList] = useTagList()
   const [, fetchFolders] = useFolderList()
 
+  const [tagName, setTagName] = useState<string>('')
   const [linkUrl, setLinkUrl] = useState<string>('')
   const [folderId, setFolderId] = useState<string>('')
   const [tagIds, setTagIds] = useState<string[]>([])
@@ -66,6 +71,11 @@ const LinkAdd = ({
     () => linkUrl.length > 0 && folderId !== '',
     [linkUrl, folderId]
   )
+
+  useEffect(() => {
+    fetchTagList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (route.params && route.params.folderId) {
@@ -88,11 +98,28 @@ const LinkAdd = ({
   }
 
   const onTagAddPress = () => {
-    setIsInputShow(true)
+    setIsInputShow(!isInputShow)
   }
 
   const onTagClosePress = () => {
-    setIsInputShow(false)
+    const trimmedTagName = tagName.trim()
+    if (tagName.length === 0) {
+      return
+    }
+    if (tagName.length > 20) {
+      return
+    }
+    api
+      .post<ITag>('/tag', { tagName: trimmedTagName })
+      .then(response => {
+        if (response.status === 200) {
+          setIsInputShow(false)
+          fetchTagList()
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 
   const onFolderAddPress = () => {
@@ -104,15 +131,28 @@ const LinkAdd = ({
     if (index > -1) {
       tagIds.splice(index, 1)
       setTagIds([...tagIds])
-    } else {
+    } else if (tagIds.length < 3) {
       setTagIds([...tagIds, tagId])
+    } else {
+      // cannot over 3
     }
+  }
+
+  const onTagRemovePress = (tagId: string) => {
+    api
+      .delete(`/tag/${tagId}`)
+      .then(response => {
+        if (response.status === 200) {
+          fetchTagList()
+        }
+      })
+      .catch(error => console.error(error))
   }
 
   return (
     <LinkAddPageView>
       <Header>링크추가</Header>
-      <LinkContentScroll>
+      <LinkContentScroll contentContainerStyle={containerStyle}>
         <LinkAddContentView>
           <SectionTitle title="링크 URL" />
           <SectionContent>
@@ -135,6 +175,7 @@ const LinkAdd = ({
                 tags={tags}
                 selectedIds={tagIds}
                 onTagPress={onTagPress}
+                onRemovePress={onTagRemovePress}
               />
             )}
           </SectionContent>
@@ -145,8 +186,14 @@ const LinkAdd = ({
           </Button>
         </BottomButton>
       </LinkContentScroll>
-      <LinkAddInputView disabled={!isInputShow}>
-        <Input small disabled={!isInputShow} onEnterPress={onTagClosePress} />
+      <LinkAddInputView disabled={!isInputShow} style={shadow}>
+        <Input
+          value={tagName}
+          onChangeText={setTagName}
+          small
+          disabled={!isInputShow}
+          onEnterPress={onTagClosePress}
+        />
       </LinkAddInputView>
     </LinkAddPageView>
   )

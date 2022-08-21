@@ -1,4 +1,5 @@
 import { atom, atomFamily, selector, selectorFamily } from 'recoil'
+import { ITag } from './tags'
 
 export interface IFolderBase {
   folderId: string
@@ -23,6 +24,7 @@ export interface IArticle {
   registerDate: string
   modifiedDate: string
   bookmark: boolean
+  tags: ITag[]
 }
 
 export interface IFolderDetail extends IFolderBase {

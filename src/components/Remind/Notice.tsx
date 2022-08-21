@@ -37,8 +37,7 @@ const AlarmCardBar = styled.View`
   left: 24px;
   top: 72px;
 `
-
-const AddIcon = styled.Image`
+const AddIconBtn = styled.TouchableOpacity`
   position: absolute;
   height: 24px;
   width: 24px;
@@ -46,13 +45,25 @@ const AddIcon = styled.Image`
   top: 24px;
   border-radius: 0px;
 `
+const AddIcon = styled.Image`
+  height: 24px;
+  width: 24px;
+`
 
-const Notice = () => {
+interface Props {
+  onPress: () => void
+}
+const Notice = ({ onPress }: Props) => {
   return (
     <NoticeView>
       <TopView>
         <TopText>리마인딩 알림</TopText>
-        <AddIcon source={require('../../assets/images/plus.png')} />
+        <AddIconBtn onPress={onPress}>
+          <AddIcon
+            source={require('../../assets/images/plus.png')}
+            resizeMode="contain"
+          />
+        </AddIconBtn>
       </TopView>
       <AlarmCardBar>
         <AlarmCard />

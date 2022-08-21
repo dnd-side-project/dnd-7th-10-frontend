@@ -1,9 +1,3 @@
-/**
-
- *
- * @format
- */
-
 import React, { useState } from 'react'
 import styled from '@emotion/native'
 import WebView from 'react-native-webview'
@@ -17,8 +11,6 @@ import {
   Text,
   View
 } from 'react-native'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faNoteSticky } from '@fortawesome/free-solid-svg-icons'
 
 const uri = 'https://naver.com'
 
@@ -80,7 +72,7 @@ const WebViewPage = () => {
         ) : (
           <MemoContainer>
             <Memo onPress={() => setClick(!click)}>
-              <FontAwesomeIcon icon={faNoteSticky} size={50} color={'white'} />
+              {/* <FontAwesomeIcon icon={faNoteSticky} size={50} color={'white'} /> */}
             </Memo>
           </MemoContainer>
         )}

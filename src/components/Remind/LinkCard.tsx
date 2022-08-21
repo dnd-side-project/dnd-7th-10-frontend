@@ -109,8 +109,8 @@ const LinkCard = ({ link }: Props) => {
         <LinkTitle>{linkTitle}</LinkTitle>
         <LinkDesc>{linkDescription}</LinkDesc>
         <TagBar>
-          {tags.map(tag => (
-            <TagView text={tag.tagName} />
+          {tags.map((tag, idx) => (
+            <TagView text={tag.tagName} key={idx} />
           ))}
         </TagBar>
       </LinkDescView>

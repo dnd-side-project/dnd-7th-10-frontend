@@ -61,7 +61,7 @@ const Login = () => {
 
   useEffect(() => {
     if (!auth.user) {
-      login('linkkle', 'linkkle2022!')
+      login('user', '1234')
     }
     if (auth.user) {
       console.warn('hi, ' + auth.user.username)

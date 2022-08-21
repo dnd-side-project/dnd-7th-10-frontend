@@ -91,17 +91,17 @@ const MemoIcon = styled.Image`
   border-radius: 0px;
 `
 
-interface IMemo {
-  content: string
-  id: string
-  modifiedDate: string
+export interface IMemo {
+  id?: string
+  content?: string
   registerDate: string
-  article: {
-    linkDescription: string
-    linkImage: string
-    linkTitle: string
+  modifiedDate: string
+  openGraph: {
+    linkTitle?: string
+    linkDescription?: string
+    linkImage?: string
   }
-  folder: string
+  folderTitle?: string
 }
 
 interface Props {
@@ -109,16 +109,21 @@ interface Props {
 }
 
 const MemoCard = ({ memo }: Props) => {
-  const { content, modifiedDate, folder, article } = memo
+  const { content, modifiedDate, folderTitle, openGraph } = memo
   const date = modifiedDate.split('T')[0]
-  const { linkImage, linkTitle } = article
+  const { linkImage, linkTitle } = openGraph
+
   return (
     <MemoCardView>
       <MemoIcon source={require('../../assets/images/memo.png')} />
       <MemoCardDate>{date}</MemoCardDate>
       <MemoCardText>{content}</MemoCardText>
-      <BottomImg source={{ uri: linkImage }} />
-      <UrlFolder>{folder}</UrlFolder>
+      <BottomImg
+        source={{
+          uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
+        }}
+      />
+      <UrlFolder>{folderTitle}</UrlFolder>
       <UrlTitle>{linkTitle}</UrlTitle>
     </MemoCardView>
   )

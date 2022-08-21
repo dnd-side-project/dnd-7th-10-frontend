@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/native'
 import MemoCard from './MemoCard'
 import { ColorPalette, Typo } from '../../styles/variable'
+import { IMemo } from '../Remind/MemoCard'
 
 const MemoCollectionView = styled.View`
   background-color: #ffffff;
@@ -37,7 +38,7 @@ const MemoView = styled.View`
   align-items: flex-start;
 `
 
-const RightArrow = styled.Image`
+const MemoBtn = styled.TouchableOpacity`
   position: absolute;
   width: 24px;
   height: 24px;
@@ -45,41 +46,28 @@ const RightArrow = styled.Image`
   top: 24px;
 `
 
-const memos = [
-  {
-    content: 'string',
-    id: 'string',
-    modifiedDate: '2022-08-20T06:38:01.351Z',
-    registerDate: '2022-08-20T06:38:01.351Z',
-    article: {
-      linkDescription: 'string',
-      linkImage: 'https://via.placeholder.com/16x16',
-      linkTitle: 'string'
-    },
-    folder: 'string'
-  },
-  {
-    content: 'string',
-    id: 'string',
-    modifiedDate: '2022-08-19T06:38:01.351Z',
-    registerDate: '2022-08-20T06:38:01.351Z',
-    article: {
-      linkDescription: 'string',
-      linkImage: 'https://via.placeholder.com/16x16',
-      linkTitle: 'string'
-    },
-    folder: 'string'
-  }
-]
+const RightArrow = styled.Image`
+  width: 24px;
+  height: 24px;
+`
 
-const MemoCollection = () => {
+interface MemoList extends Array<IMemo> {}
+
+interface Props {
+  onPress: () => void
+  memos: MemoList
+}
+
+const MemoCollection = ({ onPress, memos }: Props) => {
   return (
     <MemoCollectionView>
       <TopText>최근 작성한 메모</TopText>
-      <RightArrow source={require('../../assets/images/icon_more.png')} />
+      <MemoBtn onPress={onPress}>
+        <RightArrow source={require('../../assets/images/icon_more.png')} />
+      </MemoBtn>
       <MemoView>
-        {memos.map(memo => (
-          <MemoCard memo={memo} />
+        {memos.map((memo, idx) => (
+          <MemoCard memo={memo} key={idx} />
         ))}
       </MemoView>
     </MemoCollectionView>

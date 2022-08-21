@@ -7,7 +7,7 @@ import { fontWithColor } from '../../styles/fonts'
 import { flexWithAlign } from '../../styles/flexbox'
 import { Typo } from '../../styles/variable'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { IModalState, modalStateAtom } from '../../recoil/modal'
+import { IModalState, modalStateAtom } from '../../recoil/global'
 import { Animated } from 'react-native'
 
 const ModalBackgroundView = styled(Animated.View)`

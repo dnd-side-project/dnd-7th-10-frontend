@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import FolderSelectItem from './FolderSelectItem'
 import useFolderList from '../Home/FolderList.hook'
@@ -15,12 +15,22 @@ const FolderSelectListView = styled.View`
 const FolderTouchable = styled.TouchableOpacity``
 
 interface Props {
+  folderId: string
   onChange?: (value: string) => void
 }
 
-const FolderSelectList = ({ onChange }: Props) => {
+const FolderSelectList = ({ folderId, onChange }: Props) => {
   const [selected, setSelected] = useState<number>(-1)
   const [folderIds] = useFolderList()
+
+  useEffect(() => {
+    if (folderId) {
+      const index = folderIds.indexOf(folderId)
+      if (index > -1) {
+        setSelected(index)
+      }
+    }
+  }, [folderId, folderIds])
 
   const onPress = (index: number) => {
     if (index < folderIds.length) {
@@ -34,11 +44,11 @@ const FolderSelectList = ({ onChange }: Props) => {
   return (
     <FolderSelectListScrollView horizontal>
       <FolderSelectListView>
-        {folderIds.map((folderId, index) => {
+        {folderIds.map((_folderId, index) => {
           return (
-            <FolderTouchable key={folderId} onPress={() => onPress(index)}>
+            <FolderTouchable key={_folderId} onPress={() => onPress(index)}>
               <FolderSelectItem
-                folderId={folderId}
+                folderId={_folderId}
                 selected={index === selected}
               />
             </FolderTouchable>

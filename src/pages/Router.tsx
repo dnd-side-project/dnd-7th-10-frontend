@@ -14,7 +14,11 @@ const Stack = createNativeStackNavigator<RouterParamList>()
 export interface RouterParamList extends ParamListBase {
   Login: undefined
   Main: undefined
-  LinkAdd: undefined
+  LinkAdd:
+    | {
+        folderId?: string
+      }
+    | undefined
   FolderAdd: undefined
   FolderContent: {
     folderId: string

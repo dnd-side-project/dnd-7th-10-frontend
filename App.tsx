@@ -5,6 +5,7 @@ import { RecoilRoot } from 'recoil'
 import Router from './src/pages/Router'
 import messaging from '@react-native-firebase/messaging'
 import { Alert, AppRegistry } from 'react-native'
+import ToastContainer from './src/components/Common/ToastContainer'
 
 const SafeArea = styled.SafeAreaView`
   background: white;
@@ -33,6 +34,7 @@ const App = () => {
         <NavigationContainer>
           <Router />
         </NavigationContainer>
+        <ToastContainer />
       </RecoilRoot>
     </SafeArea>
   )

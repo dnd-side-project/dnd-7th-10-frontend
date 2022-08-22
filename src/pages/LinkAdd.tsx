@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import Input from '../components/Common/Input'
@@ -19,6 +19,7 @@ import useFolderList from '../components/Home/FolderList.hook'
 import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types'
 import { ITag } from '../recoil/tags'
 import useToast, { createWarnToast, ToastOffset } from '../hooks/useToast'
+import { TextInput } from 'react-native'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -68,6 +69,7 @@ const LinkAdd = ({
   const [folderId, setFolderId] = useState<string>('')
   const [tagIds, setTagIds] = useState<string[]>([])
 
+  const inputRef = useRef<TextInput>(null)
   const showToast = useToast()
 
   const isCreatable = useMemo(
@@ -102,6 +104,11 @@ const LinkAdd = ({
 
   const onTagAddPress = () => {
     setIsInputShow(!isInputShow)
+    setTimeout(() => {
+      if (!isInputShow) {
+        inputRef.current?.focus()
+      }
+    }, 500)
   }
 
   const onTagClosePress = () => {
@@ -202,6 +209,7 @@ const LinkAdd = ({
       </LinkContentScroll>
       <LinkAddInputView disabled={!isInputShow} style={shadow}>
         <Input
+          ref={inputRef}
           value={tagName}
           onChangeText={setTagName}
           small

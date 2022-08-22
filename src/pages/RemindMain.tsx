@@ -101,7 +101,7 @@ const RemindMain = () => {
   }
 
   const onMemoPress = () => {
-    navigation.navigate('MemoCollection')
+    navigation.navigate('MemoMain')
   }
 
   return (

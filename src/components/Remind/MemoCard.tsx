@@ -1,22 +1,27 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
+import { TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from '../../pages/Router'
 
-const MemoCardView = styled.View`
-  width: 200px;
-  height: 300px;
+type ViewProps = {
+  main: boolean
+}
+
+const MemoCardView = styled.View<ViewProps>`
+  width: ${props => (props.main === true ? '366px' : '200px')};
+  height: ${props => (props.main === true ? '288px' : '312px')};
   background: #ffffff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  margin-right: 16px;
+  border: ${props => (props.main === true ? '2px solid #DEEBF5' : 'none')};
+  border-radius: ${props => (props.main === true ? '4px' : '8px')};
+  margin-top: ${props => (props.main === true ? '16px' : '0px')};
+  margin-right: ${props => (props.main === true ? '16px' : '16px')};
 `
-
 const MemoCardDate = styled.Text`
   position: absolute;
-  width: 56px;
+  width: 60px;
   height: 14px;
   right: 16px;
   top: 16px;
@@ -37,25 +42,35 @@ const MemoCardText = styled.Text`
   letter-spacing: -0.6px;
 
   color: ${ColorPalette.BlueGray_5};
+  overflow: hidden;
 `
-const BottomImg = styled.Image`
+const UrlImg = styled.Image`
   position: absolute;
   width: 40px;
   height: 40px;
-  left: 16px;
   bottom: 16px;
   border-radius: 38px;
 `
-const UrlFolder = styled.Text`
+
+const UrlView = styled.View<ViewProps>`
+  height: 72px;
+  width: ${props => (props.main === true ? '334px' : '168px')};
   position: absolute;
-  width: 72px;
-  height: 14px;
-  left: 64px;
-  bottom: 42px;
+  top: ${props => (props.main === true ? '216px' : '240px')};
+  left: 16px;
+  border-top-width: 1px;
+  border-top-color: #deebf5;
+`
+const UrlFolder = styled.Text<ViewProps>`
+  position: absolute;
+  width: ${props => (props.main === true ? '286px' : '30px')};
+  height: 18px
+  left: ${props => (props.main === true ? '64px' : '48px')};
+  bottom:${props => (props.main === true ? '38px' : '22px')};
 
   font-family: ${Typo.Detail2_400}
   font-size: 12px;
-  line-height: 14px;
+  line-height: 18px;
   letter-spacing: -0.6px;
   color:${ColorPalette.BlueGray_3}
 `
@@ -67,8 +82,6 @@ const UrlTitle = styled.Text`
   bottom: 16px;
 
   font-family: ${Typo.Heading4_600}
-  font-style: normal;
-  font-weight: 600;
   font-size: 16px;
   line-height: 24px;
 
@@ -106,26 +119,36 @@ export interface IMemo {
 
 interface Props {
   memo: IMemo
+  main: boolean
 }
 
-const MemoCard = ({ memo }: Props) => {
+const MemoCard = ({ memo, main }: Props) => {
   const { content, modifiedDate, folderTitle, openGraph } = memo
   const date = modifiedDate.split('T')[0]
   const { linkImage, linkTitle } = openGraph
 
+  const navigation = useNavigation<RouterNavigationProps>()
+  const onCardPress = () => {
+    navigation.navigate('MemoPage')
+  }
+
   return (
-    <MemoCardView>
-      <MemoIcon source={require('../../assets/images/memo.png')} />
-      <MemoCardDate>{date}</MemoCardDate>
-      <MemoCardText>{content}</MemoCardText>
-      <BottomImg
-        source={{
-          uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
-        }}
-      />
-      <UrlFolder>{folderTitle}</UrlFolder>
-      <UrlTitle>{linkTitle}</UrlTitle>
-    </MemoCardView>
+    <TouchableOpacity onPress={onCardPress}>
+      <MemoCardView main={main}>
+        <MemoIcon source={require('../../assets/images/memo.png')} />
+        <MemoCardDate>{date}</MemoCardDate>
+        <MemoCardText>{content}</MemoCardText>
+        <UrlView main={main}>
+          <UrlImg
+            source={{
+              uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
+            }}
+          />
+          <UrlFolder main>{folderTitle}</UrlFolder>
+          <UrlTitle>{linkTitle}</UrlTitle>
+        </UrlView>
+      </MemoCardView>
+    </TouchableOpacity>
   )
 }
 

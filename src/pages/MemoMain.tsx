@@ -3,9 +3,10 @@ import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import MemoCard from '../components/Remind/MemoCard'
 import { IMemo } from '../components/Remind/MemoCard'
-import { ScrollView } from 'react-native'
+import { ScrollView, TouchableOpacity } from 'react-native'
 import api from '../lib/api'
-import { useRoute } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from '../pages/Router'
 
 const MemoMainView = styled.View`
   background-color: #f5f5f5;
@@ -31,6 +32,7 @@ interface MemoList extends Array<IMemo> {}
 const MemoMain = () => {
   const route = useRoute()
   const [memos, setMemos] = useState<MemoList>()
+  const navigation = useNavigation<RouterNavigationProps>()
 
   const getMemos = () => {
     api
@@ -54,13 +56,19 @@ const MemoMain = () => {
     }
   }, [route.name])
 
+  const onCardPress = (memo: IMemo) => {
+    navigation.navigate('MemoPage', { memo })
+  }
+
   return (
     <MemoMainView>
       <ScrollView scrollEnabled={true}>
         <Header>메모 모음</Header>
         <MemosView>
           {memos?.map((memo, idx) => (
-            <MemoCard memo={memo} main key={idx} />
+            <TouchableOpacity key={idx} onPress={() => onCardPress(memo)}>
+              <MemoCard memo={memo} main key={idx} />
+            </TouchableOpacity>
           ))}
         </MemosView>
       </ScrollView>

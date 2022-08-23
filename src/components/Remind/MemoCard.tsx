@@ -1,9 +1,6 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
-import { TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { RouterNavigationProps } from '../../pages/Router'
 
 type ViewProps = {
   main: boolean
@@ -127,28 +124,21 @@ const MemoCard = ({ memo, main }: Props) => {
   const date = modifiedDate.split('T')[0]
   const { linkImage, linkTitle } = openGraph
 
-  const navigation = useNavigation<RouterNavigationProps>()
-  const onCardPress = () => {
-    navigation.navigate('MemoPage')
-  }
-
   return (
-    <TouchableOpacity onPress={onCardPress}>
-      <MemoCardView main={main}>
-        <MemoIcon source={require('../../assets/images/memo.png')} />
-        <MemoCardDate>{date}</MemoCardDate>
-        <MemoCardText>{content}</MemoCardText>
-        <UrlView main={main}>
-          <UrlImg
-            source={{
-              uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
-            }}
-          />
-          <UrlFolder main>{folderTitle}</UrlFolder>
-          <UrlTitle>{linkTitle}</UrlTitle>
-        </UrlView>
-      </MemoCardView>
-    </TouchableOpacity>
+    <MemoCardView main={main}>
+      <MemoIcon source={require('../../assets/images/memo.png')} />
+      <MemoCardDate>{date}</MemoCardDate>
+      <MemoCardText>{content}</MemoCardText>
+      <UrlView main={main}>
+        <UrlImg
+          source={{
+            uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
+          }}
+        />
+        <UrlFolder main>{folderTitle}</UrlFolder>
+        <UrlTitle>{linkTitle}</UrlTitle>
+      </UrlView>
+    </MemoCardView>
   )
 }
 

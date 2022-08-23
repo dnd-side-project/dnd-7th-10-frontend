@@ -4,7 +4,8 @@ import Header from '../components/Common/Header'
 import { ScrollView } from 'react-native'
 import { IIconButton } from '../components/Common/Header'
 import { ColorPalette, Typo } from '../styles/variable'
-import SVG from '../assets/images/svg'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RouterParamList } from './Router'
 
 const MemoMainView = styled.View`
   background-color: #f5f5f5;
@@ -106,7 +107,6 @@ const UrlTitle = styled.Text`
 const UrlDate = styled.Text`
   position: absolute;
   left: 25.6%;
-  right: 61.59%;
   top: 70.41%;
   bottom: 11.22%;
 
@@ -128,43 +128,14 @@ const iconButtons: IIconButton[] = [
   }
 ]
 
-// interface MemoList extends Array<IMemo> {}
-const memo1 = {
-  id: '62c8f540-5dea-484b-969e-2ec47f7271be',
-  content: 'string',
-  registerDate: '2022-08-21T17:15:00.506413',
-  modifiedDate: '2022-08-21T17:15:00.506413',
-  openGraph: {
-    linkTitle: 'Google',
-    linkDescription: '',
-    linkImage: ''
-  },
-  folderTitle: '기본 폴더'
-}
-
-const MemoPage = () => {
-  // const [memos, setMemos] = useState<MemoList>()
-
-  // const getMemos = () => {
-  //   api
-  //     .get<MemoList>('/memos')
-  //     .then(response => {
-  //       if (response.status === 200) {
-  //         console.log(response.data)
-  //         let resArr = Array.from(response.data)
-  //         // setMemos(resArr)
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error(error)
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   if (route.name === 'MemoMain') {
-  //     // getMemos()
-  //   }
-  // }, [route.name])
+const MemoPage = ({
+  route
+}: NativeStackScreenProps<RouterParamList, 'MemoPage'>) => {
+  const { memo } = route.params
+  console.log(memo)
+  const { content, folderTitle, openGraph, registerDate } = memo
+  const { linkTitle, linkImage } = openGraph
+  const date = registerDate.split('T')[0]
 
   return (
     <MemoMainView>
@@ -172,20 +143,19 @@ const MemoPage = () => {
         <Header iconButtons={iconButtons}>메모</Header>
         <MemoCardsView>
           <MemoCardView>
-            <MemoContent>{memo1.content}</MemoContent>
+            <MemoContent>{content}</MemoContent>
           </MemoCardView>
           <UrlView>
             <UrlImg
               source={{
-                uri: 'https://via.placeholder.com/16x16'
+                uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
               }}
             />
-            <UrlFolder>폴더명</UrlFolder>
+            <UrlFolder>{folderTitle}</UrlFolder>
             <UrlTitleComponent>
-              <UrlTitle>링크제목</UrlTitle>
-              <SVG.ChevronLeft />
+              <UrlTitle>{linkTitle}</UrlTitle>
             </UrlTitleComponent>
-            <UrlDate>2022.07.01</UrlDate>
+            <UrlDate>{date}</UrlDate>
           </UrlView>
         </MemoCardsView>
       </ScrollView>

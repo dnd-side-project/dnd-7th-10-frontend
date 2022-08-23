@@ -10,6 +10,7 @@ import RemindMain from './RemindMain'
 import MemoMain from './MemoMain'
 import MemoPage from './MemoPage'
 import Main from './Main'
+import { IMemo } from '../components/Remind/MemoCard'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -24,6 +25,9 @@ export interface RouterParamList extends ParamListBase {
   FolderAdd: undefined
   FolderContent: {
     folderId: string
+  }
+  MemoPage: {
+    memo: IMemo
   }
 }
 

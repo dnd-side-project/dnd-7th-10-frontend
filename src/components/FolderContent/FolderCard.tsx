@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ImageSourcePropType } from 'react-native'
+import api from '../../lib/api'
 import { IArticle } from '../../recoil/folders'
 import Card from '../Common/Card'
 
 interface Props {
   article: IArticle
+  refresh?: () => void
 }
 
-const FolderCard = ({ article }: Props) => {
+const FolderCard = ({ article, refresh }: Props) => {
   const [favicon, setFavicon] = useState<ImageSourcePropType | undefined>(
     undefined
   )
@@ -37,8 +39,18 @@ const FolderCard = ({ article }: Props) => {
   }, [getFaviconUrl])
 
   const tags = useMemo(() => {
+    console.log(article.bookmark)
     return article.tags.map(({ tagName }) => tagName)
   }, [article])
+
+  const onBookmarkPress = () => {
+    api.patch(`/article/mark/${article.id}`).then(response => {
+      console.log(response.status)
+      if (refresh) {
+        refresh()
+      }
+    })
+  }
 
   return (
     <Card
@@ -52,6 +64,7 @@ const FolderCard = ({ article }: Props) => {
       bookmark
       bookmarked={article.bookmark}
       memo={article.memos && article.memos.length > 0}
+      onBookmarkPress={onBookmarkPress}
     />
   )
 }

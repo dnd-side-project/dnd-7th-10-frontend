@@ -108,7 +108,11 @@ const FolderAdd = () => {
         <FolderAddContent>
           <SectionTitle title="폴더 명" />
           <SectionContent>
-            <Input value={folderTitle} onChangeText={onChangeText} />
+            <Input
+              value={folderTitle}
+              onChangeText={onChangeText}
+              placeholder="폴더 명을 입력해주세요."
+            />
           </SectionContent>
           <SectionTitle title="폴더 컬러 선택" />
           <SectionContent>

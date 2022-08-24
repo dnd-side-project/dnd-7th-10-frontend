@@ -190,7 +190,11 @@ const LinkAdd = ({
         <LinkAddContentView>
           <SectionTitle title="링크 URL" />
           <SectionContent>
-            <Input value={linkUrl} onChangeText={setLinkUrl} />
+            <Input
+              value={linkUrl}
+              onChangeText={setLinkUrl}
+              placeholder="링크를 입력해주세요."
+            />
           </SectionContent>
           <SectionTitle
             title="저장할 폴더 선택"

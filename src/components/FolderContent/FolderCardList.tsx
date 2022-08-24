@@ -18,6 +18,10 @@ const FolderCardView = styled.View`
   padding: 24px;
 `
 
+const FolderCardTouchable = styled.TouchableOpacity`
+  margin-bottom: 16px;
+`
+
 interface Props {
   folderId: string
 }
@@ -43,7 +47,9 @@ const FolderCardList = ({ folderId }: Props) => {
         <FolderCardScrollView>
           <FolderCardView>
             {articles.map(article => (
-              <FolderCard key={article.id} article={article} />
+              <FolderCardTouchable key={article.id} activeOpacity={0.9}>
+                <FolderCard article={article} />
+              </FolderCardTouchable>
             ))}
           </FolderCardView>
         </FolderCardScrollView>

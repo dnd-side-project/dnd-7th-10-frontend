@@ -138,7 +138,7 @@ const Card = ({
             {description}
           </CardDescriptionText>
         )}
-        {tags && (
+        {tags && tags.length > 0 && (
           <CardTagList>
             {tags.map(tag => (
               <CardTag key={tag} numberOfLines={1}>

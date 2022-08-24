@@ -13,7 +13,7 @@ const MemoCollectionView = styled.View`
   flex: none;
   flex-grow: 0;
   align-items: center;
-  justify-contents: center;
+  justify-content: center;
   padding: 24px;
 `
 const TopText = styled.Text`
@@ -22,13 +22,13 @@ const TopText = styled.Text`
   top: 22px;
   width: 113px;
   height: 27px;
-  font-family:${Typo.Heading3_600}
+  font-family: ${Typo.Heading3_600};
   font-size: 18px;
   line-height: 27px;
   display: flex;
   align-items: flex-end;
   letter-spacing: -0.6px;
-  color:${ColorPalette.BlueGray_4}
+  color: ${ColorPalette.BlueGray_4};
 `
 
 const MemoCardsView = styled.ScrollView`
@@ -78,20 +78,17 @@ const BlankMemoView = styled.View`
   margin-top: 80px;
 `
 const BlankMemoText = styled.Text`
-width: 234px;
-height: 54px;
-margin-bottom : 24px;
-font-family: ${Typo.Body1_600}
-font-weight: 400;
-font-size: 18px;
-line-height: 27px;
+  width: 234px;
+  height: 54px;
+  margin-bottom: 24px;
+  font-family: ${Typo.Body1_600};
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
 
-text-align: center;
-letter-spacing: -0.6px;
-color: ${ColorPalette.BlueGray_4}
-
-flex: none;
-flex-grow: 0;
+  text-align: center;
+  letter-spacing: -0.6px;
+  color: ${ColorPalette.BlueGray_4};
 `
 const BlankMemoBtn = styled.TouchableOpacity`
   width: 128px;
@@ -104,7 +101,7 @@ const BlankBtnText = styled.Text`
   height: 18px;
   width: 51px;
 
-  font-family:${Typo.Button_600}
+  font-family: ${Typo.Button_600};
   font-size: 15px;
   line-height: 18px;
 
@@ -112,11 +109,7 @@ const BlankBtnText = styled.Text`
   align-items: center;
   text-align: center;
   letter-spacing: -0.6px;
-
-  color: white;
-
-  margin: 15px 38px;
-
+  color: #ffffff;
 `
 
 interface MemoList extends Array<IMemo> {}

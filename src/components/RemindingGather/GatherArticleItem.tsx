@@ -10,13 +10,11 @@ import {
   defaultSource
 } from '../Common/Card'
 import { shadowShallow } from '../../styles/backgrounds'
-import { ImageSourcePropType } from 'react-native'
 import SVG from '../../assets/images/svg'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { fontWithColor } from '../../styles/fonts'
 
 const GatherArticleItemView = styled.View`
-  flex: 1;
   min-width: 130px;
   margin: 8px;
 `
@@ -51,7 +49,7 @@ const GatherArticleNameText = styled.Text`
 `
 
 interface Props {
-  source?: ImageSourcePropType
+  source?: string
   tags?: string[] | null
   articleName: string
   folderName: string
@@ -68,7 +66,10 @@ const GatherArticleItem = ({
   return (
     <GatherArticleItemView>
       <CardView style={shadowShallow}>
-        <CardCoverImage source={source || defaultSource} resizeMode="cover" />
+        <CardCoverImage
+          source={{ uri: source || defaultSource.uri }}
+          resizeMode="cover"
+        />
         <CardCoverOverlay />
         <GatherSelectedImage
           source={

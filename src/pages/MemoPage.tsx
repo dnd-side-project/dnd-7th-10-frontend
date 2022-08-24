@@ -57,7 +57,7 @@ const UrlImg = styled.Image`
   top: 16.33%;
   bottom: 16.33%;
 
-  border: 1px solid ${ColorPalette.BlueGray_2}
+  border: 1px solid ${ColorPalette.BlueGray_2};
   border-radius: 38px;
 `
 const UrlFolder = styled.Text`
@@ -66,7 +66,7 @@ const UrlFolder = styled.Text`
   top: 16.33%;
   bottom: 65.31%;
 
-  font-family: ${Typo.Detail2_400}
+  font-family: ${Typo.Detail2_400};
   font-size: 12px;
   line-height: 18px;
   letter-spacing: -0.6px;
@@ -89,14 +89,14 @@ const UrlTitleComponent = styled.View`
 `
 const UrlTitle = styled.Text`
   height: 27px;
-  font-family: ${Typo.Heading3_600}
+  font-family: ${Typo.Heading3_600};
   font-size: 18px;
   line-height: 27px;
 
   display: flex;
   align-items: flex-end;
   letter-spacing: -0.6px;
-  color: ${ColorPalette.BlueGray_4}
+  color: ${ColorPalette.BlueGray_4};
 `
 const UrlDate = styled.Text`
   position: absolute;
@@ -104,11 +104,11 @@ const UrlDate = styled.Text`
   top: 70.41%;
   bottom: 11.22%;
 
-  font-family: ${Typo.Detail2_400}
+  font-family: ${Typo.Detail2_400};
   font-size: 12px;
   line-height: 18px;
   letter-spacing: -0.6px;
-  color: ${ColorPalette.BlueGray_3}
+  color: ${ColorPalette.BlueGray_3};
 `
 
 const MemoCardInput = styled.TextInput`

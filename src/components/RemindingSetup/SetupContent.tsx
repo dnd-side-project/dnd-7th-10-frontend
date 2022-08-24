@@ -7,6 +7,9 @@ import SVG from '../../assets/images/svg'
 import { flexWithAlign } from '../../styles/flexbox'
 import Empty from '../Common/Empty'
 import RemindItem from './RemindItem'
+import { useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from '../../pages/Router'
+import { IArticleSelected } from '../RemindingGather/GatherArticleList'
 
 const SetupContentView = styled.View`
   ${backgroundWithColor('White')}
@@ -39,27 +42,22 @@ const RemindList = styled.View`
 
 const addButtonInsets = { top: 8, bottom: 8, left: 8, right: 8 }
 
-const articles = [
-  {
-    articleName: 'Developer apple',
-    folderName: '디자인 레퍼런스'
-  },
-  {
-    articleName: 'Hello world',
-    folderName: '디자인 레퍼런스'
-  },
-  {
-    articleName: 'Noo,,',
-    folderName: '디자인 레퍼런스'
-  }
-]
+interface Props {
+  articles: IArticleSelected[]
+}
 
-const SetupContent = () => {
+const SetupContent = ({ articles }: Props) => {
+  const navigation = useNavigation<RouterNavigationProps>()
+
+  const onAddPress = () => {
+    navigation.navigate('RemindingGather')
+  }
+
   return (
     <SetupContentView>
       <SetupTitleView>
         <SetupTitle>이 시간에 설정한{'\n'}링크가 아직 없어요!</SetupTitle>
-        <SetupPlusTouchable hitSlop={addButtonInsets}>
+        <SetupPlusTouchable hitSlop={addButtonInsets} onPress={onAddPress}>
           <SVG.AddLight stroke={ColorPalette.LinkkleBlueGray} width="24" />
         </SetupPlusTouchable>
       </SetupTitleView>
@@ -78,7 +76,7 @@ const SetupContent = () => {
         <RemindList>
           {articles.map(article => (
             <RemindItem
-              key={article.articleName}
+              key={article.articleId}
               folderName={article.folderName}
               articleName={article.articleName}
             />

@@ -51,13 +51,16 @@ interface Props {
   onChange?: (option: string) => void
 }
 
-const Select = ({ options }: Props) => {
+const Select = ({ options, onChange }: Props) => {
   const [value, setValue] = useState<number>(0)
   const scrollView = useRef<ScrollView>(null)
 
   const updateValue = (index: number) => {
     if (index !== value) {
       setValue(index)
+      if (onChange) {
+        onChange(options[index])
+      }
     }
   }
 

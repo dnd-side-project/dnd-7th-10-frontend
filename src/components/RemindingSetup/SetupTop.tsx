@@ -27,7 +27,12 @@ const SetupSwitch = styled.View`
   top: 28px;
 `
 
-const SetupTop = () => {
+interface Props {
+  isRemindOn: boolean
+  setIsRemindOn: (value: boolean) => void
+}
+
+const SetupTop = ({ isRemindOn, setIsRemindOn }: Props) => {
   return (
     <SetupTopView>
       <SetupTopTitle>리마인딩 알림을 받아보시겠어요?</SetupTopTitle>
@@ -35,7 +40,7 @@ const SetupTop = () => {
         꾸준한 리마인딩을 위해 푸시알림을 보내드릴게요.
       </SetupTopDescription>
       <SetupSwitch>
-        <Switch />
+        <Switch value={isRemindOn} onChange={setIsRemindOn} />
       </SetupSwitch>
     </SetupTopView>
   )

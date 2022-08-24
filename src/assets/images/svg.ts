@@ -19,6 +19,7 @@ import Bookmark from './bookmark.svg'
 import BookmarkFilled from './bookmark_filled.svg'
 import AddLight from './add_light.svg'
 import ChevronRight from './chevron-right.svg'
+import FolderStroke from './folder_stroke.svg'
 
 const SVG = {
   Bell,
@@ -41,7 +42,8 @@ const SVG = {
   Bookmark,
   BookmarkFilled,
   AddLight,
-  ChevronRight
+  ChevronRight,
+  FolderStroke
 }
 
 export default SVG

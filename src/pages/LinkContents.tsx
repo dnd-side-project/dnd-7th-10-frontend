@@ -11,6 +11,9 @@ import { RouterParamList } from './Router'
 import useArticleDetail from '../hooks/useArticleDetail'
 import useHeaderEvent from '../hooks/useHeaderEvent'
 import { Text } from 'react-native-svg'
+import BottomButton from '../components/Common/BottomButton'
+import Button from '../components/Common/Button'
+import { Linking } from 'react-native'
 
 const LinkView = styled.View`
   ${backgroundWithColor('background_1')}
@@ -69,6 +72,10 @@ const LinkContents = ({
     }
   }, [addEventListener, removeEventListener, onClick])
 
+  const onWebPress = () => {
+    Linking.openURL(articleDetail.linkUrl)
+  }
+
   return (
     <LinkView>
       <Header iconButtons={iconButtons}>링크 정보</Header>
@@ -83,6 +90,11 @@ const LinkContents = ({
           )}
           {isError && <Text>Error</Text>}
         </LinkContentView>
+        {!isLoading && !isError && (
+          <BottomButton>
+            <Button onPress={onWebPress}>웹사이트로 이동하기</Button>
+          </BottomButton>
+        )}
       </LinkContentScroll>
     </LinkView>
   )

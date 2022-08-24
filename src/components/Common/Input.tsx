@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { Ref, useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import { ColorPalette } from '../../styles/variable'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import { fontWithColorFamily } from '../../styles/fonts'
-// import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
+import { StyleProp, TextInput, ViewStyle } from 'react-native'
+import { forwardRef } from 'react'
 
 interface InputViewProps {
   focused: boolean
@@ -25,6 +26,27 @@ const InputTextInput = styled.TextInput`
   ${fontWithColorFamily('gray_7', 'Regular')}
   font-size: 16px;
 `
+const SearchCloseTouchable = styled.TouchableOpacity`
+  position: absolute;
+  top: 10px;
+  right: 16px;
+`
+
+const SearchCloseImage = styled.Image`
+  width: 24px;
+  height: 24px;
+`
+
+const SearchIconTouchable = styled.Pressable`
+  position: absolute;
+  right: 12px;
+  top: 10px;
+`
+
+const SearchIconImage = styled.Image`
+  width: 24px;
+  height: 24px;
+`
 
 interface Props {
   value?: string
@@ -32,45 +54,92 @@ interface Props {
   small?: boolean
   disabled?: boolean
   onEnterPress?: () => void
+  style?: StyleProp<ViewStyle>
+  placeholder?: string
+  search?: boolean
 }
 
-const Input = ({
-  value,
-  onChangeText,
-  small,
-  disabled,
-  onEnterPress
-}: Props) => {
-  const [focused, setFocused] = useState<boolean>(false)
+const closeInsets = { top: 8, bottom: 8, left: 8, right: 8 }
 
-  const handleFocusOn = () => setFocused(true)
-  const handleFocusOff = () => setFocused(false)
+const Input = forwardRef(
+  (
+    {
+      value,
+      onChangeText,
+      small,
+      disabled,
+      onEnterPress,
+      style,
+      placeholder,
+      search
+    }: Props,
+    ref: Ref<TextInput>
+  ) => {
+    const [focused, setFocused] = useState<boolean>(false)
+    const [text, setText] = useState<string>('')
 
-  const onKeyPress = useCallback(
-    // (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
-    () => {
-      // const { key } = e.nativeEvent
-      //
-    },
-    []
-  )
+    const handleFocusOn = () => setFocused(true)
+    const handleFocusOff = () => setFocused(false)
 
-  return (
-    <InputView focused={focused} small={small}>
-      <InputTextInput
-        onFocus={handleFocusOn}
-        onBlur={handleFocusOff}
-        editable={!disabled}
-        onKeyPress={onKeyPress}
-        selectTextOnFocus={!disabled}
-        value={value}
-        onChangeText={onChangeText}
-        onSubmitEditing={onEnterPress}
-        placeholder="링크를 입력해주세요"
-        placeholderTextColor={ColorPalette.gray_5}
-      />
-    </InputView>
-  )
-}
+    const onKeyPress = useCallback(
+      // (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+      () => {
+        // const { key } = e.nativeEvent
+        //
+      },
+      []
+    )
+
+    useEffect(() => {
+      setText(value || '')
+    }, [value])
+
+    const onChangeRealText = (newText: string) => {
+      setText(newText)
+      if (onChangeText) {
+        onChangeText(newText)
+      }
+    }
+
+    const onClosePress = () => {
+      onChangeRealText('')
+    }
+
+    return (
+      <InputView focused={focused} small={small} style={style}>
+        <InputTextInput
+          ref={ref}
+          onFocus={handleFocusOn}
+          onBlur={handleFocusOff}
+          editable={!disabled}
+          onKeyPress={onKeyPress}
+          selectTextOnFocus={!disabled}
+          value={text}
+          onChangeText={onChangeRealText}
+          onSubmitEditing={onEnterPress}
+          placeholder={placeholder}
+          placeholderTextColor={ColorPalette.gray_5}
+        />
+        {(text || '').length > 0 ? (
+          <SearchCloseTouchable hitSlop={closeInsets} onPress={onClosePress}>
+            <SearchCloseImage
+              source={require('../../assets/images/search_close.png')}
+              resizeMode="contain"
+            />
+          </SearchCloseTouchable>
+        ) : (
+          search && (
+            <SearchIconTouchable>
+              <SearchIconImage
+                source={require('../../assets/images/icon_search.png')}
+                resizeMode="contain"
+              />
+            </SearchIconTouchable>
+          )
+        )}
+      </InputView>
+    )
+  }
+)
 
 export default Input

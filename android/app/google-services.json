@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "858891033183",
+    "project_id": "linkkle-inandout",
+    "storage_bucket": "linkkle-inandout.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858891033183:android:a1ec16fe2587cfbaa519ea",
+        "android_client_info": {
+          "package_name": "me.linkkle.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858891033183-u4e96f44gdr8mf1e03pcgeimadn0mi3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8ioEdh1UN4viO7AGgyH4EYASZE6rORUQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858891033183-u4e96f44gdr8mf1e03pcgeimadn0mi3a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

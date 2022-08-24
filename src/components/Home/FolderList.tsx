@@ -37,7 +37,7 @@ const FolderList = () => {
             <FolderItem folderId={folderId} />
           </TouchableOpacity>
         ))}
-        <FolderAdd />
+        {folderIds.length < 6 && <FolderAdd />}
       </FolderListView>
     </FolderListScrollView>
   )

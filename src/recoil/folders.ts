@@ -1,4 +1,5 @@
 import { atom, atomFamily, selector, selectorFamily } from 'recoil'
+import { ITag } from './tags'
 
 export interface IFolderBase {
   folderId: string
@@ -10,19 +11,31 @@ export interface IFolder extends IFolderBase {
   articleCount: number
 }
 
+export interface IOpenGraph {
+  linkTitle: string
+  linkDescription: string
+  linkImage: string
+}
+
+export interface IMemo {
+  registerDate: string
+  modifiedDate: string
+  id: string
+  content: string
+  folderTitle?: string
+  openGraph?: IOpenGraph
+}
+
 export interface IArticle {
   id: string
   remindId: string | null
   linkUrl: string
-  openGraph: {
-    linkTitle: string
-    linkDescription: string
-    linkImage: string
-  }
-  memos: any[]
+  openGraph: IOpenGraph
+  memos: IMemo[]
   registerDate: string
   modifiedDate: string
   bookmark: boolean
+  tags: ITag[]
 }
 
 export interface IFolderDetail extends IFolderBase {
@@ -96,7 +109,8 @@ export const folderArticleFamily = atomFamily<IArticle, string>({
     memos: [],
     registerDate: '',
     modifiedDate: '',
-    bookmark: false
+    bookmark: false,
+    tags: []
   })
 })
 

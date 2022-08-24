@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import useHeaderEvent from '../../hooks/useHeaderEvent'
+import Input from './Input'
 
 const HeaderBar = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
@@ -48,6 +49,11 @@ const IconButtonsView = styled.View`
   flex-direction: row;
 `
 
+const HeaderSearchView = styled.View`
+  flex: 1;
+  margin: 0;
+`
+
 const SaveButtonInsets = { top: 16, bottom: 16, left: 16, right: 16 }
 
 const IconButtonInsets = { top: 16, bottom: 16, left: 4, right: 4 }
@@ -59,13 +65,6 @@ export interface IIconButton {
 
 export interface IHeaderButtonClickHandler {
   (event: GestureResponderEvent): void
-}
-
-interface Props {
-  save?: boolean
-  onSavePress?: IHeaderButtonClickHandler
-  iconButtons?: IIconButton[]
-  hideBack?: boolean
 }
 
 interface IconButtonsWrapProps {
@@ -104,18 +103,35 @@ const styles = StyleSheet.create({
 
 const backButtonInsets = { top: 8, bottom: 8, left: 16, right: 16 }
 
+interface Props {
+  save?: boolean
+  onSavePress?: IHeaderButtonClickHandler
+  iconButtons?: IIconButton[]
+  hideBack?: boolean
+  search?: boolean
+  onSearchClose?: () => void
+}
+
 const Header = ({
   children,
   save,
   iconButtons,
   onSavePress,
-  hideBack
+  hideBack,
+  search,
+  onSearchClose
 }: PropsWithChildren<Props>) => {
   const navigation = useNavigation()
   const { handlers } = useHeaderEvent()
 
   const onBackPress = () => {
-    navigation.goBack()
+    if (search) {
+      if (onSearchClose) {
+        onSearchClose()
+      }
+    } else {
+      navigation.goBack()
+    }
   }
 
   const onIconPress = useCallback(
@@ -135,14 +151,25 @@ const Header = ({
           />
         </TouchableOpacity>
       )}
-      <HeaderText numberOfLines={1}>{children}</HeaderText>
-      {save && (
-        <SaveButton hitSlop={SaveButtonInsets} onPress={onSavePress}>
-          <SaveButtonText>저장</SaveButtonText>
-        </SaveButton>
-      )}
-      {iconButtons && (
-        <IconButtonsWrap onIconPress={onIconPress} iconButtons={iconButtons} />
+      {search ? (
+        <HeaderSearchView>
+          <Input search small style={{ paddingRight: 48 }} />
+        </HeaderSearchView>
+      ) : (
+        <>
+          <HeaderText numberOfLines={1}>{children}</HeaderText>
+          {save && (
+            <SaveButton hitSlop={SaveButtonInsets} onPress={onSavePress}>
+              <SaveButtonText>저장</SaveButtonText>
+            </SaveButton>
+          )}
+          {iconButtons && (
+            <IconButtonsWrap
+              onIconPress={onIconPress}
+              iconButtons={iconButtons}
+            />
+          )}
+        </>
       )}
     </HeaderBar>
   )

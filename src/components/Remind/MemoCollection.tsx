@@ -114,6 +114,7 @@ const BlankBtnText = styled.Text`
   color:#ffffff;
 `
 
+
 interface MemoList extends Array<IMemo> {}
 
 interface Props {
@@ -122,7 +123,8 @@ interface Props {
 }
 
 const MemoCollection = ({ onPress, memos }: Props) => {
-  console.log(memos)
+
+
   return (
     <MemoCollectionView>
       <TopText>최근 작성한 메모</TopText>
@@ -130,6 +132,7 @@ const MemoCollection = ({ onPress, memos }: Props) => {
         <RightArrow source={require('../../assets/images/icon_more.png')} />
       </MemoBtn>
       <MemoView>
+
         {memos.length === 0 ? (
           <BlankMemoView>
             <BlankMemoText>
@@ -145,6 +148,7 @@ const MemoCollection = ({ onPress, memos }: Props) => {
             <MemoCard memo={memo} key={idx} main={false} />
           ))
         )}
+
       </MemoView>
     </MemoCollectionView>
   )

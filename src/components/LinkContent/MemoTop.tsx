@@ -1,23 +1,18 @@
 import React from 'react'
 import styled from '@emotion/native'
-import { ColorPalette, FontFamily } from '../../styles/variable'
+import { Typo } from '../../styles/variable'
+import { fontWithColor } from '../../styles/fonts'
+import { flexWithAlign } from '../../styles/flexbox'
 
 const MemoTopView = styled.View`
+  ${flexWithAlign('center', 'space-between', 'row')}
   width: 100%;
   margin-bottom: 24px;
-  flex-direction: row;
-  justify-content: space-between;
 `
 
 const MemoTitle = styled.Text`
-  font-family: ${FontFamily.Regular};
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 21px;
-  display: flex;
-  align-items: flex-end;
-  color: ${ColorPalette.gray_8};
+  ${fontWithColor('BlueGray_4')}
+  ${Typo.Heading3_600}
 `
 
 const MemoBtn = styled.TouchableOpacity``
@@ -25,6 +20,7 @@ const MemoBtn = styled.TouchableOpacity``
 const MemoIcon = styled.Image`
   width: 24px;
   height: 24px;
+  margin-left: 12px;
 `
 
 const MemoTop = () => {
@@ -32,7 +28,7 @@ const MemoTop = () => {
     <MemoTopView>
       <MemoTitle>메모</MemoTitle>
       <MemoBtn>
-        <MemoIcon source={require('../assets/images/icon_+.png')} />
+        <MemoIcon source={require('../../assets/images/plus.png')} />
       </MemoBtn>
     </MemoTopView>
   )

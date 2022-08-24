@@ -22,7 +22,7 @@ const FolderEmptyIcon = styled.Image`
 `
 
 const FolderEmptyText = styled.Text`
-  ${fontWithColorFamily('gray_6', 'Regular')}
+  ${fontWithColorFamily('BlueGray_4', 'Regular')}
   font-size: 18px;
   margin: 24px 0;
   text-align: center;
@@ -32,7 +32,7 @@ const FolderEmptyText = styled.Text`
 const FolderEmptyButton = styled.TouchableOpacity``
 
 const FolderEmptyButtonText = styled.Text`
-  ${backgroundWithColor('gray_5')}
+  ${backgroundWithColor('LinkkleDarkBlueGray')}
   ${fontWithColorFamily('gray_1', 'SemiBold')}
   font-size: 15px;
   border-radius: 4px;

@@ -45,7 +45,7 @@ const Tag = ({ tag }: Props) => {
         <TagComponent>
           <TagText>{tag}</TagText>
           <TagButton onPress={() => setDisplay(false)}>
-            <TagImage source={require('../assets/images/icon_x.png')} />
+            <TagImage source={require('../../assets/images/icon_x.png')} />
           </TagButton>
         </TagComponent>
       ) : null}

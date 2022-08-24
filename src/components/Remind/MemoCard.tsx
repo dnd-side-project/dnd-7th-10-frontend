@@ -119,7 +119,9 @@ interface Props {
   main: boolean
 }
 
+
 const MemoCard = ({ memo, main }: Props) => {
+
   const { content, modifiedDate, folderTitle, openGraph } = memo
   const date = modifiedDate.split('T')[0]
   const { linkImage, linkTitle } = openGraph
@@ -138,6 +140,7 @@ const MemoCard = ({ memo, main }: Props) => {
         <UrlFolder main>{folderTitle}</UrlFolder>
         <UrlTitle>{linkTitle}</UrlTitle>
       </UrlView>
+
     </MemoCardView>
   )
 }

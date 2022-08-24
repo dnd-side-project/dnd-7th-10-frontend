@@ -18,8 +18,12 @@ const ToastView = styled.View<Props>`
   flex-direction: row;
   height: 38px;
   border-radius: 4px;
-  padding: 0 24px;
+  padding: 0 16px;
   max-width: ${props => (props.short ? '66%' : '100%')};
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: ${props => props.offset + 'px'};
 `
 
 const ToastImage = styled.Image`
@@ -36,23 +40,26 @@ const ToastText = styled.Text`
   line-height: 38px;
 `
 
-type VariantType = 'red' | 'blue'
+export type VariantType = 'red' | 'blue'
 
 interface Props {
   warn?: boolean
   check?: boolean
   short?: boolean
   variant: VariantType
+  offset: number
 }
 
 const Toast = ({
   children,
   variant,
   warn,
-  check
+  check,
+  short,
+  offset
 }: PropsWithChildren<Props>) => {
   return (
-    <ToastView variant={variant}>
+    <ToastView variant={variant} offset={offset} short={short}>
       {warn && (
         <ToastImage source={require('../../assets/images/warning.png')} />
       )}

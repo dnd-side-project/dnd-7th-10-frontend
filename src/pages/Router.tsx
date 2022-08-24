@@ -11,6 +11,8 @@ import MemoMain from './MemoMain'
 import MemoPage from './MemoPage'
 import Main from './Main'
 import { IMemo } from '../components/Remind/MemoCard'
+import LinkContents from './LinkContents'
+
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -26,8 +28,14 @@ export interface RouterParamList extends ParamListBase {
   FolderContent: {
     folderId: string
   }
+
   MemoPage: {
     memo: IMemo
+    }
+
+  LinkContents: {
+    articleId: string
+
   }
 }
 
@@ -45,6 +53,8 @@ const Router = () => {
         <Stack.Screen name="RemindMain" component={RemindMain} />
         <Stack.Screen name="MemoMain" component={MemoMain} />
         <Stack.Screen name="MemoPage" component={MemoPage} />
+        <Stack.Screen name="LinkContents" component={LinkContents} />
+
       </Stack.Navigator>
       <Modal />
     </>

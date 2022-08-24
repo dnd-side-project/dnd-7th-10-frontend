@@ -1,38 +1,101 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
-import TagBar from '../components/TagBar'
-import LinkContent from '../components/LinkContent'
-import MemoContent from '../components/MemoContent'
+import TagBar from '../components/LinkContent/TagBar'
+import LinkContent from '../components/LinkContent/LinkContent'
+import MemoContent from '../components/LinkContent/MemoContent'
 import { IIconButton } from '../components/Common/Header'
+import { backgroundWithColor } from '../styles/backgrounds'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RouterParamList } from './Router'
+import useArticleDetail from '../hooks/useArticleDetail'
+import useHeaderEvent from '../hooks/useHeaderEvent'
+import { Text } from 'react-native-svg'
+import BottomButton from '../components/Common/BottomButton'
+import Button from '../components/Common/Button'
+import { Linking } from 'react-native'
 
-const LinkView = styled.View``
-const link_1 = {
-  img: '../asset/image/link_desc_thumbnail.png',
-  content:
-    'Apple’s Human Interface Guidelines (HIG) is a comprehensive resource for designers and developers looking to create great experiences across Apple platforms. Now, it’s been fully redesigned and refreshed to meet your needs — from your first sketch to the final pixel.',
-  title: 'Developer Apple',
-  date: '2022.08.01',
-  url: ''
-}
+const LinkView = styled.View`
+  ${backgroundWithColor('background_1')}
+  flex: 1;
+`
 
-const tags = ['UX/UI', '브랜딩', '브랜딩브랜딩']
+const LinkContentScroll = styled.ScrollView`
+  flex: 1;
+`
 
-const LinkContents = () => {
+const LinkContentView = styled.View`
+  flex: 1;
+`
+
+const containerStyle = { flexGrow: 1 }
+
+const LinkContents = ({
+  route,
+  navigation
+}: NativeStackScreenProps<RouterParamList, 'LinkContents'>) => {
   const iconButtons: IIconButton[] = [
     {
       name: 'edit',
-      source: require('../assets/images/icon_edit.png'),
-      onPress: () => console.log('edit')
+      source: require('../assets/images/icon_edit.png')
     }
   ]
+
+  const { articleId } = route.params
+
+  const {
+    isLoading,
+    isError,
+    recoilValue: articleDetail,
+    refresh
+  } = useArticleDetail(articleId, true)
+
+  const onFocus = useCallback(() => {
+    refresh()
+  }, [refresh])
+
+  useEffect(() => {
+    navigation.addListener('focus', onFocus)
+    return () => {
+      navigation.removeListener('focus', onFocus)
+    }
+  }, [onFocus, navigation])
+
+  const onClick = useCallback(() => {}, [])
+
+  const { addEventListener, removeEventListener } = useHeaderEvent()
+
+  useEffect(() => {
+    addEventListener(onClick)
+    return () => {
+      removeEventListener(onClick)
+    }
+  }, [addEventListener, removeEventListener, onClick])
+
+  const onWebPress = () => {
+    Linking.openURL(articleDetail.linkUrl)
+  }
 
   return (
     <LinkView>
       <Header iconButtons={iconButtons}>링크 정보</Header>
-      <LinkContent link={link_1} />
-      <TagBar tags={tags} />
-      <MemoContent />
+      <LinkContentScroll contentContainerStyle={containerStyle}>
+        <LinkContentView>
+          {!isLoading && (
+            <>
+              <LinkContent article={articleDetail} />
+              <TagBar tags={articleDetail.tags} />
+              <MemoContent memos={articleDetail.memos} />
+            </>
+          )}
+          {isError && <Text>Error</Text>}
+        </LinkContentView>
+        {!isLoading && !isError && (
+          <BottomButton>
+            <Button onPress={onWebPress}>웹사이트로 이동하기</Button>
+          </BottomButton>
+        )}
+      </LinkContentScroll>
     </LinkView>
   )
 }

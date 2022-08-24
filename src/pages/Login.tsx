@@ -60,7 +60,12 @@ const Login = () => {
   const navigation = useNavigation<RouterNavigationProps>()
   const showToast = useToast()
 
-  const { auth, login, setLoggedin } = useAuth()
+  const { auth, login, setLoggedin, loginFromKeychain } = useAuth()
+
+  useEffect(() => {
+    loginFromKeychain()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     // if (!auth.user) {

@@ -78,7 +78,7 @@ const FolderContent = ({
   return (
     <FolderDescView>
       <Header iconButtons={iconButtons}>{folderTitle}</Header>
-      {!isLoading && <FolderCardList folderId={folderId} />}
+      {!isLoading && <FolderCardList folderId={folderId} refresh={refresh} />}
     </FolderDescView>
   )
 }

@@ -96,14 +96,8 @@ const RemindMain = () => {
     }
   }, [route.name])
 
-  const onNoticePress = () => {
-    navigation.navigate('Notice')
-  }
-
   const onMemoPress = () => {
-
     navigation.navigate('MemoMain')
-
   }
 
   return (
@@ -111,9 +105,8 @@ const RemindMain = () => {
       <ScrollView scrollEnabled={true}>
         <Header iconButtons={iconButtons}>리마인딩</Header>
         <RemindingList list={list ? list : []} />
-        <Notice onPress={onNoticePress} />
+        <Notice />
         <MemoCollection onPress={onMemoPress} memos={memos ? memos : []} />
-
       </ScrollView>
     </RemindingView>
   )

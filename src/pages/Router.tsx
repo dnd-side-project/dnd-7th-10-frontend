@@ -24,7 +24,9 @@ export interface RouterParamList extends ParamListBase {
   FolderContent: {
     folderId: string
   }
-  LinkContents: undefined
+  LinkContents: {
+    articleId: string
+  }
 }
 
 export type RouterNavigationProps = NavigationProp<RouterParamList>

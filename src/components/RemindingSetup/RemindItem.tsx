@@ -50,8 +50,8 @@ const RemindItem = ({ source, articleName, folderName }: Props) => {
         source={source || { uri: 'https://via.placeholder.com/40x40' }}
       />
       <RemindContent>
-        <RemindFolderText>{folderName}</RemindFolderText>
-        <RemindArticleText>{articleName}</RemindArticleText>
+        <RemindFolderText numberOfLines={1}>{folderName}</RemindFolderText>
+        <RemindArticleText numberOfLines={1}>{articleName}</RemindArticleText>
       </RemindContent>
       <SVG.ChevronRight
         width={16}

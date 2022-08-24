@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/native'
-import TimePicker from '../Common/TimePicker'
+import TimePicker, { ITime } from '../Common/TimePicker'
 import DayPicker from '../Common/DayPicker'
 import { backgroundWithColor } from '../../styles/backgrounds'
 
@@ -15,27 +15,44 @@ const SetupPickerDivide = styled.View`
 `
 
 interface Props {
-  onChange?: (value: boolean) => void
+  onScrollChange?: (value: boolean) => void
+  onCronChange?: (value: string) => void
 }
 
-const SetupPicker = ({ onChange }: Props) => {
+const SetupPicker = ({ onScrollChange, onCronChange }: Props) => {
+  const [time, setTime] = useState<ITime>([1, 0])
+  const [days, setDays] = useState<string>('')
+
   const onStart = () => {
-    if (onChange) {
-      onChange(true)
+    if (onScrollChange) {
+      onScrollChange(true)
     }
   }
 
   const onEnd = () => {
-    if (onChange) {
-      onChange(false)
+    if (onScrollChange) {
+      onScrollChange(false)
     }
   }
 
+  const cron = useMemo(() => {
+    const [hour, minute] = time
+    const expression = `* ${minute} ${hour} ? * ${days || '*'} *`
+    console.log(expression)
+    return expression
+  }, [time, days])
+
+  useEffect(() => {
+    if (onCronChange) {
+      onCronChange(cron)
+    }
+  }, [cron, onCronChange])
+
   return (
     <SetupPickerView onTouchStart={onStart} onTouchEnd={onEnd}>
-      <TimePicker />
+      <TimePicker onChange={setTime} />
       <SetupPickerDivide />
-      <DayPicker />
+      <DayPicker onChange={setDays} />
     </SetupPickerView>
   )
 }

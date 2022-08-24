@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/native'
 import { flexWithAlign } from '../../styles/flexbox'
 import { fontWithColor } from '../../styles/fonts'
@@ -31,16 +31,53 @@ const DayText = styled.Text<DayProps>`
   line-height: 40px;
 `
 
+export type IDay = [
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean,
+  boolean
+]
+
 const DAYS = ['일', '월', '화', '수', '목', '금', '토']
 
-const DayPicker = () => {
-  const onPress = () => {}
+interface Props {
+  onChange: (cron: string) => void
+}
+
+const DayPicker = ({ onChange }: Props) => {
+  const [days, setDays] = useState<IDay>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ])
+
+  const onPress = (index: number) => {
+    setDays(oldDays => {
+      const newDays: IDay = [...oldDays]
+      newDays[index] = !newDays[index]
+      const cron = newDays
+        .map((day, dayIndex) => (day ? dayIndex + 1 + '' : ''))
+        .filter(day => day.length > 0)
+        .join(',')
+      if (onChange) {
+        onChange(cron)
+      }
+      return newDays
+    })
+  }
 
   return (
     <DayPickerView>
-      {DAYS.map(day => (
-        <Pressable key={day} onPress={() => onPress()}>
-          <DayItem>
+      {DAYS.map((day, index) => (
+        <Pressable key={day} onPress={() => onPress(index)}>
+          <DayItem selected={days[index]}>
             <DayText>{day}</DayText>
           </DayItem>
         </Pressable>

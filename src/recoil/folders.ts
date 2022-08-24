@@ -123,3 +123,8 @@ export const foldersDetailFamily = atomFamily<IFolderDetail, string>({
     articles: []
   })
 })
+
+export const articlesFamily = atomFamily<IArticle | null, string>({
+  key: 'articlesFamily',
+  default: () => null
+})

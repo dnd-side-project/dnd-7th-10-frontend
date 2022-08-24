@@ -111,7 +111,13 @@ const LinkAdd = ({
         }
       })
       .catch(error => {
-        console.error(error)
+        console.error(JSON.stringify(error, null, 2))
+        if (error.response) {
+          console.error(JSON.stringify(error.response, null, 2))
+        }
+        showToast(
+          createWarnToast('링크 생성에 실패하였습니다.', ToastOffset.BottomTab)
+        )
       })
   }
 

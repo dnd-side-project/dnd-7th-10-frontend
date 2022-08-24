@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import { flexWithAlign } from '../../styles/flexbox'
 import GatherFolderItem from './GatherFolderItem'
+import useFolderList from '../Home/FolderList.hook'
+import { TouchableOpacity } from 'react-native'
+import { ISelectedFromFolder } from '../../pages/RemindingGather'
 
 const GatherFolderListView = styled.ScrollView`
   ${backgroundWithColor('White')}
@@ -17,16 +20,38 @@ const GatherFolderView = styled.View`
   padding: 28px 16px;
 `
 
-const GatherFolderList = () => {
+interface Props {
+  onChange?: (folderId: string) => void
+  selectedArticles: ISelectedFromFolder
+}
+
+const GatherFolderList = ({ onChange, selectedArticles }: Props) => {
+  const [selectIndex, setSelectIndex] = useState<number>(0)
+  const [folderIds] = useFolderList()
+
+  const onFolderPress = (index: number) => {
+    setSelectIndex(index)
+  }
+
+  useEffect(() => {
+    const folderId = folderIds[selectIndex]
+    if (onChange) {
+      onChange(folderId)
+    }
+  }, [selectIndex, onChange, folderIds])
+
   return (
     <GatherFolderListView horizontal>
       <GatherFolderView>
-        <GatherFolderItem folderName="기본 폴더" selected />
-        <GatherFolderItem folderName="기본 폴더" />
-        <GatherFolderItem folderName="기본 폴더" />
-        <GatherFolderItem folderName="기본 폴더" />
-        <GatherFolderItem folderName="기본 폴더" />
-        <GatherFolderItem folderName="기본 폴더" />
+        {folderIds.map((folderId, index) => (
+          <TouchableOpacity key={folderId} onPress={() => onFolderPress(index)}>
+            <GatherFolderItem
+              folderId={folderId}
+              selected={selectIndex === index}
+              selectCount={(selectedArticles[folderId] || []).length}
+            />
+          </TouchableOpacity>
+        ))}
       </GatherFolderView>
     </GatherFolderListView>
   )

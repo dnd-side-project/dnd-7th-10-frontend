@@ -9,8 +9,8 @@ const RemindingListView = styled.View`
   height: 376px;
   flex: none;
   order: 0;
-  flex-grow: 0
-  padding:24px;
+  flex-grow: 0;
+  padding: 24px;
   background-color: #ffffff;
   margin-bottom: 4px;
 `
@@ -47,22 +47,22 @@ const LinkBtn = styled.TouchableOpacity`
 `
 
 const BlankText = styled.Text`
-position: absolute;
-width: 226px;
-height: 44px;
-left: 94px;
-top: 160px;
-text-align: center;
-letter-spacing: -0.6px;
-color: ${ColorPalette.BlueGray_4}
-font-family: ${Typo.Body1_600}
-font-weight: 400;
-font-size: 18px;
-line-height: 22px;
+  position: absolute;
+  width: 226px;
+  height: 44px;
+  left: 94px;
+  top: 160px;
+  text-align: center;
+  letter-spacing: -0.6px;
+  color: ${ColorPalette.BlueGray_4};
+  font-family: ${Typo.Body1_600};
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
 `
 const BtnText = styled.Text`
-  color : #FFFFFF;
-  font-family: ${Typo.Body3_600}
+  color: #ffffff;
+  font-family: ${Typo.Body3_600};
   font-style: normal;
   font-size: 15px;
   line-height: 18px;

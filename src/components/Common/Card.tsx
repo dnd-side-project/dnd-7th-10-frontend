@@ -6,6 +6,7 @@ import { ColorPalette, Typo } from '../../styles/variable'
 import { fontWithColor } from '../../styles/fonts'
 import { flexWithAlign } from '../../styles/flexbox'
 import SVG from '../../assets/images/svg'
+import { useMemo } from 'react'
 
 export const defaultSource = { uri: 'https://via.placeholder.com/1200x630' }
 
@@ -94,7 +95,7 @@ const MemoTouchable = styled.TouchableOpacity`
 const iconButtonInsets = { top: 8, bottom: 8, left: 8, right: 8 }
 
 interface Props {
-  source?: ImageSourcePropType
+  source?: ImageSourcePropType | string
   title: string
   description?: string
   tags?: string[]
@@ -102,6 +103,7 @@ interface Props {
   bookmark?: boolean
   bookmarked?: boolean
   memo?: boolean
+  onBookmarkPress?: () => void
 }
 
 const Card = ({
@@ -112,15 +114,25 @@ const Card = ({
   favicon,
   bookmark,
   bookmarked,
-  memo
+  memo,
+  onBookmarkPress
 }: Props) => {
+  const image = useMemo(() => {
+    if (typeof source === 'string') {
+      return {
+        uri: source || defaultSource.uri
+      }
+    }
+    return source || defaultSource
+  }, [])
+
   return (
     <CardView style={shadow}>
-      <CardCoverImage source={source || defaultSource} resizeMode="cover" />
+      <CardCoverImage source={image} resizeMode="cover" />
       <CardCoverOverlay />
       {favicon && <CardFavicon source={favicon} resizeMode="contain" />}
       {(bookmark || bookmarked) && (
-        <BookmarkTouchable hitSlop={iconButtonInsets}>
+        <BookmarkTouchable hitSlop={iconButtonInsets} onPress={onBookmarkPress}>
           {bookmarked ? (
             <SVG.BookmarkFilled stroke={ColorPalette.White} />
           ) : (

@@ -24,9 +24,10 @@ const FolderCardTouchable = styled.TouchableOpacity`
 
 interface Props {
   folderId: string
+  refresh?: () => void
 }
 
-const FolderCardList = ({ folderId }: Props) => {
+const FolderCardList = ({ folderId, refresh }: Props) => {
   const folderDetail = useRecoilValue(foldersDetailFamily(folderId))
   const navigation = useNavigation<RouterNavigationProps>()
 
@@ -56,7 +57,7 @@ const FolderCardList = ({ folderId }: Props) => {
                 activeOpacity={0.9}
                 onPress={() => onCardPress(article.id)}
               >
-                <FolderCard article={article} />
+                <FolderCard refresh={refresh} article={article} />
               </FolderCardTouchable>
             ))}
           </FolderCardView>

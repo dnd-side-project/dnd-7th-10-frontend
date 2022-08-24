@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/native'
 import { flexWithAlign } from '../../styles/flexbox'
 import Select from './Select'
@@ -24,17 +24,40 @@ function get2DigitSequence(count: number, fill: number) {
 }
 
 const AMPM = ['AM', 'PM']
-const HOURS = get2DigitSequence(24, 1)
+const HOURS = get2DigitSequence(12, 1)
 const MINUTES = get2DigitSequence(60, 0)
 
-const TimePicker = () => {
+export type ITime = [number, number]
+
+interface Props {
+  onChange?: (time: ITime) => void
+}
+
+const TimePicker = ({ onChange }: Props) => {
+  const [ampm, setAmpm] = useState<string>('AM')
+  const [hour, setHour] = useState<string>('01')
+  const [minute, setMinute] = useState<string>('00')
+
+  const time = useMemo(() => {
+    const remindHour = (parseInt(hour, 10) + (ampm === 'PM' ? 12 : 0)) % 24
+    const remindMinute = parseInt(minute, 10)
+    const newtime: ITime = [remindHour, remindMinute]
+    return newtime
+  }, [hour, minute, ampm])
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(time)
+    }
+  }, [time, onChange])
+
   return (
     <TimePickerView>
-      <Select options={AMPM} />
+      <Select options={AMPM} onChange={setAmpm} />
       <TimeDivideText />
-      <Select options={HOURS} />
+      <Select options={HOURS} onChange={setHour} />
       <TimeDivideText>:</TimeDivideText>
-      <Select options={MINUTES} />
+      <Select options={MINUTES} onChange={setMinute} />
     </TimePickerView>
   )
 }

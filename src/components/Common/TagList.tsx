@@ -4,10 +4,10 @@ import Tag from './Tag'
 import { ITag } from '../../recoil/tags'
 import { TouchableOpacity } from 'react-native'
 
-const TagListView = styled.View`
+const TagListView = styled.View<{ noMargin?: boolean }>`
   flex-wrap: wrap;
   flex-direction: row;
-  margin-right: -10px;
+  margin-right: ${props => (props.noMargin ? '0px' : '-10px')};
 `
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
   selectedIds?: string[]
   onTagPress?: (tagId: string, selected: boolean) => void
   onRemovePress?: (tagId: string) => void
+  noMargin?: boolean
 }
 
 const TagList = ({
@@ -23,7 +24,8 @@ const TagList = ({
   remove,
   selectedIds,
   onTagPress,
-  onRemovePress
+  onRemovePress,
+  noMargin
 }: Props) => {
   function onTagPressCallback(tagId: string, selected: boolean) {
     if (onTagPress) {
@@ -38,15 +40,17 @@ const TagList = ({
   }
 
   return (
-    <TagListView>
+    <TagListView noMargin={noMargin}>
       {tags.map(tag => {
         const selected = (selectedIds || []).includes(tag.tagId)
         return (
           <TouchableOpacity
             key={tag.tagId}
             onPress={() => onTagPressCallback(tag.tagId, selected)}
+            activeOpacity={0.9}
           >
             <Tag
+              noMargin={noMargin}
               remove={remove}
               text={tag.tagName}
               selected={selected}

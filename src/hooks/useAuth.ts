@@ -1,6 +1,7 @@
 import jwtDecode from 'jwt-decode'
 import { useRecoilState } from 'recoil'
 import api from '../lib/api'
+import keychain from '../lib/keychain'
 import { authAtom } from '../recoil/auth'
 import useToast, { createWarnToast } from './useToast'
 
@@ -62,11 +63,32 @@ export default function useAuth() {
         refreshToken
       }
     })
+
+    keychain.setToken(accessToken, refreshToken).then(result => {
+      console.log('save', result)
+    })
+  }
+
+  function loginFromKeychain() {
+    console.log('try to login with keychain')
+    keychain
+      .getCredentials()
+      .then(credentials => {
+        if (credentials) {
+          const { username: accessToken, password: refreshToken } = credentials
+          setLoggedin(accessToken, refreshToken)
+          console.log('loggined in with keychain ', accessToken, refreshToken)
+        }
+      })
+      .catch(() => {
+        console.log('login failed with keychain')
+      })
   }
 
   return {
     auth,
     login,
-    setLoggedin
+    setLoggedin,
+    loginFromKeychain
   }
 }

@@ -24,6 +24,7 @@ function getTagColor(props: TagViewProps) {
 interface TagViewProps {
   selected?: boolean
   fixed?: boolean
+  noMargin?: boolean
 }
 
 const TagView = styled.View<TagViewProps>`
@@ -32,7 +33,7 @@ const TagView = styled.View<TagViewProps>`
   height: 35px;
   border-radius: 30px;
   padding: 0 16px;
-  margin: 0 8px 12px 0;
+  margin: ${props => (props.noMargin ? '0 8px 0 0' : '0 8px 12px 0')};
 `
 
 const TagText = styled.Text<TagViewProps>`
@@ -55,11 +56,19 @@ interface Props extends TagViewProps {
   text: string
   remove?: boolean
   onRemovePress?: () => void
+  noMargin?: boolean
 }
 
 const tagRemoveButtonInsets = { top: 10, bottom: 10, left: 10, right: 10 }
 
-const Tag = ({ text, remove, selected, fixed, onRemovePress }: Props) => {
+const Tag = ({
+  text,
+  remove,
+  selected,
+  fixed,
+  onRemovePress,
+  noMargin
+}: Props) => {
   const getTagIcon = useCallback(() => {
     if (selected || fixed) {
       return require('../../assets/images/tag_remove_white.png')
@@ -68,7 +77,7 @@ const Tag = ({ text, remove, selected, fixed, onRemovePress }: Props) => {
   }, [selected, fixed])
 
   return (
-    <TagView selected={selected} fixed={fixed}>
+    <TagView selected={selected} fixed={fixed} noMargin={noMargin}>
       <TagText selected={selected} fixed={fixed}>
         {text}
       </TagText>

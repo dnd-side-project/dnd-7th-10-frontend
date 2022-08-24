@@ -8,6 +8,7 @@ import LinkAdd from './LinkAdd'
 import Login from './Login'
 import RemindMain from './RemindMain'
 import Main from './Main'
+import LinkContents from './LinkContents'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -23,6 +24,9 @@ export interface RouterParamList extends ParamListBase {
   FolderContent: {
     folderId: string
   }
+  LinkContents: {
+    articleId: string
+  }
 }
 
 export type RouterNavigationProps = NavigationProp<RouterParamList>
@@ -37,6 +41,7 @@ const Router = () => {
         <Stack.Screen name="LinkAdd" component={LinkAdd} />
         <Stack.Screen name="FolderContent" component={FolderContent} />
         <Stack.Screen name="RemindMain" component={RemindMain} />
+        <Stack.Screen name="LinkContents" component={LinkContents} />
       </Stack.Navigator>
       <Modal />
     </>

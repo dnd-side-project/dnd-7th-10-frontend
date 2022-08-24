@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode'
+import { resetGenericPassword } from 'react-native-keychain'
 import { useRecoilState } from 'recoil'
 import api from '../lib/api'
 import keychain from '../lib/keychain'
@@ -76,8 +77,25 @@ export default function useAuth() {
       .then(credentials => {
         if (credentials) {
           const { username: accessToken, password: refreshToken } = credentials
-          setLoggedin(accessToken, refreshToken)
-          console.log('loggined in with keychain ', accessToken, refreshToken)
+          api
+            .get('/folders')
+            .then(response => {
+              if (response.status === 200) {
+                setLoggedin(accessToken, refreshToken)
+                console.log(
+                  'loggined in with keychain ',
+                  accessToken,
+                  refreshToken
+                )
+              } else {
+                // failed
+                resetGenericPassword()
+              }
+            })
+            .catch(() => {
+              // failed
+              resetGenericPassword()
+            })
         }
       })
       .catch(() => {

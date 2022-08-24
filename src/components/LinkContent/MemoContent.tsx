@@ -2,8 +2,10 @@ import React from 'react'
 import styled from '@emotion/native'
 import MemoTop from './MemoTop'
 import Memo from './Memo'
+import { backgroundWithColor } from '../../styles/backgrounds'
 
 const MemoContentView = styled.View`
+  ${backgroundWithColor('White')}
   padding: 24px;
 `
 

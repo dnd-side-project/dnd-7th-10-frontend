@@ -1,32 +1,29 @@
 import React from 'react'
 import styled from '@emotion/native'
-import { ColorPalette, FontFamily } from '../../styles/variable'
+import { ColorPalette, Typo } from '../../styles/variable'
+import { backgroundWithColor } from '../../styles/backgrounds'
+import { flexWithAlign } from '../../styles/flexbox'
+import { fontWithColor } from '../../styles/fonts'
 
 const MemoContent = styled.View`
-  padding: 12px;
-  height: 182px;
-  background-color: ${ColorPalette.background_1};
-  border-radius: 5px;
-  border: 1px solid ${ColorPalette.gray_4};
+  ${backgroundWithColor('White')}
+  padding: 16px;
+  border: 2px solid ${ColorPalette.LinkkleLightBlueGray};
+  border-radius: 4px;
+  margin-bottom: 8px;
 `
 
 const TopView = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
+  ${flexWithAlign('flex-start', 'space-between', 'row')}
+  height: 24px;
   margin-bottom: 16px;
 `
 const MemoDate = styled.Text`
   color: ${ColorPalette.gray_4};
 `
 const MemoText = styled.Text`
-  font-family: ${FontFamily.Regular};
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
-  display: flex;
-  align-items: center;
-  color: ${ColorPalette.gray_6};
+  ${fontWithColor('BlueGray_5')}
+  ${Typo.Body2_600}
 `
 
 const MemoImage = styled.Image`

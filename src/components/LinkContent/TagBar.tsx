@@ -1,43 +1,70 @@
 import React from 'react'
 import styled from '@emotion/native'
-import Tag from './Tag'
+import TagList from '../Common/TagList'
+import { ITag } from '../../recoil/tags'
+import { backgroundWithColor } from '../../styles/backgrounds'
+import { flexWithAlign } from '../../styles/flexbox'
+import { fontWithColor } from '../../styles/fonts'
+import { Typo } from '../../styles/variable'
 
 const TagsView = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  border-width: 2px 0px 2px 0px;
-  border-color: gray;
-  width: 414px;
-  height: 57px;
-  padding: 11px 24px;
-  margin: 10px 0px;
-  position: relative;
+  ${backgroundWithColor('White')}
+  ${flexWithAlign('center', 'flex-start', 'row')}
+  height: 64px;
+  padding: 0 24px;
+  margin: 4px 0px;
 `
 
-const TagImage = styled.Image`
+const TagAddImage = styled.Image`
   width: 24px;
   height: 24px;
 `
 
 const TagAddButton = styled.TouchableOpacity`
-  position: absolute;
-  right: 36px;
-  top: 17px;
+  margin-left: 12px;
+`
+
+const TagListScroll = styled.ScrollView`
+  flex: 1;
+`
+
+const TagListView = styled.View`
+  flex: 1;
+`
+
+const TagEmptyView = styled.View`
+  ${backgroundWithColor('background_1')}
+  border-radius: 3px;
+  padding: 0 16px;
+  height: 34px;
+  justify-content: center;
+`
+
+const TagEmptyText = styled.Text`
+  ${fontWithColor('BlueGray_4')}
+  ${Typo.Detail2_400}
 `
 
 interface Props {
-  tags: string[]
+  tags: ITag[]
 }
 
 const TagBar = ({ tags }: Props) => {
   return (
     <TagsView>
-      {tags.map(el => (
-        <Tag tag={el} key={el} />
-      ))}
+      <TagListScroll horizontal nestedScrollEnabled>
+        {tags && tags.length > 0 ? (
+          <TagListView>
+            <TagList noMargin tags={tags} />
+          </TagListView>
+        ) : (
+          <TagEmptyView>
+            <TagEmptyText>설정된 태그가 없어요!</TagEmptyText>
+          </TagEmptyView>
+        )}
+      </TagListScroll>
       <TagAddButton>
-        <TagImage source={require('../../assets/images/icon_+.png')} />
+        <TagAddImage source={require('../../assets/images/plus.png')} />
       </TagAddButton>
     </TagsView>
   )

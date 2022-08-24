@@ -1,32 +1,35 @@
 import React from 'react'
 import styled from '@emotion/native'
-import { Text, Image } from 'react-native'
-import { ColorPalette } from '../../styles/variable'
-import { FontFamily } from '../../styles/variable'
+import { ColorPalette, Typo } from '../../styles/variable'
+import { IArticle } from '../../recoil/folders'
+import { fontWithColor } from '../../styles/fonts'
+import SVG from '../../assets/images/svg'
+import { backgroundWithColor } from '../../styles/backgrounds'
 
-const LinkView = styled.View``
+const LinkView = styled.View`
+  ${backgroundWithColor('White')}
+`
 
 const LinkImage = styled.Image`
-  width: 414px;
   height: 260px;
 `
 
 const LinkContentView = styled.View`
-  padding: 24px;
-  height: 240px;
+  padding: 24px 24px 32px;
   overflow: hidden;
 `
 
 const LinkTitle = styled.Text`
+  ${fontWithColor('BlueGray_5')}
+  ${Typo.Heading1_600}
   margin-bottom: 10px;
-  font-size: 20px;
-  color: ${ColorPalette.gray_8};
-  font-family: ${FontFamily.Regular};
-  font-weight: 600;
 `
 
 const LinkText = styled.Text`
+  ${fontWithColor('BlueGray_5')}
+  ${Typo.Body2_600}
   line-height: 20px;
+  margin-bottom: 46px;
 `
 
 const LinkBottomView = styled.View`
@@ -34,14 +37,16 @@ const LinkBottomView = styled.View`
   height: 30px;
   flex-direction: row;
   justify-content: space-between;
-  margin-left: 24px;
-  position: absolute;
-  bottom: 0;
 `
 
 const LinkButtonView = styled.View`
   display: flex;
   flex-direction: row;
+`
+
+const LinkDate = styled.Text`
+  ${fontWithColor('LinkkleBlueGray')}
+  ${Typo.Body3_600}
 `
 
 const LinkBookmark = styled.TouchableOpacity``
@@ -50,35 +55,32 @@ const LinkChain = styled.TouchableOpacity`
   margin-left: 24px;
 `
 
-interface ILink {
-  date: string
-  content: string
-  title: string
-  img: string
-}
-
 interface Props {
-  link: ILink
+  article: IArticle
 }
 
-const LinkContent = ({ link }: Props) => {
+const LinkContent = ({ article }: Props) => {
   return (
     <LinkView>
       <LinkImage
-        source={require('../../assets/images/link_desc_thumbnail.png')}
-        resizeMode="contain"
+        source={{
+          uri:
+            article.openGraph.linkImage ||
+            'https://via.placeholder.com/1200x630'
+        }}
+        resizeMode="cover"
       />
       <LinkContentView>
-        <LinkTitle>{link.title}</LinkTitle>
-        <LinkText>{link.content}</LinkText>
+        <LinkTitle>{article.openGraph.linkTitle}</LinkTitle>
+        <LinkText>{article.openGraph.linkDescription}</LinkText>
         <LinkBottomView>
-          <Text>{link.date}</Text>
+          <LinkDate>{article.registerDate}</LinkDate>
           <LinkButtonView>
             <LinkBookmark>
-              <Image source={require('../../assets/images/bookmark.png')} />
+              <SVG.Bookmark stroke={ColorPalette.LinkkleBlueGray} />
             </LinkBookmark>
             <LinkChain>
-              <Image source={require('../../assets/images/icon_link.png')} />
+              <SVG.Link stroke={ColorPalette.LinkkleBlueGray} />
             </LinkChain>
           </LinkButtonView>
         </LinkBottomView>

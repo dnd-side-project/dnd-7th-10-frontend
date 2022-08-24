@@ -41,13 +41,21 @@ const FolderCardList = ({ folderId }: Props) => {
     navigation.navigate('LinkAdd', { folderId })
   }
 
+  const onCardPress = (articleId: string) => {
+    navigation.navigate('LinkContents', { articleId })
+  }
+
   return (
     <>
       {articles.length > 0 ? (
         <FolderCardScrollView>
           <FolderCardView>
             {articles.map(article => (
-              <FolderCardTouchable key={article.id} activeOpacity={0.9}>
+              <FolderCardTouchable
+                key={article.id}
+                activeOpacity={0.9}
+                onPress={() => onCardPress(article.id)}
+              >
                 <FolderCard article={article} />
               </FolderCardTouchable>
             ))}

@@ -6,7 +6,6 @@ import Router from './src/pages/Router'
 import messaging from '@react-native-firebase/messaging'
 import { Alert, AppRegistry } from 'react-native'
 import ToastContainer from './src/components/Common/ToastContainer'
-import Browser from './src/pages/Browser'
 import { fcmTokenAtom } from './src/recoil/global'
 
 const SafeArea = styled.SafeAreaView`
@@ -43,7 +42,7 @@ const App = () => {
   return (
     <SafeArea>
       <NavigationContainer>
-        {true ? <Browser /> : <Router />}
+        <Router />
       </NavigationContainer>
       <ToastContainer />
     </SafeArea>

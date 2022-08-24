@@ -14,9 +14,9 @@ interface InputViewProps {
 const InputView = styled.View<InputViewProps>`
   ${backgroundWithColor('background_1')}
   border: 1px solid ${props =>
-    props.focused ? ColorPalette.gray_6 : ColorPalette.gray_3};
+    props.focused ? ColorPalette.LinkkleOrange : ColorPalette.gray_3};
   border-radius: 4px;
-  padding: ${props => (props.small ? '0 8px' : '0 20px')};
+  padding: ${props => (props.small ? '0 8px' : '0 12px')};
   line-height: ${props => (props.small ? '44px' : '56px')};
   height: ${props => (props.small ? '44px' : '56px')};
   justify-content: center;

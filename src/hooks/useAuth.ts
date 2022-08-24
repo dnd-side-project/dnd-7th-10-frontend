@@ -4,7 +4,7 @@ import api from '../lib/api'
 import { authAtom } from '../recoil/auth'
 import useToast, { createWarnToast } from './useToast'
 
-interface IAuthResponse {
+export interface IAuthResponse {
   header: string
   accessToken: string
   refreshToken: string
@@ -32,19 +32,7 @@ export default function useAuth() {
         .then(response => {
           if (response.status === 200) {
             const { accessToken, refreshToken } = response.data
-            const { username } = jwtDecode<IJwtStructure>(accessToken)
-
-            api.setToken!(accessToken)
-
-            setAuth({
-              user: {
-                username
-              },
-              authKey: {
-                accessToken,
-                refreshToken
-              }
-            })
+            setLoggedin(accessToken, refreshToken)
             resolve({
               success: true
             })
@@ -60,8 +48,25 @@ export default function useAuth() {
     })
   }
 
+  function setLoggedin(accessToken: string, refreshToken: string) {
+    const { username } = jwtDecode<IJwtStructure>(accessToken)
+
+    api.setToken!(accessToken)
+
+    setAuth({
+      user: {
+        username
+      },
+      authKey: {
+        accessToken,
+        refreshToken
+      }
+    })
+  }
+
   return {
     auth,
-    login
+    login,
+    setLoggedin
   }
 }

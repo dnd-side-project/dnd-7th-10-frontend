@@ -7,6 +7,7 @@ import { StackActions, useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
 import useAuth from '../hooks/useAuth'
 import useToast, { createToast } from '../hooks/useToast'
+import kakao from '../lib/kakao'
 
 const LoginBox = styled.View`
   ${backgroundWithColor('main_1')}
@@ -59,12 +60,17 @@ const Login = () => {
   const navigation = useNavigation<RouterNavigationProps>()
   const showToast = useToast()
 
-  const { auth, login } = useAuth()
+  const { auth, login, setLoggedin, loginFromKeychain } = useAuth()
 
   useEffect(() => {
-    if (!auth.user) {
-      login('user', '1234')
-    }
+    loginFromKeychain()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    // if (!auth.user) {
+    //   login('user', '1234')
+    // }
     if (auth.user) {
       showToast(createToast('logged in with ' + auth.user.username))
       navigation.dispatch(StackActions.replace('Main'))
@@ -78,12 +84,18 @@ const Login = () => {
         toValue: 1,
         duration: 200,
         useNativeDriver: true
-      })
-    }, 15000)
+      }).start()
+    }, 1500)
   }, [kakaoOpacity])
 
   const onKakaoPress = () => {
-    navigation.dispatch(StackActions.replace('Main'))
+    kakao.kakaoLogin().then(response => {
+      if (response) {
+        const { accessToken, refreshToken } = response
+        setLoggedin(accessToken, refreshToken)
+        navigation.dispatch(StackActions.replace('Main'))
+      }
+    })
   }
 
   return (

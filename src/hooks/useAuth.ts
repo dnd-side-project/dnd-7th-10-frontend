@@ -1,10 +1,11 @@
 import jwtDecode from 'jwt-decode'
 import { useRecoilState } from 'recoil'
 import api from '../lib/api'
+import keychain from '../lib/keychain'
 import { authAtom } from '../recoil/auth'
 import useToast, { createWarnToast } from './useToast'
 
-interface IAuthResponse {
+export interface IAuthResponse {
   header: string
   accessToken: string
   refreshToken: string
@@ -32,19 +33,7 @@ export default function useAuth() {
         .then(response => {
           if (response.status === 200) {
             const { accessToken, refreshToken } = response.data
-            const { username } = jwtDecode<IJwtStructure>(accessToken)
-
-            api.setToken!(accessToken)
-
-            setAuth({
-              user: {
-                username
-              },
-              authKey: {
-                accessToken,
-                refreshToken
-              }
-            })
+            setLoggedin(accessToken, refreshToken)
             resolve({
               success: true
             })
@@ -60,8 +49,46 @@ export default function useAuth() {
     })
   }
 
+  function setLoggedin(accessToken: string, refreshToken: string) {
+    const { username } = jwtDecode<IJwtStructure>(accessToken)
+
+    api.setToken!(accessToken)
+
+    setAuth({
+      user: {
+        username
+      },
+      authKey: {
+        accessToken,
+        refreshToken
+      }
+    })
+
+    keychain.setToken(accessToken, refreshToken).then(result => {
+      console.log('save', result)
+    })
+  }
+
+  function loginFromKeychain() {
+    console.log('try to login with keychain')
+    keychain
+      .getCredentials()
+      .then(credentials => {
+        if (credentials) {
+          const { username: accessToken, password: refreshToken } = credentials
+          setLoggedin(accessToken, refreshToken)
+          console.log('loggined in with keychain ', accessToken, refreshToken)
+        }
+      })
+      .catch(() => {
+        console.log('login failed with keychain')
+      })
+  }
+
   return {
     auth,
-    login
+    login,
+    setLoggedin,
+    loginFromKeychain
   }
 }

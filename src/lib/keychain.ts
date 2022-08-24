@@ -1,4 +1,8 @@
-import { getGenericPassword, setGenericPassword } from 'react-native-keychain'
+import {
+  getGenericPassword,
+  resetGenericPassword,
+  setGenericPassword
+} from 'react-native-keychain'
 
 const keychain = (() => {
   async function getCredentials() {
@@ -31,17 +35,25 @@ const keychain = (() => {
 
   async function setToken(accessToken: string, refreshToken: string) {
     try {
-      setGenericPassword(accessToken, refreshToken)
+      const result = await setGenericPassword(accessToken, refreshToken)
+      console.log(result)
+      return true
     } catch (e) {
       console.error(e)
     }
-    return null
+    return false
+  }
+
+  function resetToken() {
+    resetGenericPassword()
   }
 
   return {
     getAccessToken,
     getRefreshToken,
-    setToken
+    getCredentials,
+    setToken,
+    resetToken
   }
 })()
 

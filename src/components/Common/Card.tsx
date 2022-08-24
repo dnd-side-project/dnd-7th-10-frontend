@@ -23,6 +23,8 @@ export const CardCoverOverlay = styled.View`
   background: rgba(0, 0, 0, 0.2);
   height: 140px;
   position: absolute;
+  left: 0;
+  right: 0;
   top: 0;
 `
 

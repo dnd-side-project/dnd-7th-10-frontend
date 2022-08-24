@@ -57,6 +57,7 @@ interface Props {
   style?: StyleProp<ViewStyle>
   placeholder?: string
   search?: boolean
+  noReset?: boolean
 }
 
 const closeInsets = { top: 8, bottom: 8, left: 8, right: 8 }
@@ -71,7 +72,8 @@ const Input = forwardRef(
       onEnterPress,
       style,
       placeholder,
-      search
+      search,
+      noReset
     }: Props,
     ref: Ref<TextInput>
   ) => {
@@ -120,7 +122,7 @@ const Input = forwardRef(
           placeholder={placeholder}
           placeholderTextColor={ColorPalette.gray_5}
         />
-        {(text || '').length > 0 ? (
+        {!noReset && (text || '').length > 0 ? (
           <SearchCloseTouchable
             hitSlop={closeInsets}
             onPress={onClosePress}

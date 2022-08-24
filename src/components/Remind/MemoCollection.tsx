@@ -11,7 +11,7 @@ const MemoCollectionView = styled.View`
   flex: none;
   flex-grow: 0;
   align-items: center;
-  justify-contents: center;
+  justify-content: center;
   padding: 24px;
 `
 const TopText = styled.Text`
@@ -20,13 +20,13 @@ const TopText = styled.Text`
   top: 22px;
   width: 113px;
   height: 27px;
-  font-family:${Typo.Heading3_600}
+  font-family: ${Typo.Heading3_600};
   font-size: 18px;
   line-height: 27px;
   display: flex;
   align-items: flex-end;
   letter-spacing: -0.6px;
-  color:${ColorPalette.BlueGray_4}
+  color: ${ColorPalette.BlueGray_4};
 `
 
 const MemoView = styled.View`
@@ -69,21 +69,20 @@ const BlankMemoView = styled.View`
   margin-top: 80px;
 `
 const BlankMemoText = styled.Text`
-width: 234px;
-height: 54px;
-margin-bottom : 24px;
-font-family: ${Typo.Body1_600}
-font-weight: 400;
-font-size: 18px;
-line-height: 27px;
+  width: 234px;
+  height: 54px;
+  margin-bottom: 24px;
+  font-family: ${Typo.Body1_600};
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
 
-text-align: center;
-letter-spacing: -0.6px;
-color: ${ColorPalette.BlueGray_4}
+  text-align: center;
+  letter-spacing: -0.6px;
+  color: ${ColorPalette.BlueGray_4};
 
-flex: none;
-order: 1;
-flex-grow: 0;
+  flex: none;
+  flex-grow: 0;
 `
 const BlankMemoBtn = styled.TouchableOpacity`
   width: 128px;
@@ -94,7 +93,6 @@ const BlankMemoBtn = styled.TouchableOpacity`
   background: #26344a;
   border-radius: 4px;
   flex: none;
-  order: 2;
   flex-grow: 0;
 `
 const BlankBtnText = styled.Text`
@@ -102,7 +100,7 @@ const BlankBtnText = styled.Text`
   height: 18px;
   padding: 15px 38px;
 
-  font-family:${Typo.Button_600}
+  font-family: ${Typo.Button_600};
   font-size: 15px;
   line-height: 18px;
 
@@ -111,9 +109,8 @@ const BlankBtnText = styled.Text`
   text-align: center;
   letter-spacing: -0.6px;
 
-  color:#ffffff;
+  color: #ffffff;
 `
-
 
 interface MemoList extends Array<IMemo> {}
 
@@ -123,8 +120,6 @@ interface Props {
 }
 
 const MemoCollection = ({ onPress, memos }: Props) => {
-
-
   return (
     <MemoCollectionView>
       <TopText>최근 작성한 메모</TopText>
@@ -132,7 +127,6 @@ const MemoCollection = ({ onPress, memos }: Props) => {
         <RightArrow source={require('../../assets/images/icon_more.png')} />
       </MemoBtn>
       <MemoView>
-
         {memos.length === 0 ? (
           <BlankMemoView>
             <BlankMemoText>
@@ -148,7 +142,6 @@ const MemoCollection = ({ onPress, memos }: Props) => {
             <MemoCard memo={memo} key={idx} main={false} />
           ))
         )}
-
       </MemoView>
     </MemoCollectionView>
   )

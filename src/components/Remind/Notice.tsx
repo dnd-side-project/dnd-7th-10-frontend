@@ -2,6 +2,8 @@ import React from 'react'
 import styled from '@emotion/native'
 import AlarmCard from './AlarmCard'
 import { ColorPalette, Typo } from '../../styles/variable'
+import { useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from '../../pages/Router'
 
 const NoticeView = styled.View`
   background-color: #ffffff;
@@ -50,15 +52,18 @@ const AddIcon = styled.Image`
   width: 24px;
 `
 
-interface Props {
-  onPress: () => void
-}
-const Notice = ({ onPress }: Props) => {
+const Notice = () => {
+  const navigation = useNavigation<RouterNavigationProps>()
+
+  const onAddPress = () => {
+    navigation.navigate('RemindingSetup')
+  }
+
   return (
     <NoticeView>
       <TopView>
         <TopText>리마인딩 알림</TopText>
-        <AddIconBtn onPress={onPress}>
+        <AddIconBtn onPress={onAddPress}>
           <AddIcon
             source={require('../../assets/images/plus.png')}
             resizeMode="contain"

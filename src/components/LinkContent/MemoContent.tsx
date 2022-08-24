@@ -4,6 +4,7 @@ import MemoTop from './MemoTop'
 import Memo from './Memo'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import { IMemo } from '../../recoil/folders'
+import Empty from '../Common/Empty'
 
 const MemoContentView = styled.View`
   ${backgroundWithColor('White')}
@@ -13,6 +14,10 @@ const MemoContentView = styled.View`
 const MemoContainer = styled.View`
   flex-direction: column;
   justify-content: center;
+`
+
+const MemoEmpty = styled.View`
+  padding: 24px 0 32px;
 `
 
 interface Props {
@@ -30,7 +35,14 @@ const MemoContent = ({ memos }: Props) => {
           ))}
         </MemoContainer>
       ) : (
-        <></>
+        <MemoEmpty>
+          <Empty
+            icon
+            source={require('../../assets/images/memo.png')}
+            background={'White'}
+            button
+          />
+        </MemoEmpty>
       )}
     </MemoContentView>
   )

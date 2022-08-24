@@ -3,6 +3,7 @@ import styled from '@emotion/native'
 import MemoTop from './MemoTop'
 import Memo from './Memo'
 import { backgroundWithColor } from '../../styles/backgrounds'
+import { IMemo } from '../../recoil/folders'
 
 const MemoContentView = styled.View`
   ${backgroundWithColor('White')}
@@ -14,15 +15,23 @@ const MemoContainer = styled.View`
   justify-content: center;
 `
 
-const MemoContent = () => {
+interface Props {
+  memos?: IMemo[]
+}
+
+const MemoContent = ({ memos }: Props) => {
   return (
     <MemoContentView>
       <MemoTop />
-      <MemoContainer>
-        <Memo content=" Read the docs to discover what to do next:e" />
-        <Memo content=" Read the docs to discover what to do next:e" />
-        <Memo content=" Read the docs to discover what to do next:e" />
-      </MemoContainer>
+      {memos && memos.length > 0 ? (
+        <MemoContainer>
+          {memos.map(memo => (
+            <Memo key={memo.id} memo={memo} />
+          ))}
+        </MemoContainer>
+      ) : (
+        <></>
+      )}
     </MemoContentView>
   )
 }

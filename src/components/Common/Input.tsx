@@ -26,9 +26,9 @@ const InputTextInput = styled.TextInput`
   ${fontWithColorFamily('gray_7', 'Regular')}
   font-size: 16px;
 `
-const SearchCloseTouchable = styled.TouchableOpacity`
+const SearchCloseTouchable = styled.TouchableOpacity<{ small?: boolean }>`
   position: absolute;
-  top: 10px;
+  top: ${props => (props.small ? '10px' : '16px')};
   right: 16px;
 `
 
@@ -37,10 +37,10 @@ const SearchCloseImage = styled.Image`
   height: 24px;
 `
 
-const SearchIconTouchable = styled.Pressable`
+const SearchIconTouchable = styled.Pressable<{ small?: boolean }>`
   position: absolute;
   right: 12px;
-  top: 10px;
+  top: ${props => (props.small ? '10px' : '16px')};
 `
 
 const SearchIconImage = styled.Image`
@@ -121,7 +121,11 @@ const Input = forwardRef(
           placeholderTextColor={ColorPalette.gray_5}
         />
         {(text || '').length > 0 ? (
-          <SearchCloseTouchable hitSlop={closeInsets} onPress={onClosePress}>
+          <SearchCloseTouchable
+            hitSlop={closeInsets}
+            onPress={onClosePress}
+            small={small}
+          >
             <SearchCloseImage
               source={require('../../assets/images/search_close.png')}
               resizeMode="contain"
@@ -129,7 +133,7 @@ const Input = forwardRef(
           </SearchCloseTouchable>
         ) : (
           search && (
-            <SearchIconTouchable>
+            <SearchIconTouchable small={small}>
               <SearchIconImage
                 source={require('../../assets/images/icon_search.png')}
                 resizeMode="contain"

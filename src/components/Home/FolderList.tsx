@@ -37,9 +37,7 @@ const FolderList = () => {
 
   const checkClipboard = useCallback(async () => {
     const copied = await Clipboard.getString()
-    console.log('cop', copied, '')
     const url = isValidUrl(copied)
-    console.log('url', url)
     if (url) {
       setLast(url || '')
     }
@@ -47,11 +45,9 @@ const FolderList = () => {
       const defaultFolder = folders.find(
         ({ folderId }) => folderId === folderIds[0]
       )
-      console.log(defaultFolder?.folderTitle)
       if (defaultFolder) {
-        console.log(copied, '\n\n', last, '\n\n', copied !== last, url)
         setLast(url || '')
-        if (copied && copied !== last && url) {
+        if (copied && url !== last && url) {
           setQuickLink({
             folderId: folderIds[0],
             linkUrl: url
@@ -63,9 +59,7 @@ const FolderList = () => {
 
   const handleStateChnage = useCallback(async (state: AppStateStatus) => {
     if (state === 'active') {
-      console.log('check')
-      const clipboard = await Clipboard.getString()
-      console.log(clipboard)
+      await Clipboard.getString()
       checkClipboard()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

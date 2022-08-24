@@ -45,6 +45,13 @@ export interface RouterParamList extends ParamListBase {
         remindId: string
       }
     | undefined
+
+  Browser:
+    | {
+        url: string
+        readable?: boolean
+      }
+    | undefined
 }
 
 export type RouterNavigationProps = NavigationProp<RouterParamList>

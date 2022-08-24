@@ -27,6 +27,15 @@ const BrowserRefresh = styled.TouchableOpacity`
   right: 72px;
 `
 
+const BrowserProgress = styled.View<{ progress?: number }>`
+  ${backgroundWithColor('LinkkleOrange')}
+  position:absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: ${props => (props.progress || 0) + '%'};
+`
+
 const rightMargin = {
   marginRight: 16
 }
@@ -36,8 +45,11 @@ interface Props {
   onForwardPress?: () => void
   onBackwardPress?: () => void
   onRefreshPress?: () => void
+  progress?: number
   forward?: boolean
   backward?: boolean
+  loading?: boolean
+  url?: string
 }
 
 const browserButtonInsets = { left: 8, right: 8, top: 8, bottom: 8 }
@@ -46,13 +58,18 @@ function getAccentColor(available: boolean) {
   return available ? ColorPalette.BlueGray_3 : ColorPalette.BlueGray_1
 }
 
+const inputPadding = { paddingRight: 48 }
+
 const BrowserHeader = ({
   onExitPress,
   onForwardPress,
   onBackwardPress,
   onRefreshPress,
+  progress,
   forward,
-  backward
+  backward,
+  loading,
+  url
 }: Props) => {
   return (
     <BrowserHeaderView style={shadow}>
@@ -77,14 +94,15 @@ const BrowserHeader = ({
         />
       </TouchableOpacity>
       <BrowserUrlInput>
-        <Input small />
+        <Input small value={url} style={inputPadding} noReset />
       </BrowserUrlInput>
       <BrowserRefresh onPress={onRefreshPress} hitSlop={browserButtonInsets}>
         <SVG.Refresh stroke={ColorPalette.BlueGray_3} />
       </BrowserRefresh>
       <TouchableOpacity onPress={onExitPress} hitSlop={browserButtonInsets}>
-        <SVG.Exit stroke={ColorPalette.BlueGray_3} />
+        <SVG.Exit stroke={ColorPalette.BlueGray_3} width={18} />
       </TouchableOpacity>
+      {loading && <BrowserProgress progress={progress || 0} />}
     </BrowserHeaderView>
   )
 }

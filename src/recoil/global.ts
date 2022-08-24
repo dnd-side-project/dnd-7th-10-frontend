@@ -37,3 +37,18 @@ export const toastsAtom = atom<IToast[]>({
   key: 'toast',
   default: []
 })
+
+export interface IQuickLink {
+  folderId?: string
+  linkUrl?: string
+}
+
+export const quicklinkAtom = atom<IQuickLink>({
+  key: 'quicklink',
+  default: {}
+})
+
+export const quicklinkLastAtom = atom<string>({
+  key: 'quicklinkLast',
+  default: ''
+})

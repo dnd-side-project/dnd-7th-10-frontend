@@ -20,6 +20,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/types
 import { ITag } from '../recoil/tags'
 import useToast, { createWarnToast, ToastOffset } from '../hooks/useToast'
 import { TextInput } from 'react-native'
+import { useRecoilState } from 'recoil'
+import { quicklinkAtom } from '../recoil/global'
+import { isValidUrl } from '../lib/urlcheck'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -69,6 +72,8 @@ const LinkAdd = ({
   const [folderId, setFolderId] = useState<string>('')
   const [tagIds, setTagIds] = useState<string[]>([])
 
+  const [quickLink, setQuickLink] = useRecoilState(quicklinkAtom)
+
   const inputRef = useRef<TextInput>(null)
   const showToast = useToast()
 
@@ -79,6 +84,14 @@ const LinkAdd = ({
 
   useEffect(() => {
     fetchTagList()
+    const url = isValidUrl(quickLink.linkUrl || '')
+    if (quickLink.linkUrl && url) {
+      setLinkUrl(url)
+      setQuickLink({
+        folderId: undefined,
+        linkUrl: undefined
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

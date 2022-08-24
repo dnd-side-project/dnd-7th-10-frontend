@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/native'
 import { folderCoverColors } from '../Home/FolderItem'
 import { fontWithColor } from '../../styles/fonts'
 import { Typo } from '../../styles/variable'
-import { ImageSourcePropType } from 'react-native'
+import useFolderDetail from '../../hooks/useFolderDetail'
 
 const GatherFolderItemView = styled.View`
   width: 105px;
@@ -41,33 +41,51 @@ const GatherFolderAccentText = styled.Text`
 `
 
 interface Props {
-  source?: ImageSourcePropType
-  articleCount?: number
+  folderId: string
   selected?: boolean
-  selectedCount?: number
-  folderName: string
+  selectCount?: number
 }
 
-const GatherFolderItem = ({
-  source,
-  articleCount,
-  selected,
-  selectedCount,
-  folderName
-}: Props) => {
+const GatherFolderItem = ({ folderId, selected, selectCount }: Props) => {
+  const {
+    isLoading,
+    isError,
+    recoilValue: folder
+  } = useFolderDetail(folderId, true)
+
+  const articleCount = useMemo(() => {
+    if (!folder.articles) {
+      return -1
+    }
+    const bookmarked = (folder.articles || []).filter(
+      ({ bookmark }) => bookmark
+    )
+    return bookmarked.length
+  }, [folder])
+
+  if (isLoading || isError || articleCount === -1) {
+    return <></>
+  }
+  const folderImage =
+    (
+      folderCoverColors.find(
+        ({ name }) => name === (folder || {}).folderColor
+      ) || {}
+    ).source || folderCoverColors[0].source!
+
   return (
     <GatherFolderItemView>
-      <GatherFolderImage source={source || folderCoverColors[0].source!} />
+      <GatherFolderImage source={folderImage || folderCoverColors[0].source!} />
       {selected && (
         <GatherSelectedImage
           source={require('../../assets/images/folder_selected_star.png')}
         />
       )}
       <GatherFolderNameText selected={selected}>
-        {folderName}
+        {folder.folderTitle}
       </GatherFolderNameText>
       <GatherFolderCountText selected={selected}>
-        <GatherFolderAccentText>{selectedCount || 0}</GatherFolderAccentText>
+        <GatherFolderAccentText>{selectCount || 0}</GatherFolderAccentText>
         {' / '}
         {articleCount || 0}개
       </GatherFolderCountText>

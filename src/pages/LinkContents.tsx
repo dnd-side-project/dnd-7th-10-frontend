@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import TagBar from '../components/LinkContent/TagBar'
@@ -6,9 +6,14 @@ import LinkContent from '../components/LinkContent/LinkContent'
 import MemoContent from '../components/LinkContent/MemoContent'
 import { IIconButton } from '../components/Common/Header'
 import { backgroundWithColor } from '../styles/backgrounds'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RouterParamList } from './Router'
+import useArticleDetail from '../hooks/useArticleDetail'
+import useHeaderEvent from '../hooks/useHeaderEvent'
+import { Text } from 'react-native-svg'
 
 const LinkView = styled.View`
-  ${backgroundWithColor('White')}
+  ${backgroundWithColor('background_1')}
   flex: 1;
 `
 
@@ -20,20 +25,12 @@ const LinkContentView = styled.View`
   flex: 1;
 `
 
-const link_1 = {
-  img: '../asset/image/link_desc_thumbnail.png',
-  content:
-    'Apple’s Human Interface Guidelines (HIG) is a comprehensive resource for designers and developers looking to create great experiences across Apple platforms. Now, it’s been fully redesigned and refreshed to meet your needs — from your first sketch to the final pixel.',
-  title: 'Developer Apple',
-  date: '2022.08.01',
-  url: ''
-}
-
-const tags = ['UX/UI', '브랜딩', '브랜딩브랜딩']
-
 const containerStyle = { flexGrow: 1 }
 
-const LinkContents = () => {
+const LinkContents = ({
+  route,
+  navigation
+}: NativeStackScreenProps<RouterParamList, 'LinkContents'>) => {
   const iconButtons: IIconButton[] = [
     {
       name: 'edit',
@@ -41,14 +38,50 @@ const LinkContents = () => {
     }
   ]
 
+  const { articleId } = route.params
+
+  const {
+    isLoading,
+    isError,
+    recoilValue: articleDetail,
+    refresh
+  } = useArticleDetail(articleId, true)
+
+  const onFocus = useCallback(() => {
+    refresh()
+  }, [refresh])
+
+  useEffect(() => {
+    navigation.addListener('focus', onFocus)
+    return () => {
+      navigation.removeListener('focus', onFocus)
+    }
+  }, [onFocus, navigation])
+
+  const onClick = useCallback(() => {}, [])
+
+  const { addEventListener, removeEventListener } = useHeaderEvent()
+
+  useEffect(() => {
+    addEventListener(onClick)
+    return () => {
+      removeEventListener(onClick)
+    }
+  }, [addEventListener, removeEventListener, onClick])
+
   return (
     <LinkView>
       <Header iconButtons={iconButtons}>링크 정보</Header>
       <LinkContentScroll contentContainerStyle={containerStyle}>
         <LinkContentView>
-          <LinkContent link={link_1} />
-          <TagBar tags={tags} />
-          <MemoContent />
+          {!isLoading && (
+            <>
+              <LinkContent article={articleDetail} />
+              <TagBar tags={articleDetail.tags} />
+              <MemoContent memos={articleDetail.memos} />
+            </>
+          )}
+          {isError && <Text>Error</Text>}
         </LinkContentView>
       </LinkContentScroll>
     </LinkView>

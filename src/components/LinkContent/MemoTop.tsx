@@ -32,7 +32,7 @@ const MemoTop = () => {
     <MemoTopView>
       <MemoTitle>메모</MemoTitle>
       <MemoBtn>
-        <MemoIcon source={require('../assets/images/icon_+.png')} />
+        <MemoIcon source={require('../../assets/images/icon_+.png')} />
       </MemoBtn>
     </MemoTopView>
   )

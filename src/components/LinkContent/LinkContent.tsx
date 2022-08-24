@@ -65,7 +65,7 @@ const LinkContent = ({ link }: Props) => {
   return (
     <LinkView>
       <LinkImage
-        source={require('../assets/images/link_desc_thumbnail.png')}
+        source={require('../../assets/images/link_desc_thumbnail.png')}
         resizeMode="contain"
       />
       <LinkContentView>
@@ -75,10 +75,10 @@ const LinkContent = ({ link }: Props) => {
           <Text>{link.date}</Text>
           <LinkButtonView>
             <LinkBookmark>
-              <Image source={require('../assets/images/bookmark.png')} />
+              <Image source={require('../../assets/images/bookmark.png')} />
             </LinkBookmark>
             <LinkChain>
-              <Image source={require('../assets/images/icon_link.png')} />
+              <Image source={require('../../assets/images/icon_link.png')} />
             </LinkChain>
           </LinkButtonView>
         </LinkBottomView>

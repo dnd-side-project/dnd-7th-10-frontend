@@ -43,7 +43,7 @@ const Memo = ({ content }: Props) => {
   return (
     <MemoContent>
       <TopView>
-        <MemoImage source={require('../assets/images/icon_memo.png')} />
+        <MemoImage source={require('../../assets/images/icon_memo.png')} />
         <MemoDate>2022.08.13</MemoDate>
       </TopView>
       <MemoText>{content}</MemoText>

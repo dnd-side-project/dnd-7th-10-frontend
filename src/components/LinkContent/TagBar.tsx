@@ -34,10 +34,10 @@ const TagBar = ({ tags }: Props) => {
   return (
     <TagsView>
       {tags.map(el => (
-        <Tag tag={el} />
+        <Tag tag={el} key={el} />
       ))}
       <TagAddButton>
-        <TagImage source={require('../assets/images/icon_+.png')} />
+        <TagImage source={require('../../assets/images/icon_+.png')} />
       </TagAddButton>
     </TagsView>
   )

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
+import { shadow } from '../../styles/backgrounds'
 
 type ViewProps = {
   main: boolean
@@ -10,15 +11,15 @@ const MemoCardView = styled.View<ViewProps>`
   width: ${props => (props.main === true ? '366px' : '200px')};
   height: ${props => (props.main === true ? '288px' : '312px')};
   background: #ffffff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: ${shadow};
   border: ${props => (props.main === true ? '2px solid #DEEBF5' : 'none')};
   border-radius: ${props => (props.main === true ? '4px' : '8px')};
   margin-top: ${props => (props.main === true ? '16px' : '0px')};
-  margin-right: ${props => (props.main === true ? '16px' : '16px')};
+  margin-right: 16px;
 `
 const MemoCardDate = styled.Text`
   position: absolute;
-  width: 60px;
+  width: 65px;
   height: 14px;
   right: 16px;
   top: 16px;
@@ -89,16 +90,10 @@ const UrlTitle = styled.Text`
 `
 
 const MemoIcon = styled.Image`
-  position: absolute;
-  left: 8%;
-  right: 80%;
-  top: 5.33%;
-  bottom: 86.67%;
   height: 24px;
   width: 24px;
   left: 16px;
   top: 16px;
-  border-radius: 0px;
 `
 
 export interface IMemo {
@@ -119,9 +114,7 @@ interface Props {
   main: boolean
 }
 
-
 const MemoCard = ({ memo, main }: Props) => {
-
   const { content, modifiedDate, folderTitle, openGraph } = memo
   const date = modifiedDate.split('T')[0]
   const { linkImage, linkTitle } = openGraph
@@ -140,7 +133,6 @@ const MemoCard = ({ memo, main }: Props) => {
         <UrlFolder main>{folderTitle}</UrlFolder>
         <UrlTitle>{linkTitle}</UrlTitle>
       </UrlView>
-
     </MemoCardView>
   )
 }

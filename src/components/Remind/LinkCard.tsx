@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
+import { shadow } from '../../styles/backgrounds'
+
 const LinkCardView = styled.View`
   width: 175px;
   height: 238px;
   background: #ffffff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: ${shadow};
   border-radius: 4px;
   margin-right: 16px;
 `

@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="me.linkkle.app">
+  package="me.linkkle.app"
+  android:installLocation="preferExternal"
+  >
 
     <uses-permission android:name="android.permission.INTERNET" />
 

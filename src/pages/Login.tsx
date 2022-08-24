@@ -68,10 +68,6 @@ const Login = () => {
   }, [])
 
   useEffect(() => {
-    if (!auth.user) {
-      login('user', '1234')
-    }
-
     if (auth.user) {
       showToast(createToast('logged in with ' + auth.user.username))
       navigation.dispatch(StackActions.replace('Main'))

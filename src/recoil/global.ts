@@ -52,3 +52,8 @@ export const quicklinkLastAtom = atom<string>({
   key: 'quicklinkLast',
   default: ''
 })
+
+export const fcmTokenAtom = atom<string>({
+  key: 'fcmToken',
+  default: ''
+})

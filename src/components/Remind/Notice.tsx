@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import AlarmCard from './AlarmCard'
 import { ColorPalette, Typo } from '../../styles/variable'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
+import api from '../../lib/api'
+import { ILink } from './LinkCard'
 
 const NoticeView = styled.View`
   background-color: #ffffff;
@@ -26,19 +28,16 @@ const TopText = styled.Text`
   align-items: flex-end;
   letter-spacing: -0.6px;
 `
-const AlarmCardBar = styled.View`
+const AlarmCardBar = styled.ScrollView`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 16px;
-
   position: absolute;
-  width: 632px;
-  height: 300px;
+  width: 414px;
+  height: 200px;
   left: 24px;
   top: 72px;
 `
+
 const AddIconBtn = styled.TouchableOpacity`
   position: absolute;
   height: 24px;
@@ -52,12 +51,50 @@ const AddIcon = styled.Image`
   width: 24px;
 `
 
+interface LinkList extends Array<ILink> {}
+
+export interface IRemind {
+  filter(arg0: (el: any) => any): any
+  remindId: string
+  userId: string
+  cron: string
+  remindTitle: string
+  articleList: LinkList
+}
+
 const Notice = () => {
   const navigation = useNavigation<RouterNavigationProps>()
+  const [reminds, setReminds] = useState([])
 
   const onAddPress = () => {
     navigation.navigate('RemindingSetup')
   }
+
+  const getReminds = () => {
+    api
+      .get<IRemind>('/remind')
+      .then(response => {
+        if (response.status === 200) {
+          console.log('red', typeof response.data)
+          console.log(
+            'remindlist',
+            response.data.filter(el => el.cron !== null)
+          )
+
+          setReminds(response.data.filter(el => el.cron !== null))
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  const isFocused = useIsFocused()
+  useEffect(() => {
+    if (isFocused) {
+      getReminds()
+    }
+  }, [])
 
   return (
     <NoticeView>
@@ -70,9 +107,10 @@ const Notice = () => {
           />
         </AddIconBtn>
       </TopView>
-      <AlarmCardBar>
-        <AlarmCard />
-        <AlarmCard />
+      <AlarmCardBar horizontal={true}>
+        {reminds.map((remind, idx) => (
+          <AlarmCard remind={remind} key={idx} />
+        ))}
       </AlarmCardBar>
     </NoticeView>
   )

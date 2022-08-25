@@ -2,15 +2,13 @@ import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { shadow } from '../../styles/backgrounds'
-
+import { IRemind } from './Notice'
 const AlarmCardView = styled.View`
   width: 140px;
   height: 179px;
   background: #ffffff;
   box-shadow: ${shadow};
   border-radius: 4px;
-  flex: none;
-  flex-grow: 0;
   margin-right: 16px;
 `
 const Toggle = styled.View`
@@ -22,7 +20,7 @@ const Toggle = styled.View`
   background: #ff5216;
   border-radius: 200px;
 `
-const Circle = styled.View`
+const Circle = styled.TouchableOpacity`
   position: absolute;
   width: 16px;
   height: 16px;
@@ -77,15 +75,69 @@ const LinkNum = styled.Text`
   color: #${ColorPalette.BlueGray_3}
 `
 
-const AlarmCard = () => {
+interface Props {
+  remind: IRemind
+}
+
+const AlarmCard = ({ remind }: Props) => {
+  const cron = remind.cron.split(' ')
+  const articleList = remind.articleList
+  let min = cron[1]
+  if (min.length === 1) {
+    min = '0' + min
+  }
+  let hour = cron[2]
+  if (hour.length === 1) {
+    hour = '0' + hour
+  }
+  let days = cron[5].split(',')
+  let week: string[] = []
+  let time = ''
+
+  if (Number(hour) > 12) {
+    time = 'PM'
+    hour = String(Number(hour) - 12)
+  } else {
+    time = 'AM'
+  }
+
+  days.map(day => {
+    if (day === 'MON') {
+      week.push('월')
+    }
+    if (day === 'TUE') {
+      week.push('화')
+    }
+    if (day === 'WED') {
+      week.push('수')
+    }
+    if (day === 'THU') {
+      week.push('목')
+    }
+    if (day === 'FRI') {
+      week.push('금')
+    }
+    if (day === 'SAT') {
+      week.push('토')
+    }
+    if (day === 'SUN') {
+      week.push('일')
+    }
+  })
+
+  const onPress = () => {
+    console.log('press')
+  }
+
+  //초 분 시
   return (
     <AlarmCardView>
       <Toggle>
-        <Circle />
+        <Circle onPress={onPress} />
       </Toggle>
-      <AlarmText>AM{'\n'}09:30</AlarmText>
-      <DayText>월 화 수 목 금 토</DayText>
-      <LinkNum>20개</LinkNum>
+      <AlarmText>{time + '\n' + hour + ':' + min}</AlarmText>
+      <DayText>{week.join(' ')}</DayText>
+      <LinkNum>{articleList.length + '개'}</LinkNum>
     </AlarmCardView>
   )
 }

@@ -51,6 +51,7 @@ export interface RouterParamList extends ParamListBase {
   Browser:
     | {
         url: string
+        articleId: string
         readable?: boolean
       }
     | undefined

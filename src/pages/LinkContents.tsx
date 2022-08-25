@@ -72,7 +72,10 @@ const LinkContents = ({
   }, [addEventListener, removeEventListener, onClick])
 
   const onWebPress = () => {
-    navigation.navigate('Browser', { url: articleDetail.linkUrl })
+    navigation.navigate('Browser', {
+      url: articleDetail.linkUrl,
+      articleId: articleDetail.id
+    })
   }
 
   return (

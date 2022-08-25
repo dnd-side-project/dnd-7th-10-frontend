@@ -24,6 +24,7 @@ export interface RouterParamList extends ParamListBase {
   LinkAdd:
     | {
         folderId?: string
+        linkUrl?: string
       }
     | undefined
   FolderAdd: undefined

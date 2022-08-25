@@ -26,7 +26,7 @@ const FolderEmptyText = styled.Text`
   font-size: 18px;
   margin: 24px 0;
   text-align: center;
-  line-height: 24px;
+  line-height: 27px;
 `
 
 const FolderEmptyButton = styled.TouchableOpacity``

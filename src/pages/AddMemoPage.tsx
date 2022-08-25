@@ -140,14 +140,10 @@ const MemoPage = ({
   route
 }: NativeStackScreenProps<RouterParamList, 'MemoPage'>) => {
   const { memo } = route.params
-  const { id, content, folderTitle, openGraph, registerDate } = memo
-  const { linkTitle, linkImage } = openGraph
-  const date = registerDate.split('T')[0]
 
   const [edit, setEdit] = useState(false)
-  const [text, setText] = useState(content)
+  const [text, setText] = useState('')
 
-  const patchData = { memoId: id, memoContent: text }
   const { showModal } = useModal()
 
   const patchMemo = ({ memoId, memoContent }: Props) => {
@@ -175,6 +171,7 @@ const MemoPage = ({
         console.error(error)
       })
   }
+
   const onClick = useCallback(
     (name: string) => {
       if (name === 'edit') {
@@ -185,23 +182,27 @@ const MemoPage = ({
           '해당 메모를 삭제하시겠어요?',
           `작성하신 메모를 삭제하면
         다신 이 메모를 확인해 볼 수 없어요!`,
-          '수정할래요',
-          '삭제할래요'
+          '삭제할래요',
+          '수정할래요'
         ).then(value => {
           if (value) {
             setEdit(true)
           } else {
-            removeMemo({ memoId: id })
+            removeMemo({ memoId: memo?.id })
           }
         })
       }
     },
-    [id]
+    [memo?.id]
   )
   const { addEventListener, removeEventListener } = useHeaderEvent()
 
   useEffect(() => {
     addEventListener(onClick)
+    if (memo === undefined) {
+      setEdit(true)
+      setText('')
+    }
     return () => {
       removeEventListener(onClick)
     }
@@ -214,7 +215,7 @@ const MemoPage = ({
           iconButtons={edit ? undefined : iconButtons}
           save={edit ? true : false}
           onSavePress={() => {
-            patchMemo(patchData)
+            patchMemo({ memoId: memo?.id, memoContent: text })
             setEdit(false)
           }}
         >
@@ -237,14 +238,16 @@ const MemoPage = ({
           <UrlView>
             <UrlImg
               source={{
-                uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
+                uri: memo
+                  ? memo.openGraph.linkImage
+                  : 'https://via.placeholder.com/1200x630'
               }}
             />
-            <UrlFolder>{folderTitle}</UrlFolder>
+            <UrlFolder>{memo?.folderTitle}</UrlFolder>
             <UrlTitleComponent>
-              <UrlTitle>{linkTitle}</UrlTitle>
+              <UrlTitle>{memo?.openGraph.linkTitle}</UrlTitle>
             </UrlTitleComponent>
-            <UrlDate>{date}</UrlDate>
+            <UrlDate>{memo?.registerDate.split('T')[0]}</UrlDate>
           </UrlView>
         </MemoCardsView>
       </ScrollView>

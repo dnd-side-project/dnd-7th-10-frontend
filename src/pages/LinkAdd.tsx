@@ -68,8 +68,8 @@ const LinkAdd = ({
   const [, fetchFolders] = useFolderList()
 
   const [tagName, setTagName] = useState<string>('')
-  const [linkUrl, setLinkUrl] = useState<string>('')
-  const [folderId, setFolderId] = useState<string>('')
+  const [linkUrl, setLinkUrl] = useState<string>(route.params?.linkUrl || '')
+  const [folderId, setFolderId] = useState<string>(route.params?.folderId || '')
   const [tagIds, setTagIds] = useState<string[]>([])
 
   const [quickLink, setQuickLink] = useRecoilState(quicklinkAtom)
@@ -94,12 +94,6 @@ const LinkAdd = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    if (route.params && route.params.folderId) {
-      setFolderId(route.params.folderId)
-    }
-  }, [route])
 
   const onPress = () => {
     api
@@ -226,7 +220,7 @@ const LinkAdd = ({
         </LinkAddContentView>
         <BottomButton>
           <Button disabled={!isCreatable} onPress={onPress}>
-            링크를 담을 폴더 생성하기
+            링크 생성 완료하기
           </Button>
         </BottomButton>
       </LinkContentScroll>

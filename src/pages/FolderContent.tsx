@@ -37,13 +37,10 @@ const FolderContent = ({
   } = useFolderDetail(folderId, true)
 
   const folderTitle = useMemo(() => {
-    if (isLoading) {
-      return ''
-    }
     if (isError) {
       return '폴더를 불러올 수 없습니다.'
     }
-    return folderDetail.folderTitle
+    return folderDetail?.folderTitle || ''
   }, [isLoading, isError, folderDetail])
 
   const onFocus = useCallback(() => {
@@ -78,7 +75,7 @@ const FolderContent = ({
   return (
     <FolderDescView>
       <Header iconButtons={iconButtons}>{folderTitle}</Header>
-      {!isLoading && <FolderCardList folderId={folderId} refresh={refresh} />}
+      <FolderCardList folderId={folderId} refresh={refresh} />
     </FolderDescView>
   )
 }

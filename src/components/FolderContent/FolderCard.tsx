@@ -1,8 +1,10 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ImageSourcePropType } from 'react-native'
 import api from '../../lib/api'
 import { IArticle } from '../../recoil/folders'
 import Card from '../Common/Card'
+import { RouterNavigationProps } from '../../pages/Router'
 
 interface Props {
   article: IArticle
@@ -10,6 +12,8 @@ interface Props {
 }
 
 const FolderCard = ({ article, refresh }: Props) => {
+  const navigation = useNavigation<RouterNavigationProps>()
+
   const [favicon, setFavicon] = useState<ImageSourcePropType | undefined>(
     undefined
   )
@@ -52,6 +56,13 @@ const FolderCard = ({ article, refresh }: Props) => {
     })
   }
 
+  const onInstantPress = () => {
+    navigation.navigate('Browser', {
+      url: article.linkUrl,
+      articleId: article.id
+    })
+  }
+
   return (
     <Card
       title={article.openGraph.linkTitle}
@@ -65,6 +76,8 @@ const FolderCard = ({ article, refresh }: Props) => {
       bookmarked={article.bookmark}
       memo={article.memos && article.memos.length > 0}
       onBookmarkPress={onBookmarkPress}
+      instant
+      onInstantPress={onInstantPress}
     />
   )
 }

@@ -11,7 +11,7 @@ export default function useFolderList(): [string[], () => void] {
   async function fetchFolders() {
     const response = await api.get<IFolder[]>('/folders')
     if (response.status === 200) {
-      setFolders(response.data)
+      setFolders(response.data.reverse())
     } else {
       setFolders([])
     }

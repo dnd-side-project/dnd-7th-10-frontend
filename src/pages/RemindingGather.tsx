@@ -10,6 +10,7 @@ import Button from '../components/Common/Button'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
+import useModal from '../hooks/useModal'
 
 const RemindingGatherView = styled.View`
   flex: 1;
@@ -60,9 +61,23 @@ const RemindingGather = ({
     navigation.goBack()
   }
 
+  const { showModal } = useModal()
+
+  const onBackPress = async () => {
+    const accept = await showModal(
+      '지금 나가면 저장되지 않아요!',
+      '변경하고있던 링크 모으기를 중단하면 지금까지 변경한 내용이 사라져요!',
+      '수정할래요',
+      '네, 나갈래요'
+    )
+    if (!accept) {
+      navigation.goBack()
+    }
+  }
+
   return (
     <RemindingGatherView>
-      <Header>링크 모으기</Header>
+      <Header onBackPress={onBackPress}>링크 모으기</Header>
       <GatherFolderList
         onChange={setFolderId}
         selectedArticles={selectedArticles}

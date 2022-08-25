@@ -6,6 +6,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
 import api from '../../lib/api'
 import { ILink } from './LinkCard'
+import Empty from '../Common/Empty'
 
 const NoticeView = styled.View`
   background-color: #ffffff;
@@ -75,12 +76,6 @@ const Notice = () => {
       .get<IRemind>('/remind')
       .then(response => {
         if (response.status === 200) {
-          console.log('red', typeof response.data)
-          console.log(
-            'remindlist',
-            response.data.filter(el => el.cron !== null)
-          )
-
           setReminds(response.data.filter(el => el.cron !== null))
         }
       })
@@ -107,11 +102,20 @@ const Notice = () => {
           />
         </AddIconBtn>
       </TopView>
-      <AlarmCardBar horizontal={true}>
-        {reminds.map((remind, idx) => (
-          <AlarmCard remind={remind} key={idx} />
-        ))}
-      </AlarmCardBar>
+      {reminds.length === 0 ? (
+        <AlarmCardBar horizontal={true}>
+          {reminds.map((remind, idx) => (
+            <AlarmCard remind={remind} key={idx} />
+          ))}
+        </AlarmCardBar>
+      ) : (
+        <Empty
+          text={`알림이 설정되지 않았어요!${'\n'}꾸준한 리마인딩을 받아보세요.`}
+          button
+          buttonText="알림 추가하기"
+          background="white"
+        />
+      )}
     </NoticeView>
   )
 }

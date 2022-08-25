@@ -14,6 +14,7 @@ import { IMemo } from '../components/Remind/MemoCard'
 import LinkContents from './LinkContents'
 import RemindingSetup from './RemindingSetup'
 import RemindingGather from './RemindingGather'
+import Browser from './Browser'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -72,6 +73,7 @@ const Router = () => {
         <Stack.Screen name="LinkContents" component={LinkContents} />
         <Stack.Screen name="RemindingSetup" component={RemindingSetup} />
         <Stack.Screen name="RemindingGather" component={RemindingGather} />
+        <Stack.Screen name="Browser" component={Browser} />
       </Stack.Navigator>
       <Modal />
     </>

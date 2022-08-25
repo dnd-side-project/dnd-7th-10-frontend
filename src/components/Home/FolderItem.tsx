@@ -71,8 +71,8 @@ const FolderItem = ({ folderId }: Props) => {
   return (
     <FolderView>
       <FolderImage source={folderImage} resizeMode="contain" />
-      <FolderCountText>{folder.articleCount}</FolderCountText>
-      <FolderNameText>{folder.folderTitle}</FolderNameText>
+      <FolderCountText numberOfLines={1}>{folder.articleCount}</FolderCountText>
+      <FolderNameText numberOfLines={1}>{folder.folderTitle}</FolderNameText>
     </FolderView>
   )
 }

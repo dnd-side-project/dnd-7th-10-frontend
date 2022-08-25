@@ -12,7 +12,8 @@ import BrowserHeader from '../components/Common/BrowserHeader'
 import {
   WebViewNavigation,
   WebViewNavigationEvent,
-  WebViewProgressEvent
+  WebViewProgressEvent,
+  WebViewSource
 } from 'react-native-webview/lib/WebViewTypes'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
@@ -59,7 +60,8 @@ const Browser = ({
   route,
   navigation
 }: NativeStackScreenProps<RouterParamList, 'Browser'>) => {
-  const { readable } = (route || {}).params || {}
+  const { url: linkUrl, readable } = (route || {}).params || {}
+  const initialSource: WebViewSource = { uri: linkUrl || '' }
 
   const [url, setUrl] = useState<string>('')
   const [initUrl, setInitUrl] = useState<string>('')
@@ -171,7 +173,7 @@ const Browser = ({
             onLoadStart={onLoadStart}
             originWhitelist={['*']}
             onNavigationStateChange={setNavState}
-            source={{ uri: 'https://www.naver.com' }}
+            source={initialSource}
             style={styles.webview}
           />
         </View>

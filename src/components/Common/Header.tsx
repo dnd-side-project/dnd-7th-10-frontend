@@ -110,6 +110,7 @@ interface Props {
   hideBack?: boolean
   search?: boolean
   onSearchClose?: () => void
+  onBackPress?: () => Promise<boolean> | boolean
 }
 
 const Header = ({
@@ -119,17 +120,22 @@ const Header = ({
   onSavePress,
   hideBack,
   search,
-  onSearchClose
+  onSearchClose,
+  onBackPress
 }: PropsWithChildren<Props>) => {
   const navigation = useNavigation()
   const { handlers } = useHeaderEvent()
 
-  const onBackPress = () => {
+  const handleBackPress = async () => {
+    let prevent = false
+    if (onBackPress) {
+      prevent = await !onBackPress()
+    }
     if (search) {
       if (onSearchClose) {
         onSearchClose()
       }
-    } else {
+    } else if (prevent) {
       navigation.goBack()
     }
   }
@@ -144,7 +150,7 @@ const Header = ({
   return (
     <HeaderBar style={styles.shadow}>
       {!hideBack && (
-        <TouchableOpacity onPress={onBackPress} hitSlop={backButtonInsets}>
+        <TouchableOpacity onPress={handleBackPress} hitSlop={backButtonInsets}>
           <HeaderIcon
             source={require('../../assets/images/chevron-left.png')}
             resizeMode="contain"

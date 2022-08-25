@@ -34,6 +34,7 @@ const HeaderIconButton = styled(HeaderIcon)`
 const HeaderText = styled.Text`
   ${fontWithColorFamily('gray_7', 'SemiBold')}
   font-size: 20px;
+  flex: 1;
 `
 
 const SaveButton = styled.TouchableOpacity`
@@ -48,6 +49,7 @@ const SaveButtonText = styled.Text`
 const IconButtonsView = styled.View`
   margin-left: auto;
   flex-direction: row;
+  flex-shrink: 0;
 `
 
 const HeaderSearchView = styled.View`

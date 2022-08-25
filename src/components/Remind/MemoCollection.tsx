@@ -86,11 +86,11 @@ const MemoCollection = ({ onPress, memos }: Props) => {
       </MemoBtn>
       {memos.length !== 0 ? (
         <Empty
-          text={`아직 작성된 메모가 없어요!
-         ${'\n'} 링크를 읽고 간단히 정리해 볼까요?`}
+          text={`아직 작성된 메모가 없어요!${'\n'}링크를 읽고 간단히 정리해 볼까요?`}
           button
           buttonText="바로가기"
           background="white"
+          onButtonPress={() => navigation.navigate('Home')}
         />
       ) : (
         <MemoView>

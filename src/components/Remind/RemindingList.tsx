@@ -3,6 +3,7 @@ import styled from '@emotion/native'
 import LinkCard from './LinkCard'
 import { ILink } from './LinkCard'
 import { Typo, ColorPalette } from '../../styles/variable'
+import Empty from '../Common/Empty'
 
 const RemindingListView = styled.View`
   width: 414px;
@@ -34,43 +35,6 @@ const RightArrowImage = styled.Image`
   height: 24px;
 `
 
-const LinkBtn = styled.TouchableOpacity`
-  position: absolute;
-  width: 120px;
-  height: 40px;
-  left: 147px;
-  top: 228px;
-  border-radius: 4px;
-  background-color: #26344a;
-  padding: 11px 31px;
-`
-
-const BlankText = styled.Text`
-  position: absolute;
-  width: 226px;
-  height: 44px;
-  left: 94px;
-  top: 160px;
-  text-align: center;
-  letter-spacing: -0.6px;
-  color: ${ColorPalette.BlueGray_4};
-  font-family: ${Typo.Body1_600};
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 22px;
-`
-const BtnText = styled.Text`
-  color: #ffffff;
-  font-family: ${Typo.Body3_600};
-  font-style: normal;
-  font-size: 15px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  letter-spacing: -0.6px;
-`
-
 interface LinkList extends Array<ILink> {}
 interface Props {
   list: LinkList
@@ -96,22 +60,20 @@ const RemindingList = ({ onPress, list }: Props) => {
           />
         </RightArrow>
       </TopView>
-      {list.length !== 0 ? (
+      {list.length === 0 ? (
         <CardView horizontal={true}>
           {list.map((link, idx) => (
             <LinkCard link={link} key={idx} />
           ))}
         </CardView>
       ) : (
-        <>
-          <BlankText>
-            북마크한 링크들이 없어요!{'\n'}
-            리마인딩할 링크들을 모아볼까요?
-          </BlankText>
-          <LinkBtn>
-            <BtnText>바로가기</BtnText>
-          </LinkBtn>
-        </>
+        <Empty
+          text={`북마크한 링크들이 없어요!${'\n'}리마인딩할 링크들을 모아볼까요?`}
+          button
+          buttonText="바로가기"
+          background="white"
+          onButtonPress={onPress}
+        />
       )}
     </RemindingListView>
   )

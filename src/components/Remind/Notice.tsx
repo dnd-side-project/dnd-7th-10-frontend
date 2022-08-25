@@ -114,6 +114,7 @@ const Notice = () => {
           button
           buttonText="알림 추가하기"
           background="white"
+          onButtonPress={onAddPress}
         />
       )}
     </NoticeView>

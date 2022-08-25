@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import MemoCard from '../components/Remind/MemoCard'
 import { ScrollView, TouchableOpacity } from 'react-native'
 import api from '../lib/api'
-import { useRoute, useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { RouterNavigationProps } from '../pages/Router'
 import { IMemo } from '../components/Remind/MemoCard'
 
@@ -18,7 +18,6 @@ const MemosView = styled.View`
 interface MemoList extends Array<IMemo> {}
 
 const MemoMain = () => {
-  const route = useRoute()
   const [memos, setMemos] = useState<MemoList>()
   const navigation = useNavigation<RouterNavigationProps>()
 
@@ -38,11 +37,13 @@ const MemoMain = () => {
       })
   }
 
+  const isFocused = useIsFocused()
+
   useEffect(() => {
-    if (route.name === 'MemoMain') {
+    if (isFocused) {
       getMemos()
     }
-  }, [route.name])
+  }, [isFocused])
 
   const onCardPress = (memo: IMemo) => {
     navigation.navigate('MemoPage', { memo })

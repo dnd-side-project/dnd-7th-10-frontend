@@ -95,20 +95,16 @@ const BlankMemoBtn = styled.TouchableOpacity`
   height: 48px;
   background: #26344a;
   border-radius: 4px;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
 `
 const BlankBtnText = styled.Text`
-  position: absolute;
-  height: 18px;
-  width: 51px;
-
   font-family: ${Typo.Button_600};
   font-size: 15px;
   line-height: 18px;
-
-  display: flex;
-  align-items: center;
-  text-align: center;
   letter-spacing: -0.6px;
+  margin-left: 38px;
   color: #ffffff;
 `
 
@@ -124,8 +120,6 @@ const MemoCollection = ({ onPress, memos }: Props) => {
   const onCardPress = (memo: IMemo) => {
     navigation.navigate('MemoPage', { memo })
   }
-
-  memos = memos.slice(0, 10)
 
   return (
     <MemoCollectionView>

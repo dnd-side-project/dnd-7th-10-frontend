@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import { IIconButton } from '../components/Common/Header'
@@ -9,7 +9,11 @@ import { ILink } from '../components/Remind/LinkCard'
 import { IMemo } from '../components/Remind/MemoCard'
 import { ScrollView } from 'react-native'
 import api from '../lib/api'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute
+} from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
 
 const RemindingView = styled.View`
@@ -28,9 +32,9 @@ interface MemoList extends Array<IMemo> {}
 
 const RemindMain = () => {
   const navigation = useNavigation<RouterNavigationProps>()
-  const route = useRoute()
   const [list, setList] = useState<LinkList>()
   const [memos, setMemos] = useState<MemoList>()
+  const route = useRoute()
 
   const getArticles = () => {
     api
@@ -62,12 +66,14 @@ const RemindMain = () => {
       })
   }
 
-  useEffect(() => {
-    if (route.name === 'Reminding') {
-      getArticles()
-      getMemos()
-    }
-  }, [route.name])
+  useFocusEffect(
+    useCallback(() => {
+      if (route.name === 'Reminding') {
+        getArticles()
+        getMemos()
+      }
+    }, [route.name])
+  )
 
   const onRemindPress = () => {
     navigation.navigate('RemindingGather')

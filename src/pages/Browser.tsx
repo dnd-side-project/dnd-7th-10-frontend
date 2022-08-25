@@ -82,7 +82,9 @@ const Browser = ({
   const onBackPress = () => {
     if (navState?.canGoBack) {
       webView.current?.goBack()
+      return true
     }
+    return false
   }
 
   const onForwardPress = () => {
@@ -96,7 +98,13 @@ const Browser = ({
   }
 
   useEffect(() => {
-    const backAction = () => true
+    const backAction = () => {
+      const goBack = onBackPress()
+      if (!goBack) {
+        onExitPress()
+      }
+      return true
+    }
 
     const subscription = BackHandler.addEventListener(
       'hardwareBackPress',

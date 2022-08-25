@@ -60,7 +60,7 @@ const RemindingList = ({ onPress, list }: Props) => {
           />
         </RightArrow>
       </TopView>
-      {list.length === 0 ? (
+      {list.length !== 0 ? (
         <CardView horizontal={true}>
           {list.map((link, idx) => (
             <LinkCard link={link} key={idx} />

@@ -102,7 +102,7 @@ const Notice = () => {
           />
         </AddIconBtn>
       </TopView>
-      {reminds.length === 0 ? (
+      {reminds.length !== 0 ? (
         <AlarmCardBar horizontal={true}>
           {reminds.map((remind, idx) => (
             <AlarmCard remind={remind} key={idx} />

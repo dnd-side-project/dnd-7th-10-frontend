@@ -84,7 +84,7 @@ const MemoCollection = ({ onPress, memos }: Props) => {
       <MemoBtn onPress={onPress}>
         <RightArrow source={require('../../assets/images/icon_more.png')} />
       </MemoBtn>
-      {memos.length !== 0 ? (
+      {memos.length === 0 ? (
         <Empty
           text={`아직 작성된 메모가 없어요!${'\n'}링크를 읽고 간단히 정리해 볼까요?`}
           button

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/native'
 import WebView from 'react-native-webview'
 import {
@@ -21,7 +21,14 @@ import SVG from '../assets/images/svg'
 import { ColorPalette, Typo } from '../styles/variable'
 import { flexWithAlign } from '../styles/flexbox'
 import { fontWithColor } from '../styles/fonts'
-import useToast, { createCheckToast, ToastOffset } from '../hooks/useToast'
+import useToast, {
+  createCheckToast,
+  createWarnToast,
+  ToastOffset
+} from '../hooks/useToast'
+import MemoEditor from '../components/Browser/MemoEditor'
+import api from '../lib/api'
+import { useFocusEffect } from '@react-navigation/native'
 
 const BrowserMenuView = styled.View`
   ${flexWithAlign('center', 'center', 'row')}
@@ -60,7 +67,7 @@ const Browser = ({
   route,
   navigation
 }: NativeStackScreenProps<RouterParamList, 'Browser'>) => {
-  const { url: linkUrl, readable } = (route || {}).params || {}
+  const { url: linkUrl, articleId, readable } = (route || {}).params || {}
   const initialSource: WebViewSource = { uri: linkUrl || '' }
 
   const [url, setUrl] = useState<string>('')
@@ -70,6 +77,8 @@ const Browser = ({
   const webView = useRef<WebView>(null)
   const [readed, setReaded] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const [writing, setWriting] = useState<boolean>(false)
+  const [memo, setMemo] = useState<string>('')
 
   const showToast = useToast()
 
@@ -99,21 +108,24 @@ const Browser = ({
     navigation.goBack()
   }
 
-  useEffect(() => {
-    const backAction = () => {
-      const goBack = onBackPress()
-      if (!goBack) {
-        onExitPress()
+  useFocusEffect(
+    useCallback(() => {
+      const backAction = () => {
+        if (backward) {
+          onBackPress()
+        } else {
+          onExitPress()
+        }
+        return true
       }
-      return true
-    }
 
-    const subscription = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
-    return () => subscription.remove()
-  }, [])
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction
+      )
+      return () => subscription.remove()
+    }, [backward])
+  )
 
   const isOriginUrl = useMemo(() => {
     return url === initUrl
@@ -151,6 +163,40 @@ const Browser = ({
     }
   }
 
+  const onCancelPress = () => {
+    setWriting(false)
+    // reset memo
+  }
+
+  const onSavePress = () => {
+    const content = memo
+    setMemo('')
+    api
+      .post('/memo', { articleId, content })
+      .then(response => {
+        if (response.status === 200) {
+          showToast(
+            createCheckToast('메모가 저장되었습니다.', ToastOffset.TagInput)
+          )
+          setWriting(false)
+        } else {
+          showToast(
+            createWarnToast('메모 저장에 실패하였습니다.', ToastOffset.TagInput)
+          )
+        }
+      })
+      .catch(e => {
+        console.error(JSON.stringify(e.response.data, null, 2))
+        showToast(
+          createWarnToast('메모 저장에 실패하였습니다.', ToastOffset.TagInput)
+        )
+      })
+  }
+
+  const onLinkAddPress = () => {
+    navigation.navigate('LinkAdd', { linkUrl: url })
+  }
+
   return (
     <SafeAreaView style={styles.backgroundstyle}>
       <BrowserHeader
@@ -177,25 +223,34 @@ const Browser = ({
             style={styles.webview}
           />
         </View>
-        <BrowserMenuView>
-          {!loading &&
-            (isOriginUrl ? (
-              <>
-                <MemoButton>
-                  <SVG.Memo stroke={ColorPalette.White} width={24} />
-                </MemoButton>
-                {readable && (
-                  <TextButton onPress={onReadedPress} disabled={readed}>
-                    <TextButtonText>읽었어요</TextButtonText>
-                  </TextButton>
-                )}
-              </>
-            ) : (
-              <TextButton>
-                <TextButtonText>링크 바로저장</TextButtonText>
-              </TextButton>
-            ))}
-        </BrowserMenuView>
+        {writing ? (
+          <MemoEditor
+            onCancelPress={onCancelPress}
+            onSavePress={onSavePress}
+            memo={memo}
+            setMemo={setMemo}
+          />
+        ) : (
+          <BrowserMenuView>
+            {!loading &&
+              (isOriginUrl ? (
+                <>
+                  <MemoButton onPress={() => setWriting(true)}>
+                    <SVG.Memo stroke={ColorPalette.White} width={24} />
+                  </MemoButton>
+                  {readable && (
+                    <TextButton onPress={onReadedPress} disabled={readed}>
+                      <TextButtonText>읽었어요</TextButtonText>
+                    </TextButton>
+                  )}
+                </>
+              ) : (
+                <TextButton onPress={onLinkAddPress}>
+                  <TextButtonText>링크 바로저장</TextButtonText>
+                </TextButton>
+              ))}
+          </BrowserMenuView>
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   )

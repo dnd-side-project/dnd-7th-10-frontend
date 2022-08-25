@@ -42,6 +42,7 @@ const LinkContents = ({
   ]
 
   const { articleId } = route.params
+  console.log(articleId)
 
   const {
     isLoading,

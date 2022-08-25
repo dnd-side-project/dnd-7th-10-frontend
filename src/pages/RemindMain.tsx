@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import { IIconButton } from '../components/Common/Header'
@@ -9,7 +9,11 @@ import { ILink } from '../components/Remind/LinkCard'
 import { IMemo } from '../components/Remind/MemoCard'
 import { ScrollView } from 'react-native'
 import api from '../lib/api'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute
+} from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
 
 const RemindingView = styled.View`
@@ -26,38 +30,11 @@ const iconButtons: IIconButton[] = [
 interface LinkList extends Array<ILink> {}
 interface MemoList extends Array<IMemo> {}
 
-// const memos = [
-//   {
-//     id: '62c8f540-5dea-484b-969e-2ec47f7271be',
-//     content: 'string',
-//     registerDate: '2022-08-21T17:15:00.506413',
-//     modifiedDate: '2022-08-21T17:15:00.506413',
-//     openGraph: {
-//       linkTitle: 'Google',
-//       linkDescription: '',
-//       linkImage: ''
-//     },
-//     folderTitle: '기본 폴더'
-//   },
-//   {
-//     id: '0a7293bf-c227-4e29-afcc-5b7b98d20888',
-//     content: 'content1',
-//     registerDate: '2022-08-21T17:15:07.648693',
-//     modifiedDate: '2022-08-21T17:15:07.648693',
-//     openGraph: {
-//       linkTitle: 'Google',
-//       linkDescription: '',
-//       linkImage: ''
-//     },
-//     folderTitle: '기본 폴더'
-//   }
-// ]
-
 const RemindMain = () => {
   const navigation = useNavigation<RouterNavigationProps>()
-  const route = useRoute()
   const [list, setList] = useState<LinkList>()
   const [memos, setMemos] = useState<MemoList>()
+  const route = useRoute()
 
   const getArticles = () => {
     api
@@ -65,6 +42,7 @@ const RemindMain = () => {
       .then(response => {
         if (response.status === 200) {
           let resArr = Array.from(response.data)
+          console.log(resArr)
           setList(resArr)
         }
       })
@@ -78,10 +56,9 @@ const RemindMain = () => {
       .get<MemoList>('/memos')
       .then(response => {
         if (response.status === 200) {
-          console.log(typeof response.data)
           let resArr = Array.from(response.data)
-          console.log(Array.isArray(resArr))
           setMemos(resArr)
+          console.log(resArr)
         }
       })
       .catch(error => {
@@ -89,12 +66,22 @@ const RemindMain = () => {
       })
   }
 
-  useEffect(() => {
-    if (route.name === 'Reminding') {
-      getArticles()
-      getMemos()
-    }
-  }, [route.name])
+  useFocusEffect(
+    useCallback(() => {
+      if (route.name === 'Reminding') {
+        getArticles()
+        getMemos()
+      }
+    }, [route.name])
+  )
+
+  const onRemindPress = () => {
+    navigation.navigate('RemindingGather')
+  }
+
+  const onNoticePress = () => {
+    navigation.navigate('Notice')
+  }
 
   const onMemoPress = () => {
     navigation.navigate('MemoMain')
@@ -104,8 +91,8 @@ const RemindMain = () => {
     <RemindingView>
       <ScrollView scrollEnabled={true}>
         <Header iconButtons={iconButtons}>리마인딩</Header>
-        <RemindingList list={list ? list : []} />
-        <Notice />
+        <RemindingList list={list ? list : []} onPress={onRemindPress} />
+        <Notice onPress={onNoticePress} />
         <MemoCollection onPress={onMemoPress} memos={memos ? memos : []} />
       </ScrollView>
     </RemindingView>

@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
+import { shadow } from '../../styles/backgrounds'
 
 const AlarmCardView = styled.View`
   width: 140px;
   height: 179px;
   background: #ffffff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: ${shadow};
   border-radius: 4px;
   flex: none;
-  order: 0;
   flex-grow: 0;
   margin-right: 16px;
 `

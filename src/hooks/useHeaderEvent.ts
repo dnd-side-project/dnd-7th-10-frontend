@@ -21,3 +21,10 @@ export default function useHeaderEvent() {
     removeEventListener
   }
 }
+
+// const onIconPress = useCallback(
+//   (name: string) => {
+//     handlers.forEach(handler => handler(name))
+//   },
+//   [handlers]
+// )

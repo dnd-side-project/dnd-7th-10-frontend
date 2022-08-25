@@ -8,9 +8,8 @@ const RemindingListView = styled.View`
   width: 414px;
   height: 376px;
   flex: none;
-  order: 0;
-  flex-grow: 0;
-  padding: 24px;
+  flex-grow: 0
+  padding:24px;
   background-color: #ffffff;
   margin-bottom: 4px;
 `
@@ -18,7 +17,7 @@ const TopView = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 `
 const TopText = styled.Text`
   color: ${ColorPalette.BlueGray_3};
@@ -75,13 +74,15 @@ const BtnText = styled.Text`
 interface LinkList extends Array<ILink> {}
 interface Props {
   list: LinkList
+  onPress: () => void
 }
 
-const CardView = styled.View`
+const CardView = styled.ScrollView`
   flex-direction: row;
+  height: 250px;
 `
 
-const RemindingList = ({ list }: Props) => {
+const RemindingList = ({ onPress, list }: Props) => {
   return (
     <RemindingListView>
       <TopView>
@@ -89,14 +90,14 @@ const RemindingList = ({ list }: Props) => {
           꼭 읽어야하는 링크{'\n'}
           <BoldText>{list.length}개</BoldText>가 있어요!
         </TopText>
-        <RightArrow>
+        <RightArrow onPress={onPress}>
           <RightArrowImage
             source={require('../../assets/images/icon_more.png')}
           />
         </RightArrow>
       </TopView>
       {list.length !== 0 ? (
-        <CardView>
+        <CardView horizontal={true}>
           {list.map((link, idx) => (
             <LinkCard link={link} key={idx} />
           ))}

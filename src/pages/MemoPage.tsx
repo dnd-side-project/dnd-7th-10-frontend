@@ -1,28 +1,25 @@
-import React from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
-import { ScrollView } from 'react-native'
 import { IIconButton } from '../components/Common/Header'
+import { ScrollView } from 'react-native'
 import { ColorPalette, Typo } from '../styles/variable'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
+import api from '../lib/api'
+import { IMemo } from '../components/Remind/MemoCard'
+import useHeaderEvent from '../hooks/useHeaderEvent'
 
 const MemoMainView = styled.View`
-  background-color: #f5f5f5;
+  background-color: '#f5f5f5';
 `
 
 const MemoCardsView = styled.View`
   display: flex;
   align-items: flex-start;
   padding-top: 24px;
-
   width: 414px;
-
   background: #ffffff;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 `
 
 const MemoContent = styled.Text`
@@ -36,14 +33,13 @@ const MemoContent = styled.Text`
 const MemoCardView = styled.View`
   box-sizing: border-box;
   padding: 16px;
-  margin-left: 12px;
+  margin-left: 23px;
   width: 366px;
   height: 320px;
   background-color: ${ColorPalette.Background_1};
   border: 1px solid #d6e1ed;
   border-radius: 4px;
   flex: none;
-  order: 0;
   flex-grow: 0;
 `
 const UrlView = styled.View`
@@ -67,7 +63,6 @@ const UrlImg = styled.Image`
 const UrlFolder = styled.Text`
   position: absolute;
   left: 25.6%;
-  right: 67.15%;
   top: 16.33%;
   bottom: 65.31%;
 
@@ -93,7 +88,6 @@ const UrlTitleComponent = styled.View`
   top: 34px;
 `
 const UrlTitle = styled.Text`
-  width: 65px;
   height: 27px;
   font-family: ${Typo.Heading3_600};
   font-size: 18px;
@@ -117,6 +111,14 @@ const UrlDate = styled.Text`
   color: ${ColorPalette.BlueGray_3};
 `
 
+const MemoCardInput = styled.TextInput`
+  color: ${ColorPalette.BlueGray_5};
+  font-family: ${Typo.Body2_600};
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+`
+
 const iconButtons: IIconButton[] = [
   {
     name: 'trash',
@@ -128,22 +130,96 @@ const iconButtons: IIconButton[] = [
   }
 ]
 
+interface Props {
+  memoId?: string
+  memoContent?: string
+}
+
 const MemoPage = ({
   route
 }: NativeStackScreenProps<RouterParamList, 'MemoPage'>) => {
   const { memo } = route.params
-  console.log(memo)
-  const { content, folderTitle, openGraph, registerDate } = memo
+  const { id, content, folderTitle, openGraph, registerDate } = memo
+  console.log(content)
   const { linkTitle, linkImage } = openGraph
   const date = registerDate.split('T')[0]
+
+  const [edit, setEdit] = useState(false)
+  const [text, setText] = useState(content)
+
+  const patchData = { memoId: id, memoContent: text }
+
+  const patchMemo = ({ memoId, memoContent }: Props) => {
+    api
+      .patch<IMemo>(`/memo/${memoId}`, memoContent)
+      .then(response => {
+        if (response.status === 200) {
+          console.log(response.data)
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
+  const removeMemo = ({ memoId }: Props) => {
+    api
+      .delete<IMemo>(`/memo/${memoId}`)
+      .then(response => {
+        if (response.status === 200) {
+          console.log(response.data)
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+  const onClick = useCallback(
+    (name: string) => {
+      if (name === 'edit') {
+        setEdit(true)
+      }
+      if (name === 'trash') {
+        removeMemo({ memoId: id })
+      }
+    },
+    [id]
+  )
+  const { addEventListener, removeEventListener } = useHeaderEvent()
+
+  useEffect(() => {
+    addEventListener(onClick)
+    return () => {
+      removeEventListener(onClick)
+    }
+  }, [addEventListener, onClick, removeEventListener])
 
   return (
     <MemoMainView>
       <ScrollView scrollEnabled={true}>
-        <Header iconButtons={iconButtons}>메모</Header>
+        <Header
+          iconButtons={edit ? undefined : iconButtons}
+          save={edit ? true : false}
+          onSavePress={() => {
+            patchMemo(patchData)
+            setEdit(false)
+          }}
+        >
+          메모
+        </Header>
         <MemoCardsView>
           <MemoCardView>
-            <MemoContent>{content}</MemoContent>
+            {edit ? (
+              <MemoCardInput
+                multiline
+                defaultValue={text}
+                onChangeText={txt => {
+                  setText(txt)
+                }}
+              />
+            ) : (
+              <MemoContent>{text}</MemoContent>
+            )}
           </MemoCardView>
           <UrlView>
             <UrlImg

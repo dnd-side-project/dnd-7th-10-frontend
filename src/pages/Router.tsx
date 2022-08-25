@@ -32,6 +32,7 @@ export interface RouterParamList extends ParamListBase {
   MemoPage: {
     memo: IMemo
   }
+
   LinkContents: {
     articleId: string
   }

@@ -3,11 +3,13 @@ import styled from '@emotion/native'
 import MemoCard from './MemoCard'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { IMemo } from '../Remind/MemoCard'
+import { useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from '../../pages/Router'
 
 const MemoCollectionView = styled.View`
   background-color: #ffffff;
   width: 414px;
-  height: 438px;
+  height: 450px;
   flex: none;
   flex-grow: 0;
   align-items: center;
@@ -29,6 +31,14 @@ const TopText = styled.Text`
   color: ${ColorPalette.BlueGray_4};
 `
 
+const MemoCardsView = styled.ScrollView`
+  height: 400px;
+  padding: 10px 0px;
+  width: 414px;
+`
+const MemoCardBtn = styled.TouchableOpacity`
+  height: 330px;
+`
 const MemoView = styled.View`
   position: absolute;
   width: 632px;
@@ -64,7 +74,6 @@ const BlankMemoView = styled.View`
   height: 174px;
 
   flex: none;
-  order: 1;
   flex-grow: 0;
   margin-top: 80px;
 `
@@ -80,35 +89,22 @@ const BlankMemoText = styled.Text`
   text-align: center;
   letter-spacing: -0.6px;
   color: ${ColorPalette.BlueGray_4};
-
-  flex: none;
-  flex-grow: 0;
 `
 const BlankMemoBtn = styled.TouchableOpacity`
   width: 128px;
   height: 48px;
-
-  /* Main/Main Dark Color(700) */
-
   background: #26344a;
   border-radius: 4px;
-  flex: none;
-  flex-grow: 0;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
 `
 const BlankBtnText = styled.Text`
-  position: absolute;
-  height: 18px;
-  padding: 15px 38px;
-
   font-family: ${Typo.Button_600};
   font-size: 15px;
   line-height: 18px;
-
-  display: flex;
-  align-items: center;
-  text-align: center;
   letter-spacing: -0.6px;
-
+  margin-left: 38px;
   color: #ffffff;
 `
 
@@ -120,9 +116,14 @@ interface Props {
 }
 
 const MemoCollection = ({ onPress, memos }: Props) => {
+  const navigation = useNavigation<RouterNavigationProps>()
+  const onCardPress = (memo: IMemo) => {
+    navigation.navigate('MemoPage', { memo })
+  }
+
   return (
     <MemoCollectionView>
-      <TopText>최근 작성한 메모</TopText>
+      <TopText>메모 모음</TopText>
       <MemoBtn onPress={onPress}>
         <RightArrow source={require('../../assets/images/icon_more.png')} />
       </MemoBtn>
@@ -138,9 +139,13 @@ const MemoCollection = ({ onPress, memos }: Props) => {
             </BlankMemoBtn>
           </BlankMemoView>
         ) : (
-          memos.map((memo, idx) => (
-            <MemoCard memo={memo} key={idx} main={false} />
-          ))
+          <MemoCardsView horizontal={true}>
+            {memos.map((memo, idx) => (
+              <MemoCardBtn onPress={() => onCardPress(memo)} key={idx}>
+                <MemoCard memo={memo} key={idx} main={false} />
+              </MemoCardBtn>
+            ))}
+          </MemoCardsView>
         )}
       </MemoView>
     </MemoCollectionView>

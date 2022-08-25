@@ -43,6 +43,8 @@ export type IDay = [
 
 const DAYS = ['일', '월', '화', '수', '목', '금', '토']
 
+const QUARTZ_DAYS = 'SUN,MON,TUE,WED,THU,FRI,SAT'.split(',')
+
 interface Props {
   onChange: (cron: string) => void
 }
@@ -63,8 +65,9 @@ const DayPicker = ({ onChange }: Props) => {
       const newDays: IDay = [...oldDays]
       newDays[index] = !newDays[index]
       const cron = newDays
-        .map((day, dayIndex) => (day ? dayIndex + 1 + '' : ''))
-        .filter(day => day.length > 0)
+        .map((day, dayIndex) => (day ? dayIndex : -1))
+        .filter(day => day > -1)
+        .map(day => QUARTZ_DAYS[day])
         .join(',')
       if (onChange) {
         onChange(cron)

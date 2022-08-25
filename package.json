@@ -1,6 +1,6 @@
 {
   "name": "inandout",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "repository": {
     "type": "git",
@@ -60,6 +60,7 @@
     "react-native-screens": "^3.15.0",
     "react-native-svg": "^12.4.4",
     "react-native-toast-notifications": "^3.3.1",
+    "react-native-webview": "^11.23.0",
     "recoil": "^0.7.4"
   },
   "devDependencies": {

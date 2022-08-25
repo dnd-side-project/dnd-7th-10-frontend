@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native'
 import useHeaderEvent from '../../hooks/useHeaderEvent'
 import Input from './Input'
+import { RouterNavigationProps } from '../../pages/Router'
 
 const HeaderBar = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
@@ -110,7 +111,7 @@ interface Props {
   hideBack?: boolean
   search?: boolean
   onSearchClose?: () => void
-  onBackPress?: () => Promise<boolean> | boolean
+  onBackPress?: () => Promise<boolean> | boolean | Promise<void> | void
 }
 
 const Header = ({
@@ -123,20 +124,20 @@ const Header = ({
   onSearchClose,
   onBackPress
 }: PropsWithChildren<Props>) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<RouterNavigationProps>()
   const { handlers } = useHeaderEvent()
 
   const handleBackPress = async () => {
-    let prevent = false
     if (onBackPress) {
-      prevent = await !onBackPress()
-    }
-    if (search) {
-      if (onSearchClose) {
-        onSearchClose()
+      onBackPress()
+    } else {
+      if (search) {
+        if (onSearchClose) {
+          onSearchClose()
+        }
+      } else {
+        navigation.goBack()
       }
-    } else if (prevent) {
-      navigation.goBack()
     }
   }
 

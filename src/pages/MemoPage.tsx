@@ -9,6 +9,7 @@ import { RouterParamList } from './Router'
 import api from '../lib/api'
 import { IMemo } from '../components/Remind/MemoCard'
 import useHeaderEvent from '../hooks/useHeaderEvent'
+import useModal from '../hooks/useModal'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -140,7 +141,6 @@ const MemoPage = ({
 }: NativeStackScreenProps<RouterParamList, 'MemoPage'>) => {
   const { memo } = route.params
   const { id, content, folderTitle, openGraph, registerDate } = memo
-  console.log(content)
   const { linkTitle, linkImage } = openGraph
   const date = registerDate.split('T')[0]
 
@@ -148,6 +148,7 @@ const MemoPage = ({
   const [text, setText] = useState(content)
 
   const patchData = { memoId: id, memoContent: text }
+  const { showModal } = useModal()
 
   const patchMemo = ({ memoId, memoContent }: Props) => {
     api
@@ -180,7 +181,19 @@ const MemoPage = ({
         setEdit(true)
       }
       if (name === 'trash') {
-        removeMemo({ memoId: id })
+        showModal(
+          '해당 메모를 삭제하시겠어요?',
+          `작성하신 메모를 삭제하면
+        다신 이 메모를 확인해 볼 수 없어요!`,
+          '수정할래요',
+          '삭제할래요'
+        ).then(value => {
+          if (value) {
+            setEdit(true)
+          } else {
+            removeMemo({ memoId: id })
+          }
+        })
       }
     },
     [id]

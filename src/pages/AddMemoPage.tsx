@@ -132,26 +132,35 @@ const iconButtons: IIconButton[] = [
 ]
 
 interface Props {
+  articleId?: string
+  content?: string
   memoId?: string
-  memoContent?: string
+
 }
 
 const MemoPage = ({
   route
-}: NativeStackScreenProps<RouterParamList, 'MemoPage'>) => {
-  const { memo } = route.params
+}: NativeStackScreenProps<RouterParamList, 'AddMemoPage'>) => {
+  const { article } = route.params
+  console.log(article)
 
-  const [edit, setEdit] = useState(false)
+  const [edit, setEdit] = useState(true)
   const [text, setText] = useState('')
+  const [memo, setMemo] = useState(null)
 
   const { showModal } = useModal()
 
-  const patchMemo = ({ memoId, memoContent }: Props) => {
+  const postMemo = ({ articleId, content }: Props) => {
     api
-      .patch<IMemo>(`/memo/${memoId}`, memoContent)
+      .post<IMemo>('/memo', {
+        articleId,
+        content
+      })
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data)
+          console.log('memo', response.data)
+          setMemo(response.data)
+
         }
       })
       .catch(error => {
@@ -193,13 +202,15 @@ const MemoPage = ({
         })
       }
     },
-    [memo?.id]
+    [article?.id]
+
   )
   const { addEventListener, removeEventListener } = useHeaderEvent()
 
   useEffect(() => {
     addEventListener(onClick)
-    if (memo === undefined) {
+    if (article === undefined) {
+
       setEdit(true)
       setText('')
     }
@@ -215,7 +226,8 @@ const MemoPage = ({
           iconButtons={edit ? undefined : iconButtons}
           save={edit ? true : false}
           onSavePress={() => {
-            patchMemo({ memoId: memo?.id, memoContent: text })
+            postMemo({ articleId: article?.id, content: text })
+
             setEdit(false)
           }}
         >
@@ -238,16 +250,17 @@ const MemoPage = ({
           <UrlView>
             <UrlImg
               source={{
-                uri: memo
-                  ? memo.openGraph.linkImage
-                  : 'https://via.placeholder.com/1200x630'
+                uri: article
+                  ? article.openGraph.linkImage
+                  : 'https://via.placeholder.com/16x16'
               }}
             />
-            <UrlFolder>{memo?.folderTitle}</UrlFolder>
+            <UrlFolder>{article?.folderTitle}</UrlFolder>
             <UrlTitleComponent>
-              <UrlTitle>{memo?.openGraph.linkTitle}</UrlTitle>
+              <UrlTitle>{article?.openGraph.linkTitle}</UrlTitle>
             </UrlTitleComponent>
-            <UrlDate>{memo?.registerDate.split('T')[0]}</UrlDate>
+            <UrlDate>{article?.registerDate.split('T')[0]}</UrlDate>
+
           </UrlView>
         </MemoCardsView>
       </ScrollView>

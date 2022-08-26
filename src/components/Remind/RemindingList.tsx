@@ -4,6 +4,8 @@ import LinkCard from './LinkCard'
 import { ILink } from './LinkCard'
 import { Typo, ColorPalette } from '../../styles/variable'
 import Empty from '../Common/Empty'
+import { TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const RemindingListView = styled.View`
   width: 414px;
@@ -47,6 +49,7 @@ const CardView = styled.ScrollView`
 `
 
 const RemindingList = ({ onPress, list }: Props) => {
+  const navigation = useNavigation()
   return (
     <RemindingListView>
       <TopView>
@@ -63,7 +66,14 @@ const RemindingList = ({ onPress, list }: Props) => {
       {list.length !== 0 ? (
         <CardView horizontal={true}>
           {list.map((link, idx) => (
-            <LinkCard link={link} key={idx} />
+            <TouchableOpacity
+              key={idx}
+              onPress={() =>
+                navigation.navigate('LinkContents', { articleId: link.id })
+              }
+            >
+              <LinkCard link={link} key={idx} />
+            </TouchableOpacity>
           ))}
         </CardView>
       ) : (

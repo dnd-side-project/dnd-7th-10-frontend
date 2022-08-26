@@ -9,7 +9,6 @@ import Empty from '../Common/Empty'
 
 const MemoCollectionView = styled.View`
   background-color: #ffffff;
-  width: 414px;
   height: 450px;
   flex: none;
   flex-grow: 0;
@@ -35,7 +34,6 @@ const TopText = styled.Text`
 const MemoCardsView = styled.ScrollView`
   height: 400px;
   padding: 10px 0px;
-  width: 414px;
 `
 const MemoCardBtn = styled.TouchableOpacity`
   height: 330px;
@@ -56,7 +54,7 @@ const MemoBtn = styled.TouchableOpacity`
   position: absolute;
   width: 24px;
   height: 24px;
-  left: 366px;
+  right: 24px;
   top: 24px;
 `
 

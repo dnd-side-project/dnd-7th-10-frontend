@@ -19,7 +19,7 @@ import useFolderList from '../components/Home/FolderList.hook'
 import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types'
 import { ITag } from '../recoil/tags'
 import useToast, { createWarnToast, ToastOffset } from '../hooks/useToast'
-import { Platform, TextInput } from 'react-native'
+import { TextInput } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { quicklinkAtom } from '../recoil/global'
 import { isValidUrl } from '../lib/urlcheck'
@@ -33,7 +33,7 @@ const LinkContentScroll = styled.ScrollView`
   flex: 1;
 `
 
-const LinkAddContentView = styled.KeyboardAvoidingView`
+const LinkAddContentView = styled.View`
   ${backgroundWithColor('gray_1')}
   padding: 0 24px;
   flex: 1;
@@ -59,7 +59,7 @@ const LinkAddInputView = styled.View<InputViewProps>`
 
 const containerStyle = { flexGrow: 1 }
 
-const LinkAdd = ({
+const LinkEdit = ({
   route
 }: NativeStackScreenProps<RouterParamList, 'LinkAdd'>) => {
   const navigation = useNavigation<RouterNavigationProps>()
@@ -187,9 +187,7 @@ const LinkAdd = ({
     <LinkAddPageView>
       <Header>링크추가</Header>
       <LinkContentScroll contentContainerStyle={containerStyle}>
-        <LinkAddContentView
-          behavior={Platform.OS === 'android' ? 'padding' : 'height'}
-        >
+        <LinkAddContentView>
           <SectionTitle title="링크 URL" />
           <SectionContent>
             <Input
@@ -216,7 +214,6 @@ const LinkAdd = ({
                 selectedIds={tagIds}
                 onTagPress={onTagPress}
                 onRemovePress={onTagRemovePress}
-                border={true}
               />
             )}
           </SectionContent>
@@ -241,4 +238,4 @@ const LinkAdd = ({
   )
 }
 
-export default LinkAdd
+export default LinkEdit

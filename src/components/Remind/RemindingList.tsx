@@ -8,7 +8,6 @@ import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 const RemindingListView = styled.View`
-  width: 414px;
   height: 376px;
   flex: none;
   flex-grow: 0
@@ -45,7 +44,8 @@ interface Props {
 
 const CardView = styled.ScrollView`
   flex-direction: row;
-  height: 250px;
+  height: 300px;
+  padding-left: 10px;
 `
 
 const RemindingList = ({ onPress, list }: Props) => {

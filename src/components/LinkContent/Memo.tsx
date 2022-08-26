@@ -42,7 +42,7 @@ const Memo = ({ memo }: Props) => {
     <MemoContent>
       <TopView>
         <MemoImage source={require('../../assets/images/icon_memo.png')} />
-        <MemoDate>{memo.registerDate}</MemoDate>
+        <MemoDate>{memo.registerDate.split('T')[0]}</MemoDate>
       </TopView>
       <MemoText>{memo.content}</MemoText>
     </MemoContent>

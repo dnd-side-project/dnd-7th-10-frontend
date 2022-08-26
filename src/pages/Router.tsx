@@ -1,6 +1,10 @@
-import { NavigationProp, ParamListBase } from '@react-navigation/native'
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation
+} from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Modal from '../components/Common/Modal'
 import FolderAdd from './FolderAdd'
 import FolderContent from './FolderContent'
@@ -16,7 +20,17 @@ import RemindingSetup from './RemindingSetup'
 import RemindingGather from './RemindingGather'
 import AddMemoPage from './AddMemoPage'
 import Browser from './Browser'
+import RemindingNotice from './RemindingNotice'
+import { useRecoilState } from 'recoil'
+import { noticeAtom } from '../recoil/global'
+import RemindingListPage from './RemindingListPage'
+
 const Stack = createNativeStackNavigator<RouterParamList>()
+
+export interface INoticeData {
+  articleId: string
+  remindId: string
+}
 
 export interface RouterParamList extends ParamListBase {
   Login: undefined
@@ -56,11 +70,25 @@ export interface RouterParamList extends ParamListBase {
         readable?: boolean
       }
     | undefined
+
+  RemindingNotice: INoticeData
+  RemindingList: undefined
 }
 
 export type RouterNavigationProps = NavigationProp<RouterParamList>
 
 const Router = () => {
+  const [notice, setNotice] = useRecoilState(noticeAtom)
+  const navigation = useNavigation<RouterNavigationProps>()
+
+  useEffect(() => {
+    if (notice) {
+      if (navigation.getState()) {
+        navigation.navigate('RemindingNotice', notice)
+      }
+    }
+  }, [notice, setNotice, navigation])
+
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -76,6 +104,8 @@ const Router = () => {
         <Stack.Screen name="LinkContents" component={LinkContents} />
         <Stack.Screen name="RemindingSetup" component={RemindingSetup} />
         <Stack.Screen name="RemindingGather" component={RemindingGather} />
+        <Stack.Screen name="RemindingNotice" component={RemindingNotice} />
+        <Stack.Screen name="RemindingList" component={RemindingListPage} />
         <Stack.Screen name="Browser" component={Browser} />
       </Stack.Navigator>
       <Modal />

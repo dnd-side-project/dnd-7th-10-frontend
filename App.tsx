@@ -1,12 +1,12 @@
 import styled from '@emotion/native'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import React, { useEffect } from 'react'
 import { RecoilRoot, useSetRecoilState } from 'recoil'
-import Router from './src/pages/Router'
+import Router, { INoticeData, RouterNavigationProps } from './src/pages/Router'
 import messaging from '@react-native-firebase/messaging'
-import { Alert, AppRegistry } from 'react-native'
+import { AppRegistry } from 'react-native'
 import ToastContainer from './src/components/Common/ToastContainer'
-import { fcmTokenAtom } from './src/recoil/global'
+import { fcmTokenAtom, noticeAtom } from './src/recoil/global'
 
 const SafeArea = styled.SafeAreaView`
   background: white;
@@ -14,10 +14,14 @@ const SafeArea = styled.SafeAreaView`
 `
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in background', remoteMessage)
+  // console.log('Message handled in background', remoteMessage)
+  console.log(JSON.stringify(remoteMessage, null, 2))
 })
 
 const App = () => {
+  const navigation = useNavigation<RouterNavigationProps>()
+
+  const setNotice = useSetRecoilState(noticeAtom)
   const setToken = useSetRecoilState(fcmTokenAtom)
   useEffect(() => {
     const messagingInstance = messaging()
@@ -25,33 +29,51 @@ const App = () => {
       .getToken()
       .then(token => {
         setToken(token)
-        console.log('token, ' + token)
       })
       .catch(e => {
         console.error(e)
       })
+    messagingInstance.onNotificationOpenedApp(remoteMessage => {
+      const noticeData: INoticeData = {
+        articleId: '',
+        remindId: '',
+        ...(remoteMessage.data as Partial<INoticeData>)
+      }
+      setNotice(noticeData)
+    })
+    messagingInstance.getInitialNotification().then(remoteMessage => {
+      if (remoteMessage) {
+        const noticeData: INoticeData = {
+          articleId: '',
+          remindId: '',
+          ...(remoteMessage.data as Partial<INoticeData>)
+        }
+        setNotice(noticeData)
+      }
+    })
     const unsubscribe = messagingInstance.onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage))
-      console.warn('warn')
-      console.log(remoteMessage)
+      const noticeData: INoticeData = {
+        articleId: '',
+        remindId: '',
+        ...(remoteMessage.data as Partial<INoticeData>)
+      }
+      navigation.navigate('RemindingNotice', noticeData)
     })
 
     return unsubscribe
   }, [])
 
-  return (
-    <SafeArea>
-      <NavigationContainer>
-        <Router />
-      </NavigationContainer>
-      <ToastContainer />
-    </SafeArea>
-  )
+  return <Router />
 }
 
 const RecoilApp = () => (
   <RecoilRoot>
-    <App />
+    <SafeArea>
+      <NavigationContainer>
+        <App />
+      </NavigationContainer>
+      <ToastContainer />
+    </SafeArea>
   </RecoilRoot>
 )
 

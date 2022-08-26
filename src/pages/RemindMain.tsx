@@ -76,7 +76,7 @@ const RemindMain = () => {
   )
 
   const onRemindPress = () => {
-    navigation.navigate('RemindingGather')
+    navigation.navigate('RemindingList')
   }
 
   const onMemoPress = () => {

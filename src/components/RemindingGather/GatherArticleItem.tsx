@@ -84,8 +84,12 @@ const GatherArticleItem = ({
           <SVG.BookmarkFilled stroke={ColorPalette.White} />
         </BookmarkView>
         <CardContent>
-          <GatherFolderNameText>{folderName}</GatherFolderNameText>
-          <GatherArticleNameText>{articleName}</GatherArticleNameText>
+          <GatherFolderNameText numberOfLines={1}>
+            {folderName}
+          </GatherFolderNameText>
+          <GatherArticleNameText numberOfLines={1}>
+            {articleName}
+          </GatherArticleNameText>
           {tags && (
             <CardTagList>
               {tags.map(tag => (

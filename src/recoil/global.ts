@@ -1,5 +1,6 @@
 import { atom } from 'recoil'
 import { VariantType } from '../components/Common/Toast'
+import { INoticeData } from '../pages/Router'
 
 export interface IModalState {
   isModalOpen: boolean
@@ -56,4 +57,9 @@ export const quicklinkLastAtom = atom<string>({
 export const fcmTokenAtom = atom<string>({
   key: 'fcmToken',
   default: ''
+})
+
+export const noticeAtom = atom<INoticeData | null>({
+  key: 'notice',
+  default: null
 })

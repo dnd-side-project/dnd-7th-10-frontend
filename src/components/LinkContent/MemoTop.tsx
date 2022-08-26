@@ -3,6 +3,8 @@ import styled from '@emotion/native'
 import { Typo } from '../../styles/variable'
 import { fontWithColor } from '../../styles/fonts'
 import { flexWithAlign } from '../../styles/flexbox'
+import { useNavigation } from '@react-navigation/native'
+import { IArticle } from '../../recoil/folders'
 
 const MemoTopView = styled.View`
   ${flexWithAlign('center', 'space-between', 'row')}
@@ -22,12 +24,16 @@ const MemoIcon = styled.Image`
   height: 24px;
   margin-left: 12px;
 `
+interface Props {
+  article: IArticle
+}
 
-const MemoTop = () => {
+const MemoTop = ({ article }: Props) => {
+  const navigation = useNavigation()
   return (
     <MemoTopView>
       <MemoTitle>메모</MemoTitle>
-      <MemoBtn>
+      <MemoBtn onPress={() => navigation.navigate('AddMemoPage', { article })}>
         <MemoIcon source={require('../../assets/images/plus.png')} />
       </MemoBtn>
     </MemoTopView>

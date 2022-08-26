@@ -23,6 +23,8 @@ const LinkTitle = styled.Text`
   ${fontWithColor('BlueGray_5')}
   ${Typo.Heading1_600}
   margin-bottom: 10px;
+  height: 30px;
+  overflow: hidden;
 `
 
 const LinkText = styled.Text`
@@ -30,6 +32,8 @@ const LinkText = styled.Text`
   ${Typo.Body2_600}
   line-height: 20px;
   margin-bottom: 46px;
+  height: 105px;
+  overflow: hidden;
 `
 
 const LinkBottomView = styled.View`
@@ -74,7 +78,7 @@ const LinkContent = ({ article }: Props) => {
         <LinkTitle>{article.openGraph.linkTitle}</LinkTitle>
         <LinkText>{article.openGraph.linkDescription}</LinkText>
         <LinkBottomView>
-          <LinkDate>{article.registerDate}</LinkDate>
+          <LinkDate>{article.registerDate.split('T')[0]}</LinkDate>
           <LinkButtonView>
             <LinkBookmark>
               <SVG.Bookmark stroke={ColorPalette.LinkkleBlueGray} />

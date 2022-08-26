@@ -3,7 +3,7 @@ import styled from '@emotion/native'
 import MemoTop from './MemoTop'
 import Memo from './Memo'
 import { backgroundWithColor } from '../../styles/backgrounds'
-import { IMemo } from '../../recoil/folders'
+import { IArticle, IMemo } from '../../recoil/folders'
 import Empty from '../Common/Empty'
 
 const MemoContentView = styled.View`
@@ -22,12 +22,13 @@ const MemoEmpty = styled.View`
 
 interface Props {
   memos?: IMemo[]
+  article: IArticle
 }
 
-const MemoContent = ({ memos }: Props) => {
+const MemoContent = ({ memos, article }: Props) => {
   return (
     <MemoContentView>
-      <MemoTop />
+      <MemoTop article={article} />
       {memos && memos.length > 0 ? (
         <MemoContainer>
           {memos.map(memo => (
@@ -41,6 +42,8 @@ const MemoContent = ({ memos }: Props) => {
             source={require('../../assets/images/memo.png')}
             background={'White'}
             button
+            text="콘텐츠가 아무것도 없을 때의 경우
+메시지는 2줄을 작성해 주세요."
           />
         </MemoEmpty>
       )}

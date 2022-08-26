@@ -16,7 +16,6 @@ import RemindingSetup from './RemindingSetup'
 import RemindingGather from './RemindingGather'
 import AddMemoPage from './AddMemoPage'
 import Browser from './Browser'
-
 const Stack = createNativeStackNavigator<RouterParamList>()
 
 export interface RouterParamList extends ParamListBase {

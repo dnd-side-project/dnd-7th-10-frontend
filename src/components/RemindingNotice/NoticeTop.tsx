@@ -15,7 +15,6 @@ const NoticeFrameImage = styled.Image`
   position: absolute;
   right: 0;
   top: 0;
-  width: 414px;
   height: 133px;
 `
 

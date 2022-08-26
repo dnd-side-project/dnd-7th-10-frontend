@@ -19,7 +19,6 @@ const MemoCardsView = styled.View`
   display: flex;
   align-items: flex-start;
   padding-top: 24px;
-  width: 414px;
   background: #ffffff;
 `
 
@@ -45,9 +44,8 @@ const MemoCardView = styled.View`
 `
 const UrlView = styled.View`
   height: 98px;
-  width: 414px;
   border-radius: 0px;
-  background: #ffffff;
+  width: 414px;
   margin-top: 4px;
 `
 

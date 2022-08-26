@@ -17,6 +17,7 @@ interface Props {
   onTagPress?: (tagId: string, selected: boolean) => void
   onRemovePress?: (tagId: string) => void
   noMargin?: boolean
+  border?: boolean
 }
 
 const TagList = ({
@@ -25,7 +26,8 @@ const TagList = ({
   selectedIds,
   onTagPress,
   onRemovePress,
-  noMargin
+  noMargin,
+  border
 }: Props) => {
   function onTagPressCallback(tagId: string, selected: boolean) {
     if (onTagPress) {
@@ -55,6 +57,7 @@ const TagList = ({
               text={tag.tagName}
               selected={selected}
               onRemovePress={() => onTagRemovePress(tag.tagId)}
+              border={border}
             />
           </TouchableOpacity>
         )

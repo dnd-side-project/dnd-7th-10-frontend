@@ -64,6 +64,8 @@ interface Props {
 }
 
 const LinkContent = ({ article }: Props) => {
+  const date = article.registerDate.split('T')[0].split('-').join('.')
+
   return (
     <LinkView>
       <LinkImage
@@ -78,7 +80,7 @@ const LinkContent = ({ article }: Props) => {
         <LinkTitle>{article.openGraph.linkTitle}</LinkTitle>
         <LinkText>{article.openGraph.linkDescription}</LinkText>
         <LinkBottomView>
-          <LinkDate>{article.registerDate.split('T')[0]}</LinkDate>
+          <LinkDate>{date}</LinkDate>
           <LinkButtonView>
             <LinkBookmark>
               <SVG.Bookmark stroke={ColorPalette.LinkkleBlueGray} />

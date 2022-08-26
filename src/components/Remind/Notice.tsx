@@ -10,7 +10,6 @@ import Empty from '../Common/Empty'
 
 const NoticeView = styled.View`
   background-color: #ffffff;
-  width: 414px;
   height: 276px;
   margin-bottom: 4px;
 `
@@ -33,17 +32,16 @@ const AlarmCardBar = styled.ScrollView`
   display: flex;
   flex-direction: row;
   position: absolute;
-  width: 414px;
   height: 200px;
-  left: 24px;
   top: 72px;
+  margin-left: 24px;
 `
 
 const AddIconBtn = styled.TouchableOpacity`
   position: absolute;
   height: 24px;
   width: 24px;
-  left: 366px;
+  right: 24px;
   top: 24px;
   border-radius: 0px;
 `

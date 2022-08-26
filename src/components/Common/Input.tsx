@@ -25,7 +25,7 @@ const InputView = styled.View<InputViewProps>`
 const InputTextInput = styled.TextInput`
   ${fontWithColorFamily('gray_7', 'Regular')}
   font-size: 16px;
-  width: 220px;
+  padding-right: 30px;
 `
 const SearchCloseTouchable = styled.TouchableOpacity<{ small?: boolean }>`
   position: absolute;

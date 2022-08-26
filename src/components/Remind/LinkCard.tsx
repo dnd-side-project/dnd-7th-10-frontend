@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
-import { shadow } from '../../styles/backgrounds'
+import { backgroundWithColor, shadow } from '../../styles/backgrounds'
 
 const LinkCardView = styled.View`
+  ${backgroundWithColor('White')}
   width: 175px;
   height: 238px;
-  background: #ffffff;
   box-shadow: ${shadow};
   border-radius: 4px;
   margin-right: 16px;
@@ -20,7 +20,7 @@ const LinkDescView = styled.View`
 `
 const LinkTitle = styled.Text`
   color: ${ColorPalette.BlueGray_3};
-  font-family: ${Typo.Detail1_400} 
+  font-family: ${Typo.Detail1_400};
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
@@ -29,14 +29,14 @@ const LinkTitle = styled.Text`
   overflow: hidden;
 `
 const LinkDesc = styled.Text`
-font-family: ${Typo.Heading4_600}
-width: 143px;
-height: 24px;
-font-size: 16px;
-line-height: 24px;
-letter-spacing: -0.6px;
-overflow: hidden;
-color: ${ColorPalette.BlueGray_4}
+  font-family: ${Typo.Heading4_600};
+  width: 143px;
+  height: 24px;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  overflow: hidden;
+  color: ${ColorPalette.BlueGray_4};
 `
 
 const TagBar = styled.View`
@@ -106,7 +106,9 @@ const LinkCard = ({ link }: Props) => {
   const { linkDescription, linkImage, linkTitle } = openGraph
   return (
     <LinkCardView>
-      <LinkImage source={{ uri: linkImage }} />
+      <LinkImage
+        source={{ uri: linkImage || 'https://via.placeholder.com/1200x630' }}
+      />
       <LinkDescView>
         <LinkTitle>{linkTitle}</LinkTitle>
         <LinkDesc>{linkDescription}</LinkDesc>

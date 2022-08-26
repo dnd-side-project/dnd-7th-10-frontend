@@ -11,20 +11,21 @@ function getTagBackground(props: TagViewProps) {
   if (props.fixed) {
     return backgroundWithColor('gray_5')
   }
-  return backgroundWithColor('gray_3')
+  return backgroundWithColor('background_1')
 }
 
 function getTagColor(props: TagViewProps) {
   if (props.selected || props.fixed) {
     return fontWithColorFamily('gray_1', 'Regular')
   }
-  return fontWithColorFamily('gray_6', 'Regular')
+  return fontWithColorFamily('BlueGray_4', 'Regular')
 }
 
 interface TagViewProps {
   selected?: boolean
   fixed?: boolean
   noMargin?: boolean
+  border?: boolean
 }
 
 const TagView = styled.View<TagViewProps>`
@@ -32,6 +33,8 @@ const TagView = styled.View<TagViewProps>`
   ${flexWithAlign('center', 'center', 'row')}
   height: 35px;
   border-radius: 30px;
+  border: ${props =>
+    props.border ? '1.3px solid #DEEBF5;' : '1.3px solid #5e7294'};
   padding: 0 16px;
   margin: ${props => (props.noMargin ? '0 8px 0 0' : '0 8px 12px 0')};
 `
@@ -39,7 +42,7 @@ const TagView = styled.View<TagViewProps>`
 const TagText = styled.Text<TagViewProps>`
   ${getTagColor}
   font-size: 16px;
-  line-height: 35px;
+  line-height: 24px;
 `
 
 const TagRemoveButton = styled.TouchableOpacity`
@@ -57,6 +60,7 @@ interface Props extends TagViewProps {
   remove?: boolean
   onRemovePress?: () => void
   noMargin?: boolean
+  border?: boolean
 }
 
 const tagRemoveButtonInsets = { top: 10, bottom: 10, left: 10, right: 10 }
@@ -67,7 +71,8 @@ const Tag = ({
   selected,
   fixed,
   onRemovePress,
-  noMargin
+  noMargin,
+  border
 }: Props) => {
   const getTagIcon = useCallback(() => {
     if (selected || fixed) {
@@ -77,7 +82,12 @@ const Tag = ({
   }, [selected, fixed])
 
   return (
-    <TagView selected={selected} fixed={fixed} noMargin={noMargin}>
+    <TagView
+      selected={selected}
+      fixed={fixed}
+      noMargin={noMargin}
+      border={border}
+    >
       <TagText selected={selected} fixed={fixed}>
         {text}
       </TagText>

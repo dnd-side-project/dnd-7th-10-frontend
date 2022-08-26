@@ -20,7 +20,7 @@ interface Props {
 }
 
 const FolderSelectList = ({ folderId, onChange }: Props) => {
-  const [selected, setSelected] = useState<number>(-1)
+  const [selected, setSelected] = useState<number>(0)
   const [folderIds] = useFolderList()
 
   useEffect(() => {

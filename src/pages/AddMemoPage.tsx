@@ -19,7 +19,6 @@ const MemoCardsView = styled.View`
   display: flex;
   align-items: flex-start;
   padding-top: 24px;
-  width: 414px;
   background: #ffffff;
 `
 
@@ -45,9 +44,8 @@ const MemoCardView = styled.View`
 `
 const UrlView = styled.View`
   height: 98px;
-  width: 414px;
   border-radius: 0px;
-  background: #ffffff;
+  width: 414px;
   margin-top: 4px;
 `
 
@@ -135,7 +133,6 @@ interface Props {
   articleId?: string
   content?: string
   memoId?: string
-
 }
 
 const MemoPage = ({
@@ -160,7 +157,6 @@ const MemoPage = ({
         if (response.status === 200) {
           console.log('memo', response.data)
           setMemo(response.data)
-
         }
       })
       .catch(error => {
@@ -203,14 +199,12 @@ const MemoPage = ({
       }
     },
     [article?.id]
-
   )
   const { addEventListener, removeEventListener } = useHeaderEvent()
 
   useEffect(() => {
     addEventListener(onClick)
     if (article === undefined) {
-
       setEdit(true)
       setText('')
     }
@@ -227,7 +221,6 @@ const MemoPage = ({
           save={edit ? true : false}
           onSavePress={() => {
             postMemo({ articleId: article?.id, content: text })
-
             setEdit(false)
           }}
         >
@@ -260,7 +253,6 @@ const MemoPage = ({
               <UrlTitle>{article?.openGraph.linkTitle}</UrlTitle>
             </UrlTitleComponent>
             <UrlDate>{article?.registerDate.split('T')[0]}</UrlDate>
-
           </UrlView>
         </MemoCardsView>
       </ScrollView>

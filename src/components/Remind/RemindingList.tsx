@@ -6,12 +6,14 @@ import { Typo, ColorPalette } from '../../styles/variable'
 import Empty from '../Common/Empty'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from '../../pages/Router'
+import { backgroundWithColor } from '../../styles/backgrounds'
 
 const RemindingListView = styled.View`
   height: 376px;
   flex: none;
-  flex-grow: 0
-  padding:24px;
+  flex-grow: 0;
+  padding: 24px;
   background-color: #ffffff;
   margin-bottom: 4px;
 `
@@ -43,13 +45,14 @@ interface Props {
 }
 
 const CardView = styled.ScrollView`
+  ${backgroundWithColor('White')}
   flex-direction: row;
   height: 300px;
   padding-left: 10px;
 `
 
 const RemindingList = ({ onPress, list }: Props) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<RouterNavigationProps>()
   return (
     <RemindingListView>
       <TopView>
@@ -81,7 +84,7 @@ const RemindingList = ({ onPress, list }: Props) => {
           text={`북마크한 링크들이 없어요!${'\n'}리마인딩할 링크들을 모아볼까요?`}
           button
           buttonText="바로가기"
-          background="white"
+          background="White"
           onButtonPress={onPress}
         />
       )}

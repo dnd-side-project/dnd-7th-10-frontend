@@ -23,7 +23,7 @@ import Browser from './Browser'
 import RemindingNotice from './RemindingNotice'
 import { useRecoilState } from 'recoil'
 import { noticeAtom } from '../recoil/global'
-import RemindingList from './RemindingList'
+import RemindingListPage from './RemindingListPage'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -105,7 +105,7 @@ const Router = () => {
         <Stack.Screen name="RemindingSetup" component={RemindingSetup} />
         <Stack.Screen name="RemindingGather" component={RemindingGather} />
         <Stack.Screen name="RemindingNotice" component={RemindingNotice} />
-        <Stack.Screen name="RemindingList" component={RemindingList} />
+        <Stack.Screen name="RemindingList" component={RemindingListPage} />
         <Stack.Screen name="Browser" component={Browser} />
       </Stack.Navigator>
       <Modal />

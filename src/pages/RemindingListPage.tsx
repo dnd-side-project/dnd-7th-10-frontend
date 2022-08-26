@@ -8,7 +8,7 @@ const RemindDescView = styled.View`
   flex: 1;
 `
 
-const RemindingList = () => {
+const RemindingListPage = () => {
   const iconButtons: IIconButton[] = [
     {
       name: 'folder-content-search',
@@ -24,4 +24,4 @@ const RemindingList = () => {
   )
 }
 
-export default RemindingList
+export default RemindingListPage

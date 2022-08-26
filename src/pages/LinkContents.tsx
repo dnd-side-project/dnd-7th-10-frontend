@@ -42,7 +42,6 @@ const LinkContents = ({
   ]
 
   const { articleId } = route.params
-  console.log(articleId)
 
   const {
     isLoading,
@@ -86,7 +85,10 @@ const LinkContents = ({
             <>
               <LinkContent article={articleDetail} />
               <TagBar tags={articleDetail.tags} />
-              <MemoContent memos={articleDetail.memos} />
+              <MemoContent
+                memos={articleDetail.memos}
+                article={articleDetail}
+              />
             </>
           )}
           {isError && <Text>Error</Text>}

@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native'
 import useHeaderEvent from '../../hooks/useHeaderEvent'
 import Input from './Input'
+import { RouterNavigationProps } from '../../pages/Router'
 
 const HeaderBar = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
@@ -33,6 +34,7 @@ const HeaderIconButton = styled(HeaderIcon)`
 const HeaderText = styled.Text`
   ${fontWithColorFamily('gray_7', 'SemiBold')}
   font-size: 20px;
+  flex: 1;
 `
 
 const SaveButton = styled.TouchableOpacity`
@@ -47,6 +49,7 @@ const SaveButtonText = styled.Text`
 const IconButtonsView = styled.View`
   margin-left: auto;
   flex-direction: row;
+  flex-shrink: 0;
 `
 
 const HeaderSearchView = styled.View`
@@ -110,6 +113,7 @@ interface Props {
   hideBack?: boolean
   search?: boolean
   onSearchClose?: () => void
+  onBackPress?: () => Promise<boolean> | boolean | Promise<void> | void
 }
 
 const Header = ({
@@ -119,18 +123,23 @@ const Header = ({
   onSavePress,
   hideBack,
   search,
-  onSearchClose
+  onSearchClose,
+  onBackPress
 }: PropsWithChildren<Props>) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<RouterNavigationProps>()
   const { handlers } = useHeaderEvent()
 
-  const onBackPress = () => {
-    if (search) {
-      if (onSearchClose) {
-        onSearchClose()
-      }
+  const handleBackPress = async () => {
+    if (onBackPress) {
+      onBackPress()
     } else {
-      navigation.goBack()
+      if (search) {
+        if (onSearchClose) {
+          onSearchClose()
+        }
+      } else {
+        navigation.goBack()
+      }
     }
   }
 
@@ -144,7 +153,7 @@ const Header = ({
   return (
     <HeaderBar style={styles.shadow}>
       {!hideBack && (
-        <TouchableOpacity onPress={onBackPress} hitSlop={backButtonInsets}>
+        <TouchableOpacity onPress={handleBackPress} hitSlop={backButtonInsets}>
           <HeaderIcon
             source={require('../../assets/images/chevron-left.png')}
             resizeMode="contain"

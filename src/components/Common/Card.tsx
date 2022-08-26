@@ -92,6 +92,22 @@ const MemoTouchable = styled.TouchableOpacity`
   position: absolute;
 `
 
+const InstantTouchable = styled.TouchableOpacity`
+  ${flexWithAlign('center', 'center')}
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 3px;
+  width: 86px;
+  height: 34px;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+`
+
+const InstantText = styled.Text`
+  ${fontWithColor('BlueGray_4')}
+  ${Typo.Button_600}
+`
+
 const iconButtonInsets = { top: 8, bottom: 8, left: 8, right: 8 }
 
 interface Props {
@@ -104,6 +120,8 @@ interface Props {
   bookmarked?: boolean
   memo?: boolean
   onBookmarkPress?: () => void
+  instant?: boolean
+  onInstantPress?: () => void
 }
 
 const Card = ({
@@ -115,7 +133,9 @@ const Card = ({
   bookmark,
   bookmarked,
   memo,
-  onBookmarkPress
+  onBookmarkPress,
+  instant,
+  onInstantPress
 }: Props) => {
   const image = useMemo(() => {
     if (typeof source === 'string') {
@@ -129,7 +149,13 @@ const Card = ({
   return (
     <CardView style={shadow}>
       <CardCoverImage source={image} resizeMode="cover" />
-      <CardCoverOverlay />
+      <CardCoverOverlay>
+        {instant && (
+          <InstantTouchable onPress={onInstantPress}>
+            <InstantText>바로 열기</InstantText>
+          </InstantTouchable>
+        )}
+      </CardCoverOverlay>
       {favicon && <CardFavicon source={favicon} resizeMode="contain" />}
       {(bookmark || bookmarked) && (
         <BookmarkTouchable hitSlop={iconButtonInsets} onPress={onBookmarkPress}>

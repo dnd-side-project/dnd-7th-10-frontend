@@ -8,6 +8,8 @@ import { RouterNavigationProps } from './Router'
 import useAuth from '../hooks/useAuth'
 import useToast, { createToast } from '../hooks/useToast'
 import kakao from '../lib/kakao'
+import { useRecoilValue } from 'recoil'
+import { noticeAtom } from '../recoil/global'
 
 const LoginBox = styled.View`
   ${backgroundWithColor('main_1')}
@@ -58,6 +60,7 @@ const Login = () => {
   const [needLogin, setNeedLogin] = useState<boolean>(false)
   const kakaoOpacity = useRef(new Animated.Value(0)).current
   const navigation = useNavigation<RouterNavigationProps>()
+  const notice = useRecoilValue(noticeAtom)
   const showToast = useToast()
 
   const { auth, login, setLoggedin, loginFromKeychain } = useAuth()
@@ -70,7 +73,11 @@ const Login = () => {
   useEffect(() => {
     if (auth.user) {
       showToast(createToast('logged in with ' + auth.user.username))
-      navigation.dispatch(StackActions.replace('Main'))
+      if (notice) {
+        navigation.navigate('RemindingNotice', notice)
+      } else {
+        navigation.dispatch(StackActions.replace('Main'))
+      }
     }
   }, [auth, login, navigation, showToast])
 
@@ -90,7 +97,11 @@ const Login = () => {
       if (response) {
         const { accessToken, refreshToken } = response
         setLoggedin(accessToken, refreshToken)
-        navigation.dispatch(StackActions.replace('Main'))
+        if (notice) {
+          navigation.navigate('RemindingNotice', notice)
+        } else {
+          navigation.dispatch(StackActions.replace('Main'))
+        }
       }
     })
   }

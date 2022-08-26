@@ -12,7 +12,7 @@ export interface IAuthResponse {
   refreshToken: string
 }
 
-interface IJwtStructure {
+export interface IJwtStructure {
   sub: string
   exp: number
   username: string
@@ -53,7 +53,11 @@ export default function useAuth() {
   function setLoggedin(accessToken: string, refreshToken: string) {
     const { username } = jwtDecode<IJwtStructure>(accessToken)
 
-    api.setToken!(accessToken)
+    api.setToken!(accessToken, refreshToken)
+
+    console.log('new token registered')
+    console.log(accessToken)
+    console.log(refreshToken)
 
     setAuth({
       user: {
@@ -77,25 +81,19 @@ export default function useAuth() {
       .then(credentials => {
         if (credentials) {
           const { username: accessToken, password: refreshToken } = credentials
-          api
-            .get('/folders')
-            .then(response => {
-              if (response.status === 200) {
-                setLoggedin(accessToken, refreshToken)
-                console.log(
-                  'loggined in with keychain ',
-                  accessToken,
-                  refreshToken
-                )
-              } else {
-                // failed
-                resetGenericPassword()
-              }
-            })
-            .catch(() => {
-              // failed
+          console.log('set token ', accessToken, refreshToken)
+          api.setToken!(accessToken, refreshToken)
+          console.log('refresh token')
+          api.refreshToken!(success => {
+            console.log(success)
+            if (success) {
+              setLoggedin(...api.getToken!())
+            } else {
               resetGenericPassword()
-            })
+            }
+          })
+        } else {
+          console.log('credentials not found')
         }
       })
       .catch(() => {

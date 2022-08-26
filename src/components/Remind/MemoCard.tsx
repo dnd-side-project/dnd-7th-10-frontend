@@ -26,14 +26,15 @@ const MemoCardDate = styled.Text`
   font-family: ${Typo.Detail2_400};
   color: ${ColorPalette.BlueGray_3};
 `
-const MemoCardText = styled.Text`
+const MemoCardText = styled.Text<{ main?: boolean }>`
   position: absolute;
-  width: 168px;
+  width: ${props => (props.main ? '100%' : '168px')};
   height: 164px;
-  left: 16px;
+  left: 0;
+  padding: 16px;
   top: 56px;
 
-  font-family: ${Typo.Body2_600}
+  font-family: ${Typo.Body2_600};
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
@@ -62,15 +63,15 @@ const UrlView = styled.View<ViewProps>`
 const UrlFolder = styled.Text<ViewProps>`
   position: absolute;
   width: ${props => (props.main === true ? '286px' : '30px')};
-  height: 18px
+  height: 18px;
   left: ${props => (props.main === true ? '64px' : '48px')};
-  bottom:${props => (props.main === true ? '38px' : '22px')};
+  bottom: ${props => (props.main === true ? '38px' : '22px')};
 
-  font-family: ${Typo.Detail2_400}
+  font-family: ${Typo.Detail2_400};
   font-size: 12px;
   line-height: 18px;
   letter-spacing: -0.6px;
-  color:${ColorPalette.BlueGray_3}
+  color: ${ColorPalette.BlueGray_3};
 `
 const UrlTitle = styled.Text`
   position: absolute;
@@ -79,14 +80,14 @@ const UrlTitle = styled.Text`
   left: 64px;
   bottom: 16px;
 
-  font-family: ${Typo.Heading4_600}
+  font-family: ${Typo.Heading4_600};
   font-size: 16px;
   line-height: 24px;
 
   display: flex;
   align-items: flex-end;
   letter-spacing: -0.6px;
-  color: ${ColorPalette.BlueGray_4}
+  color: ${ColorPalette.BlueGray_4};
 `
 
 const MemoIcon = styled.Image`
@@ -123,7 +124,7 @@ const MemoCard = ({ memo, main }: Props) => {
     <MemoCardView main={main}>
       <MemoIcon source={require('../../assets/images/memo.png')} />
       <MemoCardDate>{date}</MemoCardDate>
-      <MemoCardText>{content}</MemoCardText>
+      <MemoCardText main={main}>{content}</MemoCardText>
       <UrlView main={main}>
         <UrlImg
           source={{

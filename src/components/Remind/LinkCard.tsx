@@ -49,10 +49,10 @@ const TagBar = styled.View`
   margin-top: 16px;
 `
 const TagComponent = styled.View`
-  padding: 4px 8px;
+  padding: 2px 12px;
   margin-right: 10px;
-  width: 52px;
   height: 25px;
+  line-height: 25px;
   background-color: #5e7294;
   border-radius: 30px;
   color: #ffffff;
@@ -96,7 +96,7 @@ interface TProps {
 const TagView = ({ text }: TProps) => {
   return (
     <TagComponent>
-      <TagText>{text}</TagText>
+      <TagText numberOfLines={1}>{text}</TagText>
     </TagComponent>
   )
 }
@@ -110,7 +110,7 @@ const LinkCard = ({ link }: Props) => {
         source={{ uri: linkImage || 'https://via.placeholder.com/1200x630' }}
       />
       <LinkDescView>
-        <LinkTitle>{linkTitle}</LinkTitle>
+        <LinkTitle numberOfLines={1}>{linkTitle}</LinkTitle>
         <LinkDesc>{linkDescription}</LinkDesc>
         <TagBar>
           {tags.map((tag, idx) => (

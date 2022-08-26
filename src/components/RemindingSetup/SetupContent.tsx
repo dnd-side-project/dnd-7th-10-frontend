@@ -38,6 +38,7 @@ const SetupEmptyWrapper = styled.View`
 
 const RemindList = styled.View`
   padding: 24px 6px;
+  flex: 1;
 `
 
 const addButtonInsets = { top: 8, bottom: 8, left: 8, right: 8 }
@@ -56,7 +57,11 @@ const SetupContent = ({ articles }: Props) => {
   return (
     <SetupContentView>
       <SetupTitleView>
-        <SetupTitle>이 시간에 설정한{'\n'}링크가 아직 없어요!</SetupTitle>
+        <SetupTitle>
+          {articles.length > 0
+            ? `이 시간에 설정한\n링크가 ${articles.length}개 있어요!`
+            : '이 시간에 설정한\n링크가 아직 없어요!'}
+        </SetupTitle>
         <SetupPlusTouchable hitSlop={addButtonInsets} onPress={onAddPress}>
           <SVG.AddLight stroke={ColorPalette.LinkkleBlueGray} width="24" />
         </SetupPlusTouchable>
@@ -74,11 +79,23 @@ const SetupContent = ({ articles }: Props) => {
         </SetupEmptyWrapper>
       ) : (
         <RemindList>
+          {articles.length === 0 && (
+            <Empty
+              text={
+                '링크가 설정되지 않았어요!\n리마인딩 받을 링크를 모아보세요.'
+              }
+              background={'White'}
+              button
+            />
+          )}
           {articles.map(article => (
             <RemindItem
               key={article.articleId}
               folderName={article.folderName}
               articleName={article.articleName}
+              source={{
+                uri: article.articleImage || 'https://via.placeholder.com/16x16'
+              }}
             />
           ))}
         </RemindList>

@@ -27,9 +27,13 @@ const RemindingSetupScrollView = styled.ScrollView`
   flex: 1;
 `
 
-const RemindingSetupContent = styled.View``
+const RemindingSetupContent = styled.View`
+  flex: 1;
+`
 
 let isLoading = false
+
+const containerStyle = { flexGrow: 1 }
 
 const RemindingSetup = () => {
   const navigation = useNavigation<RouterNavigationProps>()
@@ -112,7 +116,10 @@ const RemindingSetup = () => {
       <Header save onSavePress={onSavePress}>
         알림 설정
       </Header>
-      <RemindingSetupScrollView scrollEnabled={!scrollLock}>
+      <RemindingSetupScrollView
+        scrollEnabled={!scrollLock}
+        contentContainerStyle={containerStyle}
+      >
         <RemindingSetupContent>
           <SetupTop isRemindOn={isRemindOn} setIsRemindOn={setIsRemindOff} />
           <SetupPicker onScrollChange={setScrollLock} onCronChange={setCron} />

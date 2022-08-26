@@ -81,7 +81,7 @@ const DayPicker = ({ onChange }: Props) => {
       {DAYS.map((day, index) => (
         <Pressable key={day} onPress={() => onPress(index)}>
           <DayItem selected={days[index]}>
-            <DayText>{day}</DayText>
+            <DayText selected={days[index]}>{day}</DayText>
           </DayItem>
         </Pressable>
       ))}

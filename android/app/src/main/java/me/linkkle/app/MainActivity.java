@@ -12,7 +12,7 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
     String keyHash = com.kakao.util.helper.Utility.getKeyHash(this /* context */);
-    Toast.makeText(context, keyHash, Toast.LENGTH_LONG).show();
+    Toast.makeText(this, keyHash, Toast.LENGTH_LONG).show();
   }
 
   /**

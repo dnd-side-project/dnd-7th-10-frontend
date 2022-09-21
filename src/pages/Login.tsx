@@ -10,6 +10,7 @@ import useToast, { createToast } from '../hooks/useToast'
 import kakao from '../lib/kakao'
 import { useRecoilValue } from 'recoil'
 import { noticeAtom } from '../recoil/global'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 const LoginBox = styled.View`
   ${backgroundWithColor('main_1')}
@@ -63,11 +64,10 @@ const Login = () => {
   const notice = useRecoilValue(noticeAtom)
   const showToast = useToast()
 
-  const { auth, login, setLoggedin, loginFromKeychain } = useAuth()
+  const { auth, login, setLoggedin /*loginFromKeychain*/ } = useAuth()
 
   useEffect(() => {
-    loginFromKeychain()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // loginFromKeychain()
   }, [])
 
   useEffect(() => {
@@ -93,17 +93,27 @@ const Login = () => {
   }, [kakaoOpacity])
 
   const onKakaoPress = () => {
-    kakao.kakaoLogin().then(response => {
-      if (response) {
-        const { accessToken, refreshToken } = response
-        setLoggedin(accessToken, refreshToken)
-        if (notice) {
-          navigation.navigate('RemindingNotice', notice)
+    kakao
+      .kakaoLogin()
+      .then(response => {
+        console.log(response)
+        if (response) {
+          const { accessToken, refreshToken } = response
+          setLoggedin(accessToken, refreshToken)
+          if (notice) {
+            navigation.navigate('RemindingNotice', notice)
+          } else {
+            navigation.dispatch(StackActions.replace('Main'))
+          }
         } else {
-          navigation.dispatch(StackActions.replace('Main'))
+          showToast(createToast('kakao login no response'))
         }
-      }
-    })
+      })
+      .catch(e => {
+        console.log(e)
+        showToast(createToast('kakao login error'))
+        Clipboard.setString(JSON.stringify(e))
+      })
   }
 
   return (

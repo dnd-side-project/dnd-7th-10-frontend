@@ -4,12 +4,15 @@ import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import android.widget.Toast;
 
 public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
+    String keyHash = com.kakao.util.helper.Utility.getKeyHash(this /* context */);
+    Toast.makeText(context, keyHash, Toast.LENGTH_LONG).show();
   }
 
   /**

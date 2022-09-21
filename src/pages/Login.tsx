@@ -5,7 +5,7 @@ import { backgroundWithColor } from '../styles/backgrounds'
 import { Animated } from 'react-native'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
-import useAuth from '../hooks/useAuth'
+import useAuth, { IAuthResponse } from '../hooks/useAuth'
 import useToast, { createToast } from '../hooks/useToast'
 import kakao from '../lib/kakao'
 import { useRecoilValue } from 'recoil'
@@ -95,10 +95,9 @@ const Login = () => {
   const onKakaoPress = () => {
     kakao
       .kakaoLogin()
-      .then(response => {
-        console.log(response)
-        if (response) {
-          const { accessToken, refreshToken } = response
+      .then(([success, response]) => {
+        if (success) {
+          const { accessToken, refreshToken } = response as IAuthResponse
           setLoggedin(accessToken, refreshToken)
           if (notice) {
             navigation.navigate('RemindingNotice', notice)
@@ -106,6 +105,7 @@ const Login = () => {
             navigation.dispatch(StackActions.replace('Main'))
           }
         } else {
+          Clipboard.setString(response)
           showToast(createToast('kakao login no response'))
         }
       })

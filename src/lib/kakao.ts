@@ -8,8 +8,8 @@ import {
 import { IAuthResponse } from '../hooks/useAuth'
 import api from './api'
 
-async function kakaoLogin(): Promise<IAuthResponse | false> {
-  const loginSuccess = await requestKakaoLogin()
+async function kakaoLogin(): Promise<[boolean, IAuthResponse | string]> {
+  const [loginSuccess, message] = await requestKakaoLogin()
   if (loginSuccess) {
     const profileSuccess = await requestProfile()
     console.log(profileSuccess)
@@ -20,7 +20,7 @@ async function kakaoLogin(): Promise<IAuthResponse | false> {
         const response = await api.post<IAuthResponse>('/kakao', {
           userEmail: email
         })
-        return response.data
+        return [true, response.data]
       } catch (e) {
         console.error(e)
       }
@@ -30,16 +30,16 @@ async function kakaoLogin(): Promise<IAuthResponse | false> {
   } else {
     console.log('login failed')
   }
-  return false
+  return [false, message || '']
 }
 
-async function requestKakaoLogin(): Promise<boolean> {
+async function requestKakaoLogin(): Promise<[boolean, string?]> {
   try {
     const token: KakaoOAuthToken = await login()
     console.log(token.accessToken)
-    return true
+    return [true]
   } catch (e) {
-    return false
+    return [false, JSON.stringify(e)]
   }
 }
 

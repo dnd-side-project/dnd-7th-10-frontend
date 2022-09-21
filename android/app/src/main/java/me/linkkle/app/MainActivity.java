@@ -5,14 +5,46 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import android.widget.Toast;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.util.Base64;
+import android.util.Log;
 
 public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
-    String keyHash = com.kakao.util.helper.Utility.getKeyHash(this /* context */);
+    String keyHash = getHashKey();
     Toast.makeText(this, keyHash, Toast.LENGTH_LONG).show();
+  }
+
+  private String getHashKey() {
+    PackageInfo packageInfo = null;
+    try {
+      packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+    } catch (PackageManager.NameNotFoundException e) {
+      e.printStackTrace();
+    }
+    if (packageInfo == null)
+      Log.e("KeyHash", "KeyHash:null");
+
+    String keys = "";
+
+    for (Signature signature : packageInfo.signatures) {
+      try {
+        MessageDigest md = MessageDigest.getInstance("SHA");
+        md.update(signature.toByteArray());
+        Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+        keys += Base64.encodeToString(md.digest(), Base64.DEFAULT) + "\n";
+      } catch (NoSuchAlgorithmException e) {
+        Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
+      }
+    }
+    return keys;
   }
 
   /**

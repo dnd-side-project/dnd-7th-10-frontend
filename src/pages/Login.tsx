@@ -10,7 +10,6 @@ import useToast, { createToast } from '../hooks/useToast'
 import kakao from '../lib/kakao'
 import { useRecoilValue } from 'recoil'
 import { noticeAtom } from '../recoil/global'
-import Clipboard from '@react-native-clipboard/clipboard'
 
 const LoginBox = styled.View`
   ${backgroundWithColor('main_1')}
@@ -105,14 +104,12 @@ const Login = () => {
             navigation.dispatch(StackActions.replace('Main'))
           }
         } else {
-          Clipboard.setString(response)
-          showToast(createToast('kakao login no response'))
+          showToast(createToast('로그인에 실패하였습니다.'))
         }
       })
       .catch(e => {
         console.log(e)
-        showToast(createToast('kakao login error'))
-        Clipboard.setString(JSON.stringify(e))
+        showToast(createToast('로그인에 오류가 발생했습니다.'))
       })
   }
 

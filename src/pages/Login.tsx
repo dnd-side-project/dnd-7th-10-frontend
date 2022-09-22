@@ -63,10 +63,10 @@ const Login = () => {
   const notice = useRecoilValue(noticeAtom)
   const showToast = useToast()
 
-  const { auth, login, setLoggedin /*loginFromKeychain*/ } = useAuth()
+  const { auth, login, setLoggedin, loginFromKeychain } = useAuth()
 
   useEffect(() => {
-    // loginFromKeychain()
+    loginFromKeychain()
   }, [])
 
   useEffect(() => {

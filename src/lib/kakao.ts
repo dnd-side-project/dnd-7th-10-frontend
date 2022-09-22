@@ -14,11 +14,13 @@ async function kakaoLogin(): Promise<[boolean, IAuthResponse | string]> {
     const profileSuccess = await requestProfile()
     console.log(profileSuccess)
     if (profileSuccess) {
-      const { email } = profileSuccess as KakaoProfile
+      const { email, nickname, id } = profileSuccess as KakaoProfile
 
       try {
         const response = await api.post<IAuthResponse>('/kakao', {
-          userEmail: email
+          userEmail: email,
+          nickname,
+          id
         })
         return [true, response.data]
       } catch (e) {

@@ -20,7 +20,7 @@ async function kakaoLogin(): Promise<[boolean, IAuthResponse | string]> {
         const response = await api.post<IAuthResponse>('/kakao', {
           userEmail: email,
           nickname,
-          id
+          password: id
         })
         return [true, response.data]
       } catch (e) {
@@ -30,7 +30,7 @@ async function kakaoLogin(): Promise<[boolean, IAuthResponse | string]> {
       console.log('get profile failed')
     }
   } else {
-    console.log('login failed')
+    console.log('login failed', message)
   }
   return [false, message || '']
 }
@@ -41,6 +41,7 @@ async function requestKakaoLogin(): Promise<[boolean, string?]> {
     console.log(token.accessToken)
     return [true]
   } catch (e) {
+    console.log(e)
     return [false, JSON.stringify(e)]
   }
 }

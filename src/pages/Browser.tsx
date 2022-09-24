@@ -12,8 +12,7 @@ import BrowserHeader from '../components/Common/BrowserHeader'
 import {
   WebViewNavigation,
   WebViewNavigationEvent,
-  WebViewProgressEvent,
-  WebViewSource
+  WebViewProgressEvent
 } from 'react-native-webview/lib/WebViewTypes'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
@@ -68,9 +67,8 @@ const Browser = ({
   navigation
 }: NativeStackScreenProps<RouterParamList, 'Browser'>) => {
   const { url: linkUrl, articleId, readable } = (route || {}).params || {}
-  const initialSource: WebViewSource = { uri: linkUrl || '' }
 
-  const [url, setUrl] = useState<string>('')
+  const [url, setUrl] = useState<string>(linkUrl || '')
   const [initUrl, setInitUrl] = useState<string>('')
   const [progress, setProgress] = useState<number>(0)
   const [navState, setNavState] = useState<WebViewNavigation>()
@@ -127,10 +125,6 @@ const Browser = ({
     }, [backward])
   )
 
-  const isOriginUrl = useMemo(() => {
-    return url === initUrl
-  }, [url, initUrl])
-
   const onLoadChange = (event: WebViewProgressEvent) => {
     const roundProgress = Math.round(event.nativeEvent.progress * 100)
     setProgress(roundProgress)
@@ -142,12 +136,11 @@ const Browser = ({
   }
 
   const onLoadStart = (event: WebViewNavigationEvent) => {
-    setLoading(true)
     const newUrl = event.nativeEvent.url
     if (initUrl === '') {
       setInitUrl(newUrl)
     }
-    setUrl(newUrl)
+    setLoading(true)
   }
 
   const onRefreshPress = () => {
@@ -197,6 +190,15 @@ const Browser = ({
     navigation.navigate('LinkAdd', { linkUrl: url })
   }
 
+  const onEnterPress = (newUrl: string) => {
+    setUrl(newUrl)
+  }
+
+  const onNavChange = (event: WebViewNavigation) => {
+    setUrl(event.url)
+    setNavState(event)
+  }
+
   return (
     <SafeAreaView style={styles.backgroundstyle}>
       <BrowserHeader
@@ -208,6 +210,7 @@ const Browser = ({
         onForwardPress={onForwardPress}
         onRefreshPress={onRefreshPress}
         onExitPress={onExitPress}
+        onEnterPress={onEnterPress}
         url={navState?.url}
       />
       <KeyboardAvoidingView style={styles.container}>
@@ -218,8 +221,9 @@ const Browser = ({
             onLoadEnd={onLoadEnd}
             onLoadStart={onLoadStart}
             originWhitelist={['*']}
-            onNavigationStateChange={setNavState}
-            source={initialSource}
+            onNavigationStateChange={onNavChange}
+            source={{ uri: url }}
+            setSupportMultipleWindows={false}
             style={styles.webview}
           />
         </View>
@@ -233,7 +237,7 @@ const Browser = ({
         ) : (
           <BrowserMenuView>
             {!loading &&
-              (isOriginUrl ? (
+              (initUrl === url ? (
                 <>
                   <MemoButton onPress={() => setWriting(true)}>
                     <SVG.Memo stroke={ColorPalette.White} width={24} />

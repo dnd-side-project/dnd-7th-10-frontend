@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import { backgroundWithColor, shadow } from '../../styles/backgrounds'
 import SVG from '../../assets/images/svg'
@@ -45,6 +45,7 @@ interface Props {
   onForwardPress?: () => void
   onBackwardPress?: () => void
   onRefreshPress?: () => void
+  onEnterPress?: (url: string) => void
   progress?: number
   forward?: boolean
   backward?: boolean
@@ -65,12 +66,26 @@ const BrowserHeader = ({
   onForwardPress,
   onBackwardPress,
   onRefreshPress,
+  onEnterPress,
   progress,
   forward,
   backward,
   loading,
   url
 }: Props) => {
+  const [tempUrl, setTempUrl] = useState<string>(url || '')
+
+  const handleEnterPress = () => {
+    if (onEnterPress) {
+      onEnterPress(tempUrl)
+      setTempUrl(url || '')
+    }
+  }
+
+  useEffect(() => {
+    setTempUrl(url || '')
+  }, [url])
+
   return (
     <BrowserHeaderView style={shadow}>
       <TouchableOpacity
@@ -94,7 +109,14 @@ const BrowserHeader = ({
         />
       </TouchableOpacity>
       <BrowserUrlInput>
-        <Input small value={url} style={inputPadding} noReset />
+        <Input
+          small
+          value={tempUrl}
+          onChangeText={setTempUrl}
+          style={inputPadding}
+          noReset
+          onEnterPress={handleEnterPress}
+        />
       </BrowserUrlInput>
       <BrowserRefresh onPress={onRefreshPress} hitSlop={browserButtonInsets}>
         <SVG.Refresh stroke={ColorPalette.BlueGray_3} />

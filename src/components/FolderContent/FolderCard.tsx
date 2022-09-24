@@ -27,7 +27,7 @@ const FolderCard = ({ article, refresh }: Props) => {
 
   const getFaviconUrl = useCallback(() => {
     const [protocol, url] = article.linkUrl.split('://')
-    const [host] = url.split('/')
+    const [host] = (url || protocol).split('/')
     return `${protocol}://${host}/favicon.ico`
   }, [article.linkUrl])
 

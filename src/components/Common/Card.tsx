@@ -139,8 +139,12 @@ const Card = ({
 }: Props) => {
   const image = useMemo(() => {
     if (typeof source === 'string') {
+      let uri = source || defaultSource.uri
+      if (source.startsWith('//')) {
+        uri = 'https:' + uri
+      }
       return {
-        uri: source || defaultSource.uri
+        uri
       }
     }
     return source || defaultSource

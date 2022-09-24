@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { IArticle } from '../../recoil/folders'
@@ -66,16 +66,20 @@ interface Props {
 const LinkContent = ({ article }: Props) => {
   const date = article.registerDate.split('T')[0].split('-').join('.')
 
+  const image = useMemo(() => {
+    const source = article.openGraph.linkImage
+    let uri = source || 'https://via.placeholder.com/1200x630'
+    if (source.startsWith('//')) {
+      uri = 'https:' + uri
+    }
+    return {
+      uri
+    }
+  }, [])
+
   return (
     <LinkView>
-      <LinkImage
-        source={{
-          uri:
-            article.openGraph.linkImage ||
-            'https://via.placeholder.com/1200x630'
-        }}
-        resizeMode="cover"
-      />
+      <LinkImage source={image} resizeMode="cover" />
       <LinkContentView>
         <LinkTitle>{article.openGraph.linkTitle}</LinkTitle>
         <LinkText>{article.openGraph.linkDescription}</LinkText>

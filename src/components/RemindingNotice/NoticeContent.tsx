@@ -47,7 +47,7 @@ const NoticeContent = ({ article }: Props) => {
       return 'https://..'
     }
     const [protocol, url] = article.linkUrl.split('://')
-    const [host] = url.split('/')
+    const [host] = (url || protocol).split('/')
     return `${protocol}://${host}/favicon.ico`
   }, [article.linkUrl])
 

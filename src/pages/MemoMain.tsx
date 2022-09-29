@@ -7,13 +7,17 @@ import api from '../lib/api'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { RouterNavigationProps } from '../pages/Router'
 import { IMemo } from '../components/Remind/MemoCard'
+import { backgroundWithColor } from '../styles/backgrounds'
+import Empty from '../components/Common/Empty'
 
 const MemoMainView = styled.View`
   background-color: #f5f5f5;
+  flex: 1;
 `
 const MemosView = styled.View`
-  width: 366px;
-  left: 23px;
+  ${backgroundWithColor('White')}
+  padding: 8px 24px 24px;
+  flex-grow: 1;
 `
 interface MemoList extends Array<IMemo> {}
 
@@ -49,16 +53,34 @@ const MemoMain = () => {
     navigation.navigate('MemoPage', { memo })
   }
 
+  const containerStyle = {
+    flexGrow: 1
+  }
+
   return (
     <MemoMainView>
-      <ScrollView scrollEnabled={true}>
+      <ScrollView scrollEnabled={true} contentContainerStyle={containerStyle}>
         <Header>메모 모음</Header>
         <MemosView>
           {memos?.map((memo, idx) => (
-            <TouchableOpacity key={idx} onPress={() => onCardPress(memo)}>
+            <TouchableOpacity
+              key={idx}
+              onPress={() => onCardPress(memo)}
+              activeOpacity={0.9}
+            >
               <MemoCard memo={memo} main key={idx} />
             </TouchableOpacity>
           ))}
+          {memos?.length === 0 && (
+            <Empty
+              background="White"
+              text={
+                '작성한 메모가 없어요!\n새로 저장한 링크들에 메모를 써볼까요?'
+              }
+              icon
+              source={require('../assets/images/memo.png')}
+            />
+          )}
         </MemosView>
       </ScrollView>
     </MemoMainView>

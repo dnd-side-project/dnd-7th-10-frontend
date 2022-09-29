@@ -8,8 +8,8 @@ type ViewProps = {
 }
 
 const MemoCardView = styled.View<ViewProps>`
-  width: ${props => (props.main === true ? '366px' : '200px')};
-  height: ${props => (props.main === true ? '288px' : '312px')};
+  width: ${props => (props.main === true ? '100%' : '200px')};
+  height: ${props => (props.main === true ? 'auto' : '312px')};
   background: #ffffff;
   box-shadow: ${shadow};
   border: ${props => (props.main === true ? '2px solid #DEEBF5' : 'none')};
@@ -27,12 +27,9 @@ const MemoCardDate = styled.Text`
   color: ${ColorPalette.BlueGray_3};
 `
 const MemoCardText = styled.Text<{ main?: boolean }>`
-  position: absolute;
   width: ${props => (props.main ? '100%' : '168px')};
-  height: 164px;
-  left: 0;
   padding: 16px;
-  top: 56px;
+  margin-top: 16px;
 
   font-family: ${Typo.Body2_600};
   font-weight: 400;
@@ -44,28 +41,23 @@ const MemoCardText = styled.Text<{ main?: boolean }>`
   overflow: hidden;
 `
 const UrlImg = styled.Image`
-  position: absolute;
   width: 40px;
   height: 40px;
-  bottom: 16px;
   border-radius: 38px;
 `
 
 const UrlView = styled.View<ViewProps>`
+  flex-direction: row;
+  margin: auto 16px 0;
+  align-items: center;
   height: 72px;
-  width: ${props => (props.main === true ? '334px' : '168px')};
-  position: absolute;
-  top: ${props => (props.main === true ? '216px' : '240px')};
-  left: 16px;
+  width: ${props => (props.main === true ? 'auto' : '168px')};
   border-top-width: 1px;
   border-top-color: #deebf5;
 `
 const UrlFolder = styled.Text<ViewProps>`
-  position: absolute;
-  width: ${props => (props.main === true ? '286px' : '30px')};
+  width: ${props => (props.main === true ? '100%' : '30px')};
   height: 18px;
-  left: ${props => (props.main === true ? '64px' : '48px')};
-  bottom: ${props => (props.main === true ? '38px' : '22px')};
 
   font-family: ${Typo.Detail2_400};
   font-size: 12px;
@@ -74,11 +66,7 @@ const UrlFolder = styled.Text<ViewProps>`
   color: ${ColorPalette.BlueGray_3};
 `
 const UrlTitle = styled.Text`
-  position: absolute;
-  width: 120px;
   height: 24px;
-  left: 64px;
-  bottom: 16px;
 
   font-family: ${Typo.Heading4_600};
   font-size: 16px;
@@ -95,6 +83,10 @@ const MemoIcon = styled.Image`
   width: 24px;
   left: 16px;
   top: 16px;
+`
+
+const UrlTextView = styled.View`
+  margin-left: 8px;
 `
 
 export interface IMemo {
@@ -131,8 +123,10 @@ const MemoCard = ({ memo, main }: Props) => {
             uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
           }}
         />
-        <UrlFolder main>{folderTitle}</UrlFolder>
-        <UrlTitle>{linkTitle}</UrlTitle>
+        <UrlTextView>
+          <UrlFolder main>{folderTitle}</UrlFolder>
+          <UrlTitle>{linkTitle}</UrlTitle>
+        </UrlTextView>
       </UrlView>
     </MemoCardView>
   )

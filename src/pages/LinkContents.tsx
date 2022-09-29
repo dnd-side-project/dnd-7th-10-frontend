@@ -13,6 +13,8 @@ import useHeaderEvent from '../hooks/useHeaderEvent'
 import { Text } from 'react-native-svg'
 import BottomButton from '../components/Common/BottomButton'
 import Button from '../components/Common/Button'
+import api from '../lib/api'
+import useToast, { createWarnToast } from '../hooks/useToast'
 
 const LinkView = styled.View`
   ${backgroundWithColor('background_1')}
@@ -39,6 +41,8 @@ const LinkContents = ({
       source: require('../assets/images/icon_edit.png')
     }
   ]
+
+  const showToast = useToast()
 
   const { articleId } = route.params
 
@@ -78,14 +82,28 @@ const LinkContents = ({
     })
   }
 
+  const onBookmarkPress = () => {
+    api.patch(`/article/mark/${articleId}`).then(response => {
+      if (response.status !== 200) {
+        showToast(createWarnToast('북마크 변경에 실패하였습니다.'))
+      }
+      if (refresh) {
+        refresh()
+      }
+    })
+  }
+
   return (
     <LinkView>
       <Header iconButtons={iconButtons}>링크 정보</Header>
       <LinkContentScroll contentContainerStyle={containerStyle}>
         <LinkContentView>
-          {!isLoading && (
+          {(!isLoading || articleDetail) && (
             <>
-              <LinkContent article={articleDetail} />
+              <LinkContent
+                article={articleDetail}
+                onBookmarkPress={onBookmarkPress}
+              />
               <TagBar tags={articleDetail.tags} />
               <MemoContent
                 memos={articleDetail.memos}

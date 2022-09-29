@@ -5,6 +5,8 @@ import { IArticle } from '../../recoil/folders'
 import { fontWithColor } from '../../styles/fonts'
 import SVG from '../../assets/images/svg'
 import { backgroundWithColor } from '../../styles/backgrounds'
+import Clipboard from '@react-native-clipboard/clipboard'
+import useToast, { createCheckToast } from '../../hooks/useToast'
 
 const LinkView = styled.View`
   ${backgroundWithColor('White')}
@@ -61,10 +63,12 @@ const LinkChain = styled.TouchableOpacity`
 
 interface Props {
   article: IArticle
+  onBookmarkPress: () => void
 }
 
-const LinkContent = ({ article }: Props) => {
+const LinkContent = ({ article, onBookmarkPress }: Props) => {
   const date = article.registerDate.split('T')[0].split('-').join('.')
+  const showToast = useToast()
 
   const image = useMemo(() => {
     const source = article.openGraph.linkImage
@@ -77,6 +81,11 @@ const LinkContent = ({ article }: Props) => {
     }
   }, [])
 
+  const handleLinkClick = () => {
+    Clipboard.setString(article.linkUrl)
+    showToast(createCheckToast(article.linkUrl))
+  }
+
   return (
     <LinkView>
       <LinkImage source={image} resizeMode="cover" />
@@ -86,10 +95,14 @@ const LinkContent = ({ article }: Props) => {
         <LinkBottomView>
           <LinkDate>{date}</LinkDate>
           <LinkButtonView>
-            <LinkBookmark>
-              <SVG.Bookmark stroke={ColorPalette.LinkkleBlueGray} />
+            <LinkBookmark onPress={onBookmarkPress}>
+              {article.bookmark ? (
+                <SVG.BookmarkFilled stroke={ColorPalette.LinkkleBlueGray} />
+              ) : (
+                <SVG.Bookmark stroke={ColorPalette.LinkkleBlueGray} />
+              )}
             </LinkBookmark>
-            <LinkChain>
+            <LinkChain onPress={handleLinkClick}>
               <SVG.Link stroke={ColorPalette.LinkkleBlueGray} />
             </LinkChain>
           </LinkButtonView>

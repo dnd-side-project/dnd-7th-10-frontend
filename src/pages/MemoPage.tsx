@@ -118,6 +118,7 @@ const UrlDate = styled.Text`
 const MemoCardInput = styled.TextInput`
   color: ${ColorPalette.BlueGray_5};
   font-family: ${Typo.Body2_600};
+  padding: 0px;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.6px;

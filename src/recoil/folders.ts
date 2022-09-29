@@ -36,6 +36,7 @@ export interface IArticle {
   modifiedDate: string
   bookmark: boolean
   tags: ITag[]
+  folderTitle?: string
 }
 
 export interface IFolderDetail extends IFolderBase {

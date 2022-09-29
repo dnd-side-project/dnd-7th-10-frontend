@@ -30,7 +30,7 @@ const MemoMain = () => {
       .get<MemoList>('/memos')
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data)
+          //
           let resArr = Array.from(response.data)
           console.log(Array.isArray(resArr))
           setMemos(resArr)
@@ -59,8 +59,8 @@ const MemoMain = () => {
 
   return (
     <MemoMainView>
+      <Header>메모 모음</Header>
       <ScrollView scrollEnabled={true} contentContainerStyle={containerStyle}>
-        <Header>메모 모음</Header>
         <MemosView>
           {memos?.map((memo, idx) => (
             <TouchableOpacity

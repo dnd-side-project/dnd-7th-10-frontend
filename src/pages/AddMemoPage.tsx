@@ -119,14 +119,14 @@ const MemoCardInput = styled.TextInput`
 `
 
 const iconButtons: IIconButton[] = [
-  {
-    name: 'trash',
-    source: require('../assets/images/trash.png')
-  },
-  {
-    name: 'edit',
-    source: require('../assets/images/icon_edit.png')
-  }
+  // {
+  //   name: 'trash',
+  //   source: require('../assets/images/trash.png')
+  // },
+  // {
+  //   name: 'edit',
+  //   source: require('../assets/images/edit.png')
+  // }
 ]
 
 interface Props {
@@ -136,14 +136,15 @@ interface Props {
 }
 
 const MemoPage = ({
-  route
+  route,
+  navigation
 }: NativeStackScreenProps<RouterParamList, 'AddMemoPage'>) => {
   const { article } = route.params
   console.log(article)
 
   const [edit, setEdit] = useState(true)
   const [text, setText] = useState('')
-  const [memo, setMemo] = useState(null)
+  const [memo, setMemo] = useState<IMemo>()
 
   const { showModal } = useModal()
 
@@ -155,8 +156,8 @@ const MemoPage = ({
       })
       .then(response => {
         if (response.status === 200) {
-          console.log('memo', response.data)
           setMemo(response.data)
+          navigation.goBack()
         }
       })
       .catch(error => {
@@ -169,7 +170,7 @@ const MemoPage = ({
       .delete<IMemo>(`/memo/${memoId}`)
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data)
+          //
         }
       })
       .catch(error => {
@@ -191,9 +192,9 @@ const MemoPage = ({
           '수정할래요'
         ).then(value => {
           if (value) {
-            setEdit(true)
-          } else {
             removeMemo({ memoId: memo?.id })
+          } else {
+            setEdit(true)
           }
         })
       }

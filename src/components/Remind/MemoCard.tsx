@@ -38,7 +38,7 @@ const MemoCardText = styled.Text<{ main?: boolean }>`
   letter-spacing: -0.6px;
 
   color: ${ColorPalette.BlueGray_5};
-  overflow: hidden;
+  flex: 1;
 `
 const UrlImg = styled.Image`
   width: 40px;

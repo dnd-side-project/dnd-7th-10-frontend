@@ -10,6 +10,9 @@ import api from '../lib/api'
 import { IMemo } from '../components/Remind/MemoCard'
 import useHeaderEvent from '../hooks/useHeaderEvent'
 import useModal from '../hooks/useModal'
+import { useFocusEffect } from '@react-navigation/native'
+import { BackHandler } from 'react-native'
+import useToast, { createCheckToast } from '../hooks/useToast'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -36,7 +39,7 @@ const MemoCardView = styled.View`
   padding: 16px;
   margin-left: 23px;
   width: 366px;
-  height: 320px;
+  min-height: 320px;
   background-color: ${ColorPalette.Background_1};
   border: 1px solid #d6e1ed;
   border-radius: 4px;
@@ -137,7 +140,8 @@ interface Props {
 }
 
 const MemoPage = ({
-  route
+  route,
+  navigation
 }: NativeStackScreenProps<RouterParamList, 'MemoPage'>) => {
   const { memo } = route.params
   const { id, content, folderTitle, openGraph, registerDate } = memo
@@ -149,6 +153,7 @@ const MemoPage = ({
 
   const patchData = { memoId: id, memoContent: text }
   const { showModal } = useModal()
+  const showToast = useToast()
 
   const patchMemo = ({ memoId, memoContent }: Props) => {
     console.log(memoContent)
@@ -160,7 +165,7 @@ const MemoPage = ({
       })
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data)
+          showToast(createCheckToast('수정 되었습니다.'))
         }
       })
       .catch(error => {
@@ -173,7 +178,7 @@ const MemoPage = ({
       .delete<IMemo>(`/memo/${memoId}`)
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data)
+          navigation.goBack()
         }
       })
       .catch(error => {
@@ -212,12 +217,50 @@ const MemoPage = ({
     }
   }, [addEventListener, onClick, removeEventListener])
 
+  const exitBehavior = () => {
+    if (edit) {
+      showModal(
+        '지금 나가면 저장되지 않아요!',
+        `지금 페이지에서 이동하면
+        편집하신 메모 내용이 저장되지 않아요.`,
+        '네, 나갈래요',
+        '다시 돌아갈래요'
+      ).then(value => {
+        if (value) {
+          navigation.goBack()
+        }
+      })
+    } else {
+      navigation.goBack()
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      const backAction = () => {
+        exitBehavior()
+        return true
+      }
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction
+      )
+      return () => subscription.remove()
+    }, [edit])
+  )
+
+  const onBackPress = () => {
+    exitBehavior()
+  }
+
   return (
     <MemoMainView>
       <ScrollView scrollEnabled={true}>
         <Header
           iconButtons={edit ? undefined : iconButtons}
           save={edit ? true : false}
+          onBackPress={onBackPress}
           onSavePress={() => {
             patchMemo(patchData)
             setEdit(false)

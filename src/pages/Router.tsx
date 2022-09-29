@@ -25,6 +25,7 @@ import { useRecoilState } from 'recoil'
 import { noticeAtom } from '../recoil/global'
 import RemindingListPage from './RemindingListPage'
 import LinkEdit from './LinkEdit'
+import { IArticle } from '../recoil/folders'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -77,6 +78,9 @@ export interface RouterParamList extends ParamListBase {
 
   RemindingNotice: INoticeData
   RemindingList: undefined
+  AddMemoPage: {
+    article?: IArticle
+  }
 }
 
 export type RouterNavigationProps = NavigationProp<RouterParamList>

@@ -24,6 +24,7 @@ import RemindingNotice from './RemindingNotice'
 import { useRecoilState } from 'recoil'
 import { noticeAtom } from '../recoil/global'
 import RemindingListPage from './RemindingListPage'
+import LinkEdit from './LinkEdit'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -41,6 +42,9 @@ export interface RouterParamList extends ParamListBase {
         linkUrl?: string
       }
     | undefined
+  LinkEdit: {
+    articleId: string
+  }
   FolderAdd: undefined
   FolderContent: {
     folderId: string
@@ -107,6 +111,7 @@ const Router = () => {
         <Stack.Screen name="RemindingNotice" component={RemindingNotice} />
         <Stack.Screen name="RemindingList" component={RemindingListPage} />
         <Stack.Screen name="Browser" component={Browser} />
+        <Stack.Screen name="LinkEdit" component={LinkEdit} />
       </Stack.Navigator>
       <Modal />
     </>

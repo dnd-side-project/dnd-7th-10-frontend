@@ -23,6 +23,7 @@ import { TextInput } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { quicklinkAtom } from '../recoil/global'
 import { isValidUrl } from '../lib/urlcheck'
+import useArticleDetail from '../hooks/useArticleDetail'
 
 const LinkAddPageView = styled.View`
   ${backgroundWithColor('gray_1')}
@@ -61,15 +62,20 @@ const containerStyle = { flexGrow: 1 }
 
 const LinkEdit = ({
   route
-}: NativeStackScreenProps<RouterParamList, 'LinkAdd'>) => {
+}: NativeStackScreenProps<RouterParamList, 'LinkEdit'>) => {
+  const articleId = route.params?.articleId || ''
+  const { isLoading, recoilValue: articleDetail } = useArticleDetail(
+    articleId,
+    true
+  )
   const navigation = useNavigation<RouterNavigationProps>()
   const [isInputShow, setIsInputShow] = useState<boolean>(false)
   const [isTagLoading, tags, fetchTagList] = useTagList()
   const [, fetchFolders] = useFolderList()
 
   const [tagName, setTagName] = useState<string>('')
-  const [linkUrl, setLinkUrl] = useState<string>(route.params?.linkUrl || '')
-  const [folderId, setFolderId] = useState<string>(route.params?.folderId || '')
+  const [linkUrl, setLinkUrl] = useState<string>('')
+  const [folderId, setFolderId] = useState<string>('')
   const [tagIds, setTagIds] = useState<string[]>([])
 
   const [quickLink, setQuickLink] = useRecoilState(quicklinkAtom)
@@ -81,6 +87,12 @@ const LinkEdit = ({
     () => linkUrl.length > 0 && folderId !== '',
     [linkUrl, folderId]
   )
+
+  useEffect(() => {
+    if (!isLoading && articleDetail) {
+      // setFolderId(articleDetail.)
+    }
+  }, [isLoading, articleDetail])
 
   useEffect(() => {
     fetchTagList()
@@ -183,9 +195,13 @@ const LinkEdit = ({
       .catch(error => console.error(error))
   }
 
+  if (!articleId) {
+    return <></>
+  }
+
   return (
     <LinkAddPageView>
-      <Header>링크추가</Header>
+      <Header>링크 수정하기</Header>
       <LinkContentScroll contentContainerStyle={containerStyle}>
         <LinkAddContentView>
           <SectionTitle title="링크 URL" />

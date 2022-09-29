@@ -32,7 +32,7 @@ const LinkText = styled.Text`
   ${Typo.Body2_600}
   line-height: 20px;
   margin-bottom: 46px;
-  height: 105px;
+  min-height: 15px;
   overflow: hidden;
 `
 

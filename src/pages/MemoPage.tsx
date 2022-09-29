@@ -127,7 +127,7 @@ const iconButtons: IIconButton[] = [
   },
   {
     name: 'edit',
-    source: require('../assets/images/icon_edit.png')
+    source: require('../assets/images/edit.png')
   }
 ]
 
@@ -151,8 +151,13 @@ const MemoPage = ({
   const { showModal } = useModal()
 
   const patchMemo = ({ memoId, memoContent }: Props) => {
+    console.log(memoContent)
     api
-      .patch<IMemo>(`/memo/${memoId}`, memoContent)
+      .patch<IMemo>(`/memo/${memoId}`, memoContent, {
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      })
       .then(response => {
         if (response.status === 200) {
           console.log(response.data)

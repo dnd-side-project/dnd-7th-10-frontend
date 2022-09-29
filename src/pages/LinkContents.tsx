@@ -38,7 +38,7 @@ const LinkContents = ({
   const iconButtons: IIconButton[] = [
     {
       name: 'edit',
-      source: require('../assets/images/icon_edit.png')
+      source: require('../assets/images/edit.png')
     }
   ]
 

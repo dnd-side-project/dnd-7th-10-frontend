@@ -89,8 +89,9 @@ const LinkEdit = ({
   )
 
   useEffect(() => {
-    if (!isLoading && articleDetail) {
-      // setFolderId(articleDetail.)
+    if (!isLoading && articleDetail && articleDetail.folderId) {
+      setFolderId(articleDetail.folderId)
+      setLinkUrl(articleDetail.linkUrl)
     }
   }, [isLoading, articleDetail])
 
@@ -109,7 +110,7 @@ const LinkEdit = ({
 
   const onPress = () => {
     api
-      .post<IArticle>('/article', { folderId, linkUrl, tagIds })
+      .patch<IArticle>('/article', { folderId, linkUrl, tagIds })
       .then(response => {
         if (response.status === 200) {
           fetchFolders()
@@ -122,7 +123,7 @@ const LinkEdit = ({
           console.error(JSON.stringify(error.response, null, 2))
         }
         showToast(
-          createWarnToast('링크 생성에 실패하였습니다.', ToastOffset.BottomTab)
+          createWarnToast('링크 수정에 실패하였습니다.', ToastOffset.BottomTab)
         )
       })
   }
@@ -236,7 +237,7 @@ const LinkEdit = ({
         </LinkAddContentView>
         <BottomButton>
           <Button disabled={!isCreatable} onPress={onPress}>
-            링크 생성 완료하기
+            링크 수정 완료하기
           </Button>
         </BottomButton>
       </LinkContentScroll>

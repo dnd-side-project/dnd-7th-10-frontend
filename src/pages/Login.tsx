@@ -114,6 +114,23 @@ const Login = () => {
         showToast(createToast('로그인에 오류가 발생했습니다.'))
         Clipboard.setString(JSON.stringify(e))
       })
+    // login('linkkle', 'linkkle2022!')
+    //   .then(result => {
+    //     if (result) {
+    //       if (notice) {
+    //         navigation.navigate('RemindingNotice', notice)
+    //       } else {
+    //         navigation.dispatch(StackActions.replace('Main'))
+    //       }
+    //     } else {
+    //       showToast(createToast('로그인에 오류가 발생했습니다.'))
+    //     }
+    //   })
+    //   .catch(e => {
+    //     console.log(e)
+    //     showToast(createToast('로그인에 오류가 발생했습니다.'))
+    //     Clipboard.setString(JSON.stringify(e))
+    //   })
   }
 
   return (

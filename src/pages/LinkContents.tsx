@@ -64,7 +64,11 @@ const LinkContents = ({
     }
   }, [onFocus, navigation])
 
-  const onClick = useCallback(() => {}, [])
+  const onClick = useCallback(() => {
+    navigation.navigate('LinkEdit', {
+      articleId: articleId
+    })
+  }, [])
 
   const { addEventListener, removeEventListener } = useHeaderEvent()
 
@@ -98,7 +102,7 @@ const LinkContents = ({
       <Header iconButtons={iconButtons}>링크 정보</Header>
       <LinkContentScroll contentContainerStyle={containerStyle}>
         <LinkContentView>
-          {(!isLoading || articleDetail) && (
+          {!isLoading && (
             <>
               <LinkContent
                 article={articleDetail}

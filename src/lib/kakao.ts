@@ -17,14 +17,22 @@ async function kakaoLogin(): Promise<[boolean, IAuthResponse | string]> {
       const { email, nickname, id } = profileSuccess as KakaoProfile
 
       try {
-        const response = await api.post<IAuthResponse>('/kakao', {
-          userEmail: email,
-          nickname,
-          password: id
-        })
+        const response = await api.post<IAuthResponse>(
+          '/kakao',
+          {
+            userEmail: email,
+            nickname,
+            password: id
+          },
+          {
+            headers: {
+              Authorization: ''
+            }
+          }
+        )
         return [true, response.data]
       } catch (e) {
-        console.error(e)
+        console.error(JSON.stringify(e))
       }
     } else {
       console.log('get profile failed')

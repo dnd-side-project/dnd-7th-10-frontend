@@ -38,7 +38,7 @@ const RemindMain = () => {
 
   const getArticles = () => {
     api
-      .get<LinkList>('/articles')
+      .get<LinkList>('/articles/mark')
       .then(response => {
         if (response.status === 200) {
           let resArr = Array.from(response.data)
@@ -85,8 +85,8 @@ const RemindMain = () => {
 
   return (
     <RemindingView>
+      <Header iconButtons={iconButtons}>리마인딩</Header>
       <ScrollView scrollEnabled={true}>
-        <Header iconButtons={iconButtons}>리마인딩</Header>
         <RemindingList list={list ? list : []} onPress={onRemindPress} />
         <Notice />
         <MemoCollection onPress={onMemoPress} memos={memos ? memos : []} />

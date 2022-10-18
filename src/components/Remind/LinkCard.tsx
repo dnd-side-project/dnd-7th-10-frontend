@@ -5,14 +5,12 @@ import { backgroundWithColor, shadow } from '../../styles/backgrounds'
 
 const LinkCardView = styled.View`
   ${backgroundWithColor('White')}
-  width: 175px;
+  width: 100%;
   height: 238px;
   box-shadow: ${shadow};
   border-radius: 4px;
-  margin-right: 16px;
 `
 const LinkImage = styled.Image`
-  width: 175px;
   height: 120px;
 `
 const LinkDescView = styled.View`
@@ -30,7 +28,6 @@ const LinkTitle = styled.Text`
 `
 const LinkDesc = styled.Text`
   font-family: ${Typo.Heading4_600};
-  width: 143px;
   height: 24px;
   font-size: 16px;
   line-height: 24px;

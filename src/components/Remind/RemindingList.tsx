@@ -4,13 +4,11 @@ import LinkCard from './LinkCard'
 import { ILink } from './LinkCard'
 import { Typo, ColorPalette } from '../../styles/variable'
 import Empty from '../Common/Empty'
-import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
 import { backgroundWithColor } from '../../styles/backgrounds'
 
 const RemindingListView = styled.View`
-  height: 376px;
   flex: none;
   flex-grow: 0;
   padding: 24px;
@@ -47,8 +45,19 @@ interface Props {
 const CardView = styled.ScrollView`
   ${backgroundWithColor('White')}
   flex-direction: row;
-  height: 300px;
-  padding-left: 10px;
+  margin: 0 -24px;
+`
+
+const CardViewWrap = styled.View`
+  flex-direction: row;
+  padding: 0 16px;
+`
+
+const CardTouchable = styled.TouchableOpacity`
+  padding: 4px;
+  width: 180px;
+  margin: 0 8px;
+  /* flex: 0.5; */
 `
 
 const RemindingList = ({ onPress, list }: Props) => {
@@ -68,16 +77,19 @@ const RemindingList = ({ onPress, list }: Props) => {
       </TopView>
       {list.length !== 0 ? (
         <CardView horizontal={true}>
-          {list.map((link, idx) => (
-            <TouchableOpacity
-              key={idx}
-              onPress={() =>
-                navigation.navigate('LinkContents', { articleId: link.id })
-              }
-            >
-              <LinkCard link={link} key={idx} />
-            </TouchableOpacity>
-          ))}
+          <CardViewWrap>
+            {list.map((link, idx) => (
+              <CardTouchable
+                activeOpacity={0.9}
+                key={idx}
+                onPress={() =>
+                  navigation.navigate('LinkContents', { articleId: link.id })
+                }
+              >
+                <LinkCard link={link} key={idx} />
+              </CardTouchable>
+            ))}
+          </CardViewWrap>
         </CardView>
       ) : (
         <Empty

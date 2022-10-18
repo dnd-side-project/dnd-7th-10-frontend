@@ -5,6 +5,7 @@ import { fontWithColor } from '../../styles/fonts'
 import { flexWithAlign } from '../../styles/flexbox'
 import { useNavigation } from '@react-navigation/native'
 import { IArticle } from '../../recoil/folders'
+import { RouterNavigationProps } from '../../pages/Router'
 
 const MemoTopView = styled.View`
   ${flexWithAlign('center', 'space-between', 'row')}
@@ -29,7 +30,7 @@ interface Props {
 }
 
 const MemoTop = ({ article }: Props) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<RouterNavigationProps>()
   return (
     <MemoTopView>
       <MemoTitle>메모</MemoTitle>

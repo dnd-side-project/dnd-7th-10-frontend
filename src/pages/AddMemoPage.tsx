@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import { IIconButton } from '../components/Common/Header'
@@ -13,10 +13,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
 import api from '../lib/api'
 import useHeaderEvent from '../hooks/useHeaderEvent'
-import useModal from '../hooks/useModal'
 import { backgroundWithColor } from '../styles/backgrounds'
 import useToast, { createWarnToast } from '../hooks/useToast'
 import { IMemo } from '../recoil/folders'
+import { StackActions } from '@react-navigation/native'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -164,10 +164,7 @@ const MemoPage = ({
   const showToast = useToast()
   const [edit, setEdit] = useState(true)
   const [text, setText] = useState('')
-  const [memo, setMemo] = useState<IMemo>()
   const [height, setHeight] = useState(320)
-
-  const { showModal } = useModal()
 
   const postMemo = ({ articleId, content }: Props) => {
     api
@@ -177,8 +174,11 @@ const MemoPage = ({
       })
       .then(response => {
         if (response.status === 200) {
-          setMemo(response.data)
-          navigation.goBack()
+          navigation.dispatch(
+            StackActions.replace('MemoPage', {
+              memo: response.data
+            })
+          )
         }
       })
       .catch(error => {
@@ -192,42 +192,6 @@ const MemoPage = ({
     }
   }, [])
 
-  const removeMemo = ({ memoId }: Props) => {
-    api
-      .delete<IMemo>(`/memo/${memoId}`)
-      .then(response => {
-        if (response.status === 200) {
-          //
-        }
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }
-
-  const onClick = useCallback(
-    (name: string) => {
-      if (name === 'edit') {
-        setEdit(true)
-      }
-      if (name === 'trash') {
-        showModal(
-          '해당 메모를 삭제하시겠어요?',
-          `작성하신 메모를 삭제하면
-        다신 이 메모를 확인해 볼 수 없어요!`,
-          '삭제할래요',
-          '수정할래요'
-        ).then(value => {
-          if (value) {
-            removeMemo({ memoId: memo?.id })
-          } else {
-            setEdit(true)
-          }
-        })
-      }
-    },
-    [article?.id]
-  )
   const { addEventListener, removeEventListener } = useHeaderEvent()
 
   const handleContentSizeChange = (
@@ -238,15 +202,11 @@ const MemoPage = ({
   }
 
   useEffect(() => {
-    addEventListener(onClick)
     if (article === undefined) {
       setEdit(true)
       setText('')
     }
-    return () => {
-      removeEventListener(onClick)
-    }
-  }, [addEventListener, onClick, removeEventListener])
+  }, [addEventListener, removeEventListener])
 
   function handleTextChange(newText: string) {
     if (newText.length > 1000) {

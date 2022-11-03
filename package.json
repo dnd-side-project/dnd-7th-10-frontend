@@ -1,6 +1,6 @@
 {
   "name": "inandout",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -11,7 +11,7 @@
     "ios": "react-native run-ios",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.json",
     "lint:fix": "yarn lint --fix",
-    "lint:staged": "eslint --fix --quiet",
+    "lint:staged": "eslint --cache --fix --quiet",
     "np": "np --no-publish",
     "prepare": "husky install",
     "prettier": "prettier *.ts",

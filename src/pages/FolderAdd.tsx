@@ -78,6 +78,7 @@ const FolderAdd = () => {
           ToastOffset.BottomTab
         )
       )
+      return
     }
     api
       .post<IFolderPost>('/folder', { folderColor, folderTitle })

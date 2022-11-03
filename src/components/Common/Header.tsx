@@ -17,7 +17,7 @@ const HeaderBar = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
   height: 60px;
   background: white;
-  padding: 0 24px;
+  padding: 0 18px 0 24px;
   elevation: 12;
 `
 
@@ -28,7 +28,7 @@ const HeaderIcon = styled.Image`
 `
 
 const HeaderIconButton = styled(HeaderIcon)`
-  margin-left: 22px;
+  margin-left: 16px;
 `
 
 const HeaderText = styled.Text`

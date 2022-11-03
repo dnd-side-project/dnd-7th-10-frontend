@@ -49,18 +49,19 @@ export const CardTagList = styled.View`
   ${flexWithAlign('center', 'flex-start', 'row')}
   flex-wrap: wrap;
   overflow: hidden;
-  height: 25px;
-  margin-top: 16px;
+  height: 27px;
+  margin-top: 10px;
 `
 
 export const CardTag = styled.Text`
-  ${backgroundWithColor('LinkkleBlueGray')}
-  ${Typo.Detail1_400}
-  ${fontWithColor('White')}
+  border: 1px solid ${ColorPalette.LinkkleBlueGray};
+  ${Typo.Body3_600}
+  ${backgroundWithColor('background_1')}
+  ${fontWithColor('BlueGray_4')}
   border-radius: 30px;
-  height: 25px;
+  height: 26px;
   margin-right: 9px;
-  padding: 0 8px;
+  padding: 0 10px;
   line-height: 25px;
   max-width: 100px;
 `

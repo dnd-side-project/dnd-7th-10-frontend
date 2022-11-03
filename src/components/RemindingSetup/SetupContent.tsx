@@ -31,11 +31,6 @@ const SetupPlusTouchable = styled.TouchableOpacity`
   height: 24px;
 `
 
-const SetupEmptyWrapper = styled.View`
-  min-height: 260px;
-  margin-bottom: 60px;
-`
-
 const RemindList = styled.View`
   padding: 24px 6px;
   flex: 1;
@@ -66,40 +61,28 @@ const SetupContent = ({ articles }: Props) => {
           <SVG.AddLight stroke={ColorPalette.LinkkleBlueGray} width="24" />
         </SetupPlusTouchable>
       </SetupTitleView>
-      {false ? (
-        <SetupEmptyWrapper>
+
+      <RemindList>
+        {articles.length === 0 && (
           <Empty
-            background="White"
-            text={
-              '링크가 설정되지 않았어요!\n리마인딩 받을 링크를 추가해보세요.'
-            }
+            text={'링크가 설정되지 않았어요!\n리마인딩 받을 링크를 모아보세요.'}
+            background={'White'}
             button
             buttonText="링크 모으기"
+            onButtonPress={onAddPress}
           />
-        </SetupEmptyWrapper>
-      ) : (
-        <RemindList>
-          {articles.length === 0 && (
-            <Empty
-              text={
-                '링크가 설정되지 않았어요!\n리마인딩 받을 링크를 모아보세요.'
-              }
-              background={'White'}
-              button
-            />
-          )}
-          {articles.map(article => (
-            <RemindItem
-              key={article.articleId}
-              folderName={article.folderName}
-              articleName={article.articleName}
-              source={{
-                uri: article.articleImage || 'https://via.placeholder.com/16x16'
-              }}
-            />
-          ))}
-        </RemindList>
-      )}
+        )}
+        {articles.map(article => (
+          <RemindItem
+            key={article.articleId}
+            folderName={article.folderName}
+            articleName={article.articleName}
+            source={{
+              uri: article.articleImage || 'https://via.placeholder.com/16x16'
+            }}
+          />
+        ))}
+      </RemindList>
     </SetupContentView>
   )
 }

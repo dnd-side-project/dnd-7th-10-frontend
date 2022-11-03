@@ -63,12 +63,16 @@ const RemindingSetup = () => {
       return
     }
     if (!targetToken) {
-      showToast(
-        createWarnToast(
-          '푸시 토큰을 발급 받을 수 없습니다.',
-          ToastOffset.BottomTab
-        )
-      )
+      showToast(createWarnToast('푸시 토큰을 발급 받을 수 없습니다.'))
+      return
+    }
+    if (cron.split(' ')[5] === '*') {
+      showToast(createWarnToast('알림을 받을 요일을 선택해주세요.'))
+      return
+    }
+    if (articleIds.length === 0) {
+      showToast(createWarnToast('알림을 받을 링크를 모아주세요.'))
+      return
     }
     isLoading = true
     api

@@ -15,6 +15,8 @@ import api from '../lib/api'
 import { IMemo } from '../components/Remind/MemoCard'
 import useHeaderEvent from '../hooks/useHeaderEvent'
 import useModal from '../hooks/useModal'
+import { backgroundWithColor } from '../styles/backgrounds'
+import useToast, { createWarnToast } from '../hooks/useToast'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -23,9 +25,7 @@ const MemoMainView = styled.View`
 
 const MemoCardsView = styled.View`
   display: flex;
-  align-items: flex-start;
-  padding-top: 24px;
-  background: #ffffff;
+  /* background: #ffffff; */
 `
 
 const MemoContent = styled.Text`
@@ -34,24 +34,47 @@ const MemoContent = styled.Text`
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.6px;
+  ${backgroundWithColor('White')}
 `
 
 const MemoCardView = styled.View`
   box-sizing: border-box;
-  padding: 16px;
-  margin-left: 23px;
-  width: 366px;
-  background-color: ${ColorPalette.Background_1};
-  border: 1px solid #d6e1ed;
-  border-radius: 4px;
-  flex: none;
-  flex-grow: 0;
+  padding: 24px;
+  ${backgroundWithColor('White')}
 `
+
+const MemoCardInput = styled.TextInput<{ height?: number }>`
+  color: ${ColorPalette.BlueGray_5};
+  font-family: ${Typo.Body2_600};
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  height: ${props => (props.height || 320) + 'px'};
+  min-height: 320px;
+  border: 1px solid #d6e1ed;
+  ${backgroundWithColor('Background_1')}
+  border-radius: 4px;
+  padding: 16px;
+`
+
+const MemoLengthText = styled.Text`
+  ${Typo.Detail1_400}
+  color: ${ColorPalette.BlueGray_3};
+  margin-top: 16px;
+  align-self: flex-end;
+`
+
+const MemoTextLength = styled.Text<{ exceed?: boolean }>`
+  color: ${props =>
+    props.exceed ? ColorPalette.system_red : ColorPalette.BlueGray_5};
+`
+
 const UrlView = styled.View`
   height: 98px;
   border-radius: 0px;
   width: 414px;
   margin-top: 4px;
+  ${backgroundWithColor('White')}
 `
 
 const UrlImg = styled.Image`
@@ -115,16 +138,6 @@ const UrlDate = styled.Text`
   color: ${ColorPalette.BlueGray_3};
 `
 
-const MemoCardInput = styled.TextInput<{ height?: number }>`
-  color: ${ColorPalette.BlueGray_5};
-  font-family: ${Typo.Body2_600};
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.6px;
-  height: ${props => (props.height || 320) + 'px'};
-  min-height: 320px;
-`
-
 const iconButtons: IIconButton[] = [
   // {
   //   name: 'trash',
@@ -148,6 +161,7 @@ const MemoPage = ({
 }: NativeStackScreenProps<RouterParamList, 'AddMemoPage'>) => {
   const { article } = route.params
   const inputRef = useRef<TextInput | null>(null)
+  const showToast = useToast()
   const [edit, setEdit] = useState(true)
   const [text, setText] = useState('')
   const [memo, setMemo] = useState<IMemo>()
@@ -234,6 +248,18 @@ const MemoPage = ({
     }
   }, [addEventListener, onClick, removeEventListener])
 
+  function handleTextChange(newText: string) {
+    if (newText.length > 1000) {
+      newText = newText.substring(0, 1000)
+      showToast(
+        createWarnToast('메모 내용은 최대 1000자 까지 입력 가능합니다.')
+      )
+    }
+    setText(newText)
+  }
+
+  console.log(article?.openGraph)
+
   return (
     <MemoMainView>
       <Header
@@ -250,17 +276,24 @@ const MemoPage = ({
         <MemoCardsView>
           <MemoCardView>
             {edit ? (
-              <MemoCardInput
-                multiline
-                ref={inputRef}
-                defaultValue={text}
-                textAlignVertical={'top'}
-                onChangeText={txt => {
-                  setText(txt)
-                }}
-                height={height}
-                onContentSizeChange={handleContentSizeChange}
-              />
+              <>
+                <MemoCardInput
+                  multiline
+                  ref={inputRef}
+                  defaultValue={text}
+                  textAlignVertical={'top'}
+                  onChangeText={handleTextChange}
+                  height={height}
+                  value={text}
+                  onContentSizeChange={handleContentSizeChange}
+                />
+                <MemoLengthText>
+                  1000/
+                  <MemoTextLength exceed={text.length >= 1000}>
+                    {text.length}
+                  </MemoTextLength>
+                </MemoLengthText>
+              </>
             ) : (
               <MemoContent>{text}</MemoContent>
             )}
@@ -268,9 +301,9 @@ const MemoPage = ({
           <UrlView>
             <UrlImg
               source={{
-                uri: article
-                  ? article.openGraph.linkImage
-                  : 'https://via.placeholder.com/16x16'
+                uri:
+                  article?.openGraph.linkImage ||
+                  'https://via.placeholder.com/120x120'
               }}
             />
             <UrlFolder>{article?.folderTitle}</UrlFolder>

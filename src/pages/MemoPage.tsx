@@ -22,7 +22,6 @@ const MemoCardsView = styled.View`
   display: flex;
   align-items: flex-start;
   padding-top: 24px;
-  width: 414px;
   background: #ffffff;
 `
 
@@ -291,7 +290,7 @@ const MemoPage = ({
             />
             <UrlFolder>{folderTitle}</UrlFolder>
             <UrlTitleComponent>
-              <UrlTitle>{linkTitle}</UrlTitle>
+              <UrlTitle numberOfLines={1}>{linkTitle}</UrlTitle>
             </UrlTitleComponent>
             <UrlDate>{date}</UrlDate>
           </UrlView>

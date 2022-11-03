@@ -1,8 +1,13 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import { IIconButton } from '../components/Common/Header'
-import { ScrollView } from 'react-native'
+import {
+  ScrollView,
+  TextInput,
+  NativeSyntheticEvent,
+  TextInputContentSizeChangeEventData
+} from 'react-native'
 import { ColorPalette, Typo } from '../styles/variable'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
@@ -13,6 +18,7 @@ import useModal from '../hooks/useModal'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
+  flex: 1;
 `
 
 const MemoCardsView = styled.View`
@@ -35,7 +41,6 @@ const MemoCardView = styled.View`
   padding: 16px;
   margin-left: 23px;
   width: 366px;
-  height: 320px;
   background-color: ${ColorPalette.Background_1};
   border: 1px solid #d6e1ed;
   border-radius: 4px;
@@ -110,12 +115,14 @@ const UrlDate = styled.Text`
   color: ${ColorPalette.BlueGray_3};
 `
 
-const MemoCardInput = styled.TextInput`
+const MemoCardInput = styled.TextInput<{ height?: number }>`
   color: ${ColorPalette.BlueGray_5};
   font-family: ${Typo.Body2_600};
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.6px;
+  height: ${props => (props.height || 320) + 'px'};
+  min-height: 320px;
 `
 
 const iconButtons: IIconButton[] = [
@@ -140,11 +147,11 @@ const MemoPage = ({
   navigation
 }: NativeStackScreenProps<RouterParamList, 'AddMemoPage'>) => {
   const { article } = route.params
-  console.log(article)
-
+  const inputRef = useRef<TextInput | null>(null)
   const [edit, setEdit] = useState(true)
   const [text, setText] = useState('')
   const [memo, setMemo] = useState<IMemo>()
+  const [height, setHeight] = useState(320)
 
   const { showModal } = useModal()
 
@@ -164,6 +171,12 @@ const MemoPage = ({
         console.error(error)
       })
   }
+
+  useEffect(() => {
+    if (inputRef.current) {
+      setTimeout(() => inputRef.current?.focus())
+    }
+  }, [])
 
   const removeMemo = ({ memoId }: Props) => {
     api
@@ -203,6 +216,13 @@ const MemoPage = ({
   )
   const { addEventListener, removeEventListener } = useHeaderEvent()
 
+  const handleContentSizeChange = (
+    event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
+  ) => {
+    const newHeight = Math.max(320, event.nativeEvent.contentSize.height)
+    setHeight(newHeight)
+  }
+
   useEffect(() => {
     addEventListener(onClick)
     if (article === undefined) {
@@ -216,26 +236,30 @@ const MemoPage = ({
 
   return (
     <MemoMainView>
-      <ScrollView scrollEnabled={true}>
-        <Header
-          iconButtons={edit ? undefined : iconButtons}
-          save={edit ? true : false}
-          onSavePress={() => {
-            postMemo({ articleId: article?.id, content: text })
-            setEdit(false)
-          }}
-        >
-          메모
-        </Header>
+      <Header
+        iconButtons={edit ? undefined : iconButtons}
+        save={edit ? true : false}
+        onSavePress={() => {
+          postMemo({ articleId: article?.id, content: text })
+          setEdit(false)
+        }}
+      >
+        메모
+      </Header>
+      <ScrollView style={{ flex: 1 }} scrollEnabled={true}>
         <MemoCardsView>
           <MemoCardView>
             {edit ? (
               <MemoCardInput
                 multiline
+                ref={inputRef}
                 defaultValue={text}
+                textAlignVertical={'top'}
                 onChangeText={txt => {
                   setText(txt)
                 }}
+                height={height}
+                onContentSizeChange={handleContentSizeChange}
               />
             ) : (
               <MemoContent>{text}</MemoContent>
@@ -251,7 +275,9 @@ const MemoPage = ({
             />
             <UrlFolder>{article?.folderTitle}</UrlFolder>
             <UrlTitleComponent>
-              <UrlTitle>{article?.openGraph.linkTitle}</UrlTitle>
+              <UrlTitle numberOfLines={1}>
+                {article?.openGraph.linkTitle}
+              </UrlTitle>
             </UrlTitleComponent>
             <UrlDate>{article?.registerDate.split('T')[0]}</UrlDate>
           </UrlView>

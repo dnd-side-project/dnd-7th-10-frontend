@@ -155,7 +155,7 @@ const Header = ({
       {!hideBack && (
         <TouchableOpacity onPress={handleBackPress} hitSlop={backButtonInsets}>
           <HeaderIcon
-            source={require('../../assets/images/chevron-left.png')}
+            source={require('../../assets/images/back-button.png')}
             resizeMode="contain"
           />
         </TouchableOpacity>

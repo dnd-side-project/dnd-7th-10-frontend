@@ -6,9 +6,9 @@ import { ScrollView, TouchableOpacity } from 'react-native'
 import api from '../lib/api'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { RouterNavigationProps } from '../pages/Router'
-import { IMemo } from '../components/Remind/MemoCard'
 import { backgroundWithColor } from '../styles/backgrounds'
 import Empty from '../components/Common/Empty'
+import { IMemo } from '../recoil/folders'
 
 const MemoMainView = styled.View`
   background-color: #f5f5f5;
@@ -32,7 +32,6 @@ const MemoMain = () => {
         if (response.status === 200) {
           //
           let resArr = Array.from(response.data)
-          console.log(Array.isArray(resArr))
           setMemos(resArr)
         }
       })

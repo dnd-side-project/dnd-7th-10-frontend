@@ -156,7 +156,6 @@ const MemoPage = ({
   const showToast = useToast()
 
   const patchMemo = ({ memoId, memoContent }: Props) => {
-    console.log(memoContent)
     api
       .patch<IMemo>(`/memo/${memoId}`, memoContent, {
         headers: {

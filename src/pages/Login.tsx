@@ -110,7 +110,7 @@ const Login = () => {
         }
       })
       .catch(e => {
-        console.log(e)
+        console.error(e)
         showToast(createToast('로그인에 오류가 발생했습니다.'))
         Clipboard.setString(JSON.stringify(e))
       })

@@ -103,10 +103,6 @@ const LinkContents = ({
     })
   }
 
-  useEffect(() => {
-    console.log('isloading, ', isLoading)
-  }, [isLoading])
-
   return (
     <LinkView>
       <Header iconButtons={iconButtons}>링크 정보</Header>

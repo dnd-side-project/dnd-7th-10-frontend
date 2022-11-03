@@ -218,8 +218,6 @@ const MemoPage = ({
     setText(newText)
   }
 
-  console.log(article?.openGraph)
-
   return (
     <MemoMainView>
       <Header

@@ -18,6 +18,7 @@ import { RouterNavigationProps } from './Router'
 
 const RemindingView = styled.View`
   background-color: #f5f5f5;
+  flex: 1;
 `
 
 const iconButtons: IIconButton[] = [

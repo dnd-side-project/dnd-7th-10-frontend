@@ -14,7 +14,6 @@ const MemoCollectionView = styled.View`
   flex-grow: 0;
   align-items: center;
   justify-content: center;
-  padding: 24px;
 `
 const TopText = styled.Text`
   position: absolute;
@@ -87,7 +86,7 @@ const MemoCollection = ({ onPress, memos }: Props) => {
           text={`아직 작성된 메모가 없어요!${'\n'}링크를 읽고 간단히 정리해 볼까요?`}
           button
           buttonText="바로가기"
-          background="white"
+          background="White"
           onButtonPress={() => navigation.navigate('Home')}
         />
       ) : (

@@ -92,6 +92,8 @@ const LinkEdit = ({
     if (!isLoading && articleDetail && articleDetail.folderId) {
       setFolderId(articleDetail.folderId)
       setLinkUrl(articleDetail.linkUrl)
+      const articleTagIds = articleDetail.tags.map(({ tagId }) => tagId)
+      setTagIds(articleTagIds)
     }
   }, [isLoading, articleDetail])
 

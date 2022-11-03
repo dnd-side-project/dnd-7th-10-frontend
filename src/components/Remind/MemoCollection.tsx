@@ -5,8 +5,9 @@ import { ColorPalette, Typo } from '../../styles/variable'
 import { useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
 import Empty from '../Common/Empty'
-import { IMemo } from '../../recoil/folders'
+import { folderIdsAtom, IMemo } from '../../recoil/folders'
 import { shadow } from '../../styles/backgrounds'
+import { useRecoilValue } from 'recoil'
 
 const MemoCollectionView = styled.View`
   background-color: #ffffff;
@@ -69,6 +70,7 @@ interface Props {
 
 const MemoCollection = ({ onPress, memos }: Props) => {
   const navigation = useNavigation<RouterNavigationProps>()
+  const folderIds = useRecoilValue(folderIdsAtom)
   const onCardPress = (memo: IMemo) => {
     navigation.navigate('MemoPage', { memo })
   }
@@ -85,7 +87,9 @@ const MemoCollection = ({ onPress, memos }: Props) => {
           button
           buttonText="바로가기"
           background="White"
-          onButtonPress={() => navigation.navigate('Home')}
+          onButtonPress={() =>
+            navigation.navigate('FolderContent', { folderId: folderIds[0] })
+          }
         />
       ) : (
         <MemoView>

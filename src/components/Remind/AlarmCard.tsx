@@ -9,7 +9,7 @@ const AlarmCardView = styled.View`
   background: #ffffff;
   box-shadow: ${shadow};
   border-radius: 4px;
-  margin-right: 16px;
+  margin: 8px;
 `
 const Toggle = styled.View`
   position: absolute;

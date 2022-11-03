@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from '@emotion/native'
 import { flexWithAlign } from '../../styles/flexbox'
 import { fontWithColor } from '../../styles/fonts'
@@ -59,6 +59,11 @@ const DayPicker = ({ onChange }: Props) => {
     false,
     false
   ])
+
+  useEffect(() => {
+    const date = new Date()
+    onPress(date.getDay())
+  }, [])
 
   const onPress = (index: number) => {
     setDays(oldDays => {

@@ -14,7 +14,8 @@ import {
   useRoute
 } from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
-import { IMemo } from '../recoil/folders'
+import { folderIdsAtom, IMemo } from '../recoil/folders'
+import { useRecoilValue } from 'recoil'
 
 const RemindingView = styled.View`
   background-color: #f5f5f5;
@@ -35,6 +36,7 @@ const RemindMain = () => {
   const navigation = useNavigation<RouterNavigationProps>()
   const [list, setList] = useState<LinkList>()
   const [memos, setMemos] = useState<MemoList>()
+  const folderIds = useRecoilValue(folderIdsAtom)
   const route = useRoute()
 
   const getArticles = () => {
@@ -79,6 +81,12 @@ const RemindMain = () => {
     navigation.navigate('RemindingList')
   }
 
+  const onEmptyPress = () => [
+    navigation.navigate('FolderContent', {
+      folderId: folderIds[0]
+    })
+  ]
+
   const onMemoPress = () => {
     navigation.navigate('MemoMain')
   }
@@ -87,7 +95,11 @@ const RemindMain = () => {
     <RemindingView>
       <Header iconButtons={iconButtons}>리마인딩</Header>
       <ScrollView scrollEnabled={true}>
-        <RemindingList list={list ? list : []} onPress={onRemindPress} />
+        <RemindingList
+          list={list ? list : []}
+          onPress={onRemindPress}
+          onEmptyPress={onEmptyPress}
+        />
         <Notice />
         <MemoCollection onPress={onMemoPress} memos={memos ? memos : []} />
       </ScrollView>

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import AlarmCard from './AlarmCard'
 import { ColorPalette, Typo } from '../../styles/variable'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation
+} from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
 import api from '../../lib/api'
 import { ILink } from './LinkCard'
@@ -34,7 +38,7 @@ const AlarmCardBar = styled.ScrollView`
   position: absolute;
   height: 200px;
   top: 72px;
-  margin-left: 24px;
+  padding: 0 16px;
 `
 
 const AddIconBtn = styled.TouchableOpacity`
@@ -81,6 +85,7 @@ const Notice = () => {
         console.error(err)
       })
   }
+  useFocusEffect(getReminds)
 
   const isFocused = useIsFocused()
   useEffect(() => {

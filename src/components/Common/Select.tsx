@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import styled from '@emotion/native'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import {
@@ -49,11 +49,21 @@ const containerStyle = { flexGrow: 1 }
 interface Props {
   options: string[]
   onChange?: (option: string) => void
+  newValue?: string
 }
 
-const Select = ({ options, onChange }: Props) => {
+const Select = ({ options, onChange, newValue }: Props) => {
   const [value, setValue] = useState<number>(0)
   const scrollView = useRef<ScrollView>(null)
+
+  useEffect(() => {
+    if (newValue) {
+      const index = options.indexOf(newValue || '')
+      if (index > -1) {
+        onPress(index)
+      }
+    }
+  }, [newValue])
 
   const updateValue = (index: number) => {
     if (index !== value) {

@@ -81,7 +81,7 @@ const GatherFolderItem = ({ folderId, selected, selectCount }: Props) => {
           source={require('../../assets/images/folder_selected_star.png')}
         />
       )}
-      <GatherFolderNameText selected={selected}>
+      <GatherFolderNameText numberOfLines={1} selected={selected}>
         {folder.folderTitle}
       </GatherFolderNameText>
       <GatherFolderCountText selected={selected}>

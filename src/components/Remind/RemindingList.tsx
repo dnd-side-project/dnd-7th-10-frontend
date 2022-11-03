@@ -40,6 +40,7 @@ interface LinkList extends Array<ILink> {}
 interface Props {
   list: LinkList
   onPress: () => void
+  onEmptyPress: () => void
 }
 
 const CardView = styled.ScrollView`
@@ -60,7 +61,7 @@ const CardTouchable = styled.TouchableOpacity`
   /* flex: 0.5; */
 `
 
-const RemindingList = ({ onPress, list }: Props) => {
+const RemindingList = ({ onPress, onEmptyPress, list }: Props) => {
   const navigation = useNavigation<RouterNavigationProps>()
   return (
     <RemindingListView>
@@ -97,7 +98,7 @@ const RemindingList = ({ onPress, list }: Props) => {
           button
           buttonText="바로가기"
           background="White"
-          onButtonPress={onPress}
+          onButtonPress={onEmptyPress}
         />
       )}
     </RemindingListView>

@@ -21,11 +21,15 @@ import RemindingGather from './RemindingGather'
 import AddMemoPage from './AddMemoPage'
 import Browser from './Browser'
 import RemindingNotice from './RemindingNotice'
-import { useRecoilState } from 'recoil'
-import { noticeAtom } from '../recoil/global'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { noticeAtom, quicklinkAtom, quicklinkLastAtom } from '../recoil/global'
 import RemindingListPage from './RemindingListPage'
 import LinkEdit from './LinkEdit'
 import { IArticle } from '../recoil/folders'
+import { AppState, AppStateStatus } from 'react-native'
+import Clipboard from '@react-native-clipboard/clipboard'
+import { isValidUrl } from '../lib/urlcheck'
+import useFolderList from '../components/Home/FolderList.hook'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -88,6 +92,9 @@ export type RouterNavigationProps = NavigationProp<RouterParamList>
 const Router = () => {
   const [notice, setNotice] = useRecoilState(noticeAtom)
   const navigation = useNavigation<RouterNavigationProps>()
+  const [last, setLast] = useRecoilState(quicklinkLastAtom)
+  const [folderIds] = useFolderList()
+  const setQuicklink = useSetRecoilState(quicklinkAtom)
 
   useEffect(() => {
     if (notice) {
@@ -96,6 +103,32 @@ const Router = () => {
       }
     }
   }, [notice, setNotice, navigation])
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange
+    )
+    return () => {
+      subscription.remove()
+    }
+  }, [last])
+
+  const handleAppStateChange = (appState: AppStateStatus) => {
+    if (appState === 'active') {
+      Clipboard.getString().then(copiedText => {
+        if (isValidUrl(copiedText) && last !== copiedText) {
+          if (folderIds.length > 0) {
+            setQuicklink({
+              linkUrl: copiedText,
+              folderId: folderIds[0]
+            })
+            setLast(copiedText)
+          }
+        }
+      })
+    }
+  }
 
   return (
     <>

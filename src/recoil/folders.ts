@@ -36,6 +36,7 @@ export interface IArticle {
   modifiedDate: string
   bookmark: boolean
   tags: ITag[]
+  folderId: string
   folderTitle?: string
 }
 
@@ -101,6 +102,7 @@ export const folderArticleFamily = atomFamily<IArticle, string>({
   default: articleId => ({
     id: articleId,
     remindId: null,
+    folderId: '',
     linkUrl: '',
     openGraph: {
       linkDescription: '',

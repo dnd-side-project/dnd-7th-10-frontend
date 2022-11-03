@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
-import { shadow } from '../../styles/backgrounds'
+import { backgroundWithColor } from '../../styles/backgrounds'
 import { IMemo } from '../../recoil/folders'
 
 type ViewProps = {
@@ -11,12 +11,11 @@ type ViewProps = {
 const MemoCardView = styled.View<ViewProps>`
   width: ${props => (props.main === true ? '100%' : '200px')};
   height: ${props => (props.main === true ? 'auto' : '312px')};
-  background: #ffffff;
-  box-shadow: ${shadow};
+  ${backgroundWithColor('White')}
   border: ${props => (props.main === true ? '2px solid #DEEBF5' : 'none')};
   border-radius: ${props => (props.main === true ? '4px' : '8px')};
   margin-top: ${props => (props.main === true ? '16px' : '0px')};
-  margin-right: 16px;
+  z-index: 1000;
 `
 const MemoCardDate = styled.Text`
   position: absolute;
@@ -52,7 +51,7 @@ const UrlView = styled.View<ViewProps>`
   margin: auto 16px 0;
   align-items: center;
   height: 72px;
-  width: ${props => (props.main === true ? 'auto' : '168px')};
+  /* width: ${props => (props.main === true ? 'auto' : '168px')}; */
   border-top-width: 1px;
   border-top-color: #deebf5;
 `
@@ -88,6 +87,7 @@ const MemoIcon = styled.Image`
 
 const UrlTextView = styled.View`
   margin-left: 8px;
+  flex: 1;
 `
 
 interface Props {
@@ -113,7 +113,7 @@ const MemoCard = ({ memo, main }: Props) => {
         />
         <UrlTextView>
           <UrlFolder main>{folderTitle}</UrlFolder>
-          <UrlTitle>{linkTitle}</UrlTitle>
+          <UrlTitle numberOfLines={1}>{linkTitle}</UrlTitle>
         </UrlTextView>
       </UrlView>
     </MemoCardView>

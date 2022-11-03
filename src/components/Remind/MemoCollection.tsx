@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
 import Empty from '../Common/Empty'
 import { IMemo } from '../../recoil/folders'
+import { shadow } from '../../styles/backgrounds'
 
 const MemoCollectionView = styled.View`
   background-color: #ffffff;
@@ -32,18 +33,15 @@ const TopText = styled.Text`
 
 const MemoCardsView = styled.ScrollView`
   height: 400px;
-  padding: 10px 0px;
 `
 const MemoCardBtn = styled.TouchableOpacity`
-  height: 330px;
+  height: 312px;
+  border-radius: 8px;
+  margin: 4px 8px;
 `
 const MemoView = styled.View`
-  position: absolute;
-  width: 632px;
   height: 300px;
-  left: 24px;
-  top: 72px;
-
+  padding: 0 16px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -93,7 +91,11 @@ const MemoCollection = ({ onPress, memos }: Props) => {
         <MemoView>
           <MemoCardsView horizontal={true}>
             {memos.map((memo, idx) => (
-              <MemoCardBtn onPress={() => onCardPress(memo)} key={idx}>
+              <MemoCardBtn
+                onPress={() => onCardPress(memo)}
+                key={idx}
+                style={shadow}
+              >
                 <MemoCard memo={memo} key={idx} main={false} />
               </MemoCardBtn>
             ))}

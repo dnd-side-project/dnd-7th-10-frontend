@@ -1,8 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import { IIconButton } from '../components/Common/Header'
-import { ScrollView } from 'react-native'
+import {
+  ScrollView,
+  TextInput,
+  KeyboardAvoidingView,
+  NativeSyntheticEvent,
+  TextInputContentSizeChangeEventData
+} from 'react-native'
 import { ColorPalette, Typo } from '../styles/variable'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
@@ -11,18 +17,19 @@ import useHeaderEvent from '../hooks/useHeaderEvent'
 import useModal from '../hooks/useModal'
 import { useFocusEffect } from '@react-navigation/native'
 import { BackHandler } from 'react-native'
-import useToast, { createCheckToast } from '../hooks/useToast'
+import useToast, { createCheckToast, createWarnToast } from '../hooks/useToast'
 import { IMemo } from '../recoil/folders'
+import { backgroundWithColor } from '../styles/backgrounds'
+import { useResetRecoilState } from 'recoil'
+import { modalStateAtom } from '../recoil/global'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
+  flex: 1;
 `
 
 const MemoCardsView = styled.View`
   display: flex;
-  align-items: flex-start;
-  padding-top: 24px;
-  background: #ffffff;
 `
 
 const MemoContent = styled.Text`
@@ -31,19 +38,17 @@ const MemoContent = styled.Text`
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.6px;
+  border: 1px solid #d6e1ed;
+  ${backgroundWithColor('Background_1')}
+  border-radius: 4px;
+  padding: 16px;
+  min-height: 320px;
 `
 
 const MemoCardView = styled.View`
   box-sizing: border-box;
-  padding: 16px;
-  margin-left: 23px;
-  width: 366px;
-  min-height: 320px;
-  background-color: ${ColorPalette.Background_1};
-  border: 1px solid #d6e1ed;
-  border-radius: 4px;
-  flex: none;
-  flex-grow: 0;
+  padding: 24px;
+  ${backgroundWithColor('White')}
 `
 const UrlView = styled.View`
   height: 98px;
@@ -114,13 +119,29 @@ const UrlDate = styled.Text`
   color: ${ColorPalette.BlueGray_3};
 `
 
-const MemoCardInput = styled.TextInput`
+const MemoCardInput = styled.TextInput<{ height?: number }>`
   color: ${ColorPalette.BlueGray_5};
   font-family: ${Typo.Body2_600};
-  padding: 0px;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.6px;
+  height: ${props => (props.height || 320) + 'px'};
+  min-height: 320px;
+  border: 1px solid #d6e1ed;
+  ${backgroundWithColor('Background_1')}
+  border-radius: 4px;
+  padding: 16px;
+`
+const MemoLengthText = styled.Text`
+  ${Typo.Detail1_400}
+  color: ${ColorPalette.BlueGray_3};
+  margin-top: 16px;
+  align-self: flex-end;
+`
+
+const MemoTextLength = styled.Text<{ exceed?: boolean }>`
+  color: ${props =>
+    props.exceed ? ColorPalette.system_red : ColorPalette.BlueGray_5};
 `
 
 const iconButtons: IIconButton[] = [
@@ -147,9 +168,13 @@ const MemoPage = ({
   const { id, content, folderTitle, openGraph, registerDate } = memo
   const { linkTitle, linkImage } = openGraph!
   const date = registerDate.split('T')[0]
+  const inputRef = useRef<TextInput | null>(null)
 
   const [edit, setEdit] = useState(false)
   const [text, setText] = useState(content)
+  const [height, setHeight] = useState(320)
+  const [remove, setRemove] = useState(false)
+  const resetModal = useResetRecoilState(modalStateAtom)
 
   const patchData = { memoId: id, memoContent: text }
   const { showModal } = useModal()
@@ -172,6 +197,12 @@ const MemoPage = ({
       })
   }
 
+  useEffect(() => {
+    if (inputRef.current) {
+      setTimeout(() => inputRef.current?.focus())
+    }
+  })
+
   const removeMemo = ({ memoId }: Props) => {
     api
       .delete<IMemo>(`/memo/${memoId}`)
@@ -190,18 +221,19 @@ const MemoPage = ({
         setEdit(true)
       }
       if (name === 'memo_trash') {
+        setRemove(true)
         showModal(
           '해당 메모를 삭제하시겠어요?',
-          `작성하신 메모를 삭제하면
-        다신 이 메모를 확인해 볼 수 없어요!`,
-          '수정할래요',
-          '삭제할래요'
+          '작성하신 메모를 삭제하면\n다신 이 메모를 확인해 볼 수 없어요!',
+          '삭제할래요',
+          '수정할래요'
         ).then(value => {
           if (value) {
-            setEdit(true)
-          } else {
             removeMemo({ memoId: id })
+          } else {
+            setEdit(true)
           }
+          setRemove(false)
         })
       }
     },
@@ -217,11 +249,11 @@ const MemoPage = ({
   }, [addEventListener, onClick, removeEventListener])
 
   const exitBehavior = () => {
+    console.log('')
     if (edit) {
       showModal(
         '지금 나가면 저장되지 않아요!',
-        `지금 페이지에서 이동하면
-        편집하신 메모 내용이 저장되지 않아요.`,
+        '지금 페이지에서 이동하면\n편집하신 메모 내용이 저장되지 않아요.',
         '네, 나갈래요',
         '다시 돌아갈래요'
       ).then(value => {
@@ -229,9 +261,22 @@ const MemoPage = ({
           navigation.goBack()
         }
       })
+    } else if (remove) {
+      resetModal()
+      setRemove(false)
     } else {
       navigation.goBack()
     }
+  }
+
+  function handleTextChange(newText: string) {
+    if (newText.length > 1000) {
+      newText = newText.substring(0, 1000)
+      showToast(
+        createWarnToast('메모 내용은 최대 1000자 까지 입력 가능합니다.')
+      )
+    }
+    setText(newText)
   }
 
   useFocusEffect(
@@ -246,37 +291,55 @@ const MemoPage = ({
         backAction
       )
       return () => subscription.remove()
-    }, [edit])
+    }, [edit, remove])
   )
 
   const onBackPress = () => {
     exitBehavior()
   }
 
+  const handleContentSizeChange = (
+    event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
+  ) => {
+    const newHeight = Math.max(320, event.nativeEvent.contentSize.height)
+    setHeight(newHeight)
+  }
+
   return (
     <MemoMainView>
-      <ScrollView scrollEnabled={true}>
-        <Header
-          iconButtons={edit ? undefined : iconButtons}
-          save={edit ? true : false}
-          onBackPress={onBackPress}
-          onSavePress={() => {
-            patchMemo(patchData)
-            setEdit(false)
-          }}
-        >
-          메모
-        </Header>
+      <Header
+        iconButtons={edit ? undefined : iconButtons}
+        save={edit ? true : false}
+        onBackPress={onBackPress}
+        onSavePress={() => {
+          patchMemo(patchData)
+          setEdit(false)
+        }}
+      >
+        메모
+      </Header>
+      <ScrollView scrollEnabled={true} nestedScrollEnabled={true}>
         <MemoCardsView>
           <MemoCardView>
             {edit ? (
-              <MemoCardInput
-                multiline
-                defaultValue={text}
-                onChangeText={txt => {
-                  setText(txt)
-                }}
-              />
+              <KeyboardAvoidingView>
+                <MemoCardInput
+                  multiline
+                  ref={inputRef}
+                  defaultValue={text}
+                  textAlignVertical={'top'}
+                  onChangeText={handleTextChange}
+                  height={height}
+                  value={text}
+                  onContentSizeChange={handleContentSizeChange}
+                />
+                <MemoLengthText>
+                  1000/
+                  <MemoTextLength exceed={text.length >= 1000}>
+                    {text.length}
+                  </MemoTextLength>
+                </MemoLengthText>
+              </KeyboardAvoidingView>
             ) : (
               <MemoContent>{text}</MemoContent>
             )}

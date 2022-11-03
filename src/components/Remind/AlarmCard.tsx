@@ -52,7 +52,7 @@ const DayText = styled.Text`
   height: 17px;
   left: 16px;
   top: 108px;
-  font-family: ${Typo.Detail1_400}
+  font-family: ${Typo.Detail1_400};
   font-size: 14px;
   line-height: 17px;
   display: flex;
@@ -67,12 +67,12 @@ const LinkNum = styled.Text`
   height: 14px;
   right: 16px;
   bottom: 16px;
-  font-family:${Typo.Detail2_400}
+  font-family: ${Typo.Detail2_400};
   font-size: 12px;
   line-height: 14px;
   text-align: right;
   letter-spacing: -0.6px;
-  color: #${ColorPalette.BlueGray_3}
+  color: #${ColorPalette.BlueGray_3};
 `
 
 interface Props {
@@ -126,7 +126,7 @@ const AlarmCard = ({ remind }: Props) => {
   })
 
   const onPress = () => {
-    console.log('press')
+    /* console.log('press') */
   }
 
   //초 분 시

@@ -31,7 +31,7 @@ const RemindingNotice = ({
     showToast(
       createWarnToast('아티클을 찾을 수 없습니다.', ToastOffset.Default)
     )
-    console.log('can not find article')
+
     navigation.goBack()
   }
 
@@ -44,18 +44,15 @@ const RemindingNotice = ({
   } = useArticleDetail(articleId, true)
 
   const onGatherPress = () => {
-    console.log('gather')
     navigation.goBack()
     navigation.navigate('RemindMain')
   }
 
   const onCancelPress = () => {
-    console.log('cancel')
     navigation.goBack()
   }
 
   const onReadPress = () => {
-    console.log('replace')
     navigation.dispatch(
       StackActions.replace('Browser', {
         url: articleDetail.linkUrl,

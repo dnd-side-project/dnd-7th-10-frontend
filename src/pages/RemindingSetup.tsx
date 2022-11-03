@@ -59,10 +59,6 @@ const RemindingSetup = () => {
 
   const onSavePress = () => {
     const articleIds = articles.map(({ articleId }) => articleId)
-    console.log(isRemindOn)
-    console.log(cron)
-    console.log(articleIds)
-    console.log(targetToken)
     if (isLoading) {
       return
     }

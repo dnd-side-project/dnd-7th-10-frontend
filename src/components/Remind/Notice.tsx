@@ -78,7 +78,7 @@ const Notice = () => {
         }
       })
       .catch(err => {
-        console.log(err)
+        console.error(err)
       })
   }
 

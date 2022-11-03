@@ -66,7 +66,6 @@ export default function useRecoilApi<T>(
     (e: AxiosError) => {
       setIsError(true)
       setError(e)
-      console.log(e)
     },
     [setIsError, setError]
   )

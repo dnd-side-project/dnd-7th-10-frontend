@@ -43,13 +43,11 @@ const FolderCard = ({ article, refresh }: Props) => {
   }, [getFaviconUrl])
 
   const tags = useMemo(() => {
-    console.log(article.bookmark)
     return article.tags.map(({ tagName }) => tagName)
   }, [article])
 
   const onBookmarkPress = () => {
-    api.patch(`/article/mark/${article.id}`).then(response => {
-      console.log(response.status)
+    api.patch(`/article/mark/${article.id}`).then(() => {
       if (refresh) {
         refresh()
       }

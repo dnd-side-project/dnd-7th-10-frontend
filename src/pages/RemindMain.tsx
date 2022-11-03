@@ -42,7 +42,7 @@ const RemindMain = () => {
       .then(response => {
         if (response.status === 200) {
           let resArr = Array.from(response.data)
-          console.log(resArr)
+
           setList(resArr)
         }
       })
@@ -58,7 +58,6 @@ const RemindMain = () => {
         if (response.status === 200) {
           let resArr = Array.from(response.data)
           setMemos(resArr)
-          console.log(resArr)
         }
       })
       .catch(error => {

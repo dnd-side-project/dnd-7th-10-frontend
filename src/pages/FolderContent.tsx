@@ -19,11 +19,11 @@ const FolderContent = ({
   const iconButtons: IIconButton[] = [
     {
       name: 'folder-content-search',
-      source: require('../assets/images/search.png')
+      source: require('../assets/images/fc_search.png')
     },
     {
       name: 'folder-content-link',
-      source: require('../assets/images/link.png')
+      source: require('../assets/images/fc_link.png')
     }
   ]
 

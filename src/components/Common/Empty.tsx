@@ -63,7 +63,7 @@ const Empty = ({
     <FolderEmptyView background={background}>
       {icon && (
         <FolderEmptyIcon
-          source={source || require('../../assets/images/link.png')}
+          source={source || require('../../assets/images/no_link.png')}
           resizeMode="contain"
         />
       )}

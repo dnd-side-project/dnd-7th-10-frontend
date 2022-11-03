@@ -74,7 +74,7 @@ const Browser = ({
   const [navState, setNavState] = useState<WebViewNavigation>()
   const webView = useRef<WebView>(null)
   const [readed, setReaded] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const [writing, setWriting] = useState<boolean>(false)
   const [memo, setMemo] = useState<string>('')
 

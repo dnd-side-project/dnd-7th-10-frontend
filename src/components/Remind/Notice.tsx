@@ -111,7 +111,7 @@ const Notice = () => {
           text={`알림이 설정되지 않았어요!${'\n'}꾸준한 리마인딩을 받아보세요.`}
           button
           buttonText="알림 추가하기"
-          background="white"
+          background="White"
           onButtonPress={onAddPress}
         />
       )}

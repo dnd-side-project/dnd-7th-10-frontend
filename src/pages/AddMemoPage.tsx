@@ -12,11 +12,11 @@ import { ColorPalette, Typo } from '../styles/variable'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
 import api from '../lib/api'
-import { IMemo } from '../components/Remind/MemoCard'
 import useHeaderEvent from '../hooks/useHeaderEvent'
 import useModal from '../hooks/useModal'
 import { backgroundWithColor } from '../styles/backgrounds'
 import useToast, { createWarnToast } from '../hooks/useToast'
+import { IMemo } from '../recoil/folders'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';

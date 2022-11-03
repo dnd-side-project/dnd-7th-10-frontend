@@ -1,4 +1,5 @@
 import React from 'react'
+import { TouchableOpacity } from 'react-native'
 import styled from '@emotion/native'
 import MemoTop from './MemoTop'
 import Memo from './Memo'
@@ -29,13 +30,30 @@ interface Props {
 
 const MemoContent = ({ memos, article }: Props) => {
   const navigation = useNavigation<RouterNavigationProps>()
+
   return (
     <MemoContentView>
       <MemoTop article={article} />
       {memos && memos.length > 0 ? (
         <MemoContainer>
           {memos.map(memo => (
-            <Memo key={memo.id} memo={memo} />
+            <TouchableOpacity
+              key={memo.id}
+              onPress={() => {
+                const newMemo = {
+                  ...memo,
+                  openGraph: {
+                    ...article.openGraph
+                  }
+                }
+
+                navigation.navigate('MemoPage', {
+                  memo: newMemo
+                })
+              }}
+            >
+              <Memo memo={memo} />
+            </TouchableOpacity>
           ))}
         </MemoContainer>
       ) : (

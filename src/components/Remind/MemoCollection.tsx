@@ -2,10 +2,10 @@ import React from 'react'
 import styled from '@emotion/native'
 import MemoCard from './MemoCard'
 import { ColorPalette, Typo } from '../../styles/variable'
-import { IMemo } from '../Remind/MemoCard'
 import { useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
 import Empty from '../Common/Empty'
+import { IMemo } from '../../recoil/folders'
 
 const MemoCollectionView = styled.View`
   background-color: #ffffff;

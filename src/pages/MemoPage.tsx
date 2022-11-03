@@ -7,12 +7,12 @@ import { ColorPalette, Typo } from '../styles/variable'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
 import api from '../lib/api'
-import { IMemo } from '../components/Remind/MemoCard'
 import useHeaderEvent from '../hooks/useHeaderEvent'
 import useModal from '../hooks/useModal'
 import { useFocusEffect } from '@react-navigation/native'
 import { BackHandler } from 'react-native'
 import useToast, { createCheckToast } from '../hooks/useToast'
+import { IMemo } from '../recoil/folders'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -125,11 +125,11 @@ const MemoCardInput = styled.TextInput`
 
 const iconButtons: IIconButton[] = [
   {
-    name: 'trash',
+    name: 'memo_trash',
     source: require('../assets/images/trash.png')
   },
   {
-    name: 'edit',
+    name: 'memo_edit',
     source: require('../assets/images/edit.png')
   }
 ]
@@ -145,7 +145,7 @@ const MemoPage = ({
 }: NativeStackScreenProps<RouterParamList, 'MemoPage'>) => {
   const { memo } = route.params
   const { id, content, folderTitle, openGraph, registerDate } = memo
-  const { linkTitle, linkImage } = openGraph
+  const { linkTitle, linkImage } = openGraph!
   const date = registerDate.split('T')[0]
 
   const [edit, setEdit] = useState(false)
@@ -187,10 +187,10 @@ const MemoPage = ({
   }
   const onClick = useCallback(
     (name: string) => {
-      if (name === 'edit') {
+      if (name === 'memo_edit') {
         setEdit(true)
       }
-      if (name === 'trash') {
+      if (name === 'memo_trash') {
         showModal(
           '해당 메모를 삭제하시겠어요?',
           `작성하신 메모를 삭제하면

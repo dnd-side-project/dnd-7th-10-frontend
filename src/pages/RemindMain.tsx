@@ -6,7 +6,6 @@ import RemindingList from '../components/Remind/RemindingList'
 import Notice from '../components/Remind/Notice'
 import MemoCollection from '../components/Remind/MemoCollection'
 import { ILink } from '../components/Remind/LinkCard'
-import { IMemo } from '../components/Remind/MemoCard'
 import { ScrollView } from 'react-native'
 import api from '../lib/api'
 import {
@@ -15,6 +14,7 @@ import {
   useRoute
 } from '@react-navigation/native'
 import { RouterNavigationProps } from './Router'
+import { IMemo } from '../recoil/folders'
 
 const RemindingView = styled.View`
   background-color: #f5f5f5;

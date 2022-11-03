@@ -64,11 +64,17 @@ const LinkContents = ({
     }
   }, [onFocus, navigation])
 
-  const onClick = useCallback(() => {
+  const onClick = useCallback((name: string) => {
+    if (name === 'edit') {
+      navigateToEdit()
+    }
+  }, [])
+
+  const navigateToEdit = () => {
     navigation.navigate('LinkEdit', {
       articleId: articleId
     })
-  }, [])
+  }
 
   const { addEventListener, removeEventListener } = useHeaderEvent()
 
@@ -112,7 +118,7 @@ const LinkContents = ({
                 article={articleDetail}
                 onBookmarkPress={onBookmarkPress}
               />
-              <TagBar tags={articleDetail.tags} onAddPress={onClick} />
+              <TagBar tags={articleDetail.tags} onAddPress={navigateToEdit} />
               <MemoContent
                 memos={articleDetail.memos}
                 article={articleDetail}

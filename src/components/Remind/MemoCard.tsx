@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { shadow } from '../../styles/backgrounds'
+import { IMemo } from '../../recoil/folders'
 
 type ViewProps = {
   main: boolean
@@ -89,19 +90,6 @@ const UrlTextView = styled.View`
   margin-left: 8px;
 `
 
-export interface IMemo {
-  id?: string
-  content?: string
-  registerDate: string
-  modifiedDate: string
-  openGraph: {
-    linkTitle?: string
-    linkDescription?: string
-    linkImage?: string
-  }
-  folderTitle?: string
-}
-
 interface Props {
   memo: IMemo
   main: boolean
@@ -110,7 +98,7 @@ interface Props {
 const MemoCard = ({ memo, main }: Props) => {
   const { content, modifiedDate, folderTitle, openGraph } = memo
   const date = modifiedDate.split('T')[0]
-  const { linkImage, linkTitle } = openGraph
+  const { linkImage, linkTitle } = openGraph!
 
   return (
     <MemoCardView main={main}>

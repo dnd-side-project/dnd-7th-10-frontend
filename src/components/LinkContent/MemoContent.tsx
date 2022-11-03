@@ -49,8 +49,7 @@ const MemoContent = ({ memos, article }: Props) => {
               navigation.navigate('AddMemoPage', { article })
             }
             buttonText="메모 작성하기"
-            text="콘텐츠가 아무것도 없을 때의 경우
-메시지는 2줄을 작성해 주세요."
+            text={'링크를 읽고 기억하고 싶은 내용을\n메모를 통해 기록해보세요.'}
           />
         </MemoEmpty>
       )}

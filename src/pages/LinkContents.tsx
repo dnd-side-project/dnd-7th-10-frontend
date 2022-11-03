@@ -54,7 +54,7 @@ const LinkContents = ({
   } = useArticleDetail(articleId, true)
 
   const onFocus = useCallback(() => {
-    refresh()
+    refresh(true)
   }, [refresh])
 
   useEffect(() => {
@@ -92,10 +92,14 @@ const LinkContents = ({
         showToast(createWarnToast('북마크 변경에 실패하였습니다.'))
       }
       if (refresh) {
-        refresh()
+        refresh(true)
       }
     })
   }
+
+  useEffect(() => {
+    console.log('isloading, ', isLoading)
+  }, [isLoading])
 
   return (
     <LinkView>
@@ -108,7 +112,7 @@ const LinkContents = ({
                 article={articleDetail}
                 onBookmarkPress={onBookmarkPress}
               />
-              <TagBar tags={articleDetail.tags} />
+              <TagBar tags={articleDetail.tags} onAddPress={onClick} />
               <MemoContent
                 memos={articleDetail.memos}
                 article={articleDetail}

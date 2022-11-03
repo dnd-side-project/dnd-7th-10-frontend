@@ -33,13 +33,17 @@ const FolderCard = ({ article, refresh }: Props) => {
 
   useEffect(() => {
     const uri = getFaviconUrl()
-    fetch(uri).then(({ status }) => {
-      if (status === 200) {
-        setFavicon({
-          uri: uri
-        })
-      }
-    })
+    fetch(uri)
+      .then(({ status }) => {
+        if (status === 200) {
+          setFavicon({
+            uri: uri
+          })
+        }
+      })
+      .catch(() => {
+        //favicon not exists
+      })
   }, [getFaviconUrl])
 
   const tags = useMemo(() => {

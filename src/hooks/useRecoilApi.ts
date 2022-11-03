@@ -66,22 +66,28 @@ export default function useRecoilApi<T>(
     (e: AxiosError) => {
       setIsError(true)
       setError(e)
+      console.error(e)
     },
     [setIsError, setError]
   )
 
-  const refresh = useCallback(() => {
-    if (isLoading) {
-      return
-    }
+  const refresh = useCallback(
+    (withoutLoading?: boolean) => {
+      if (isLoading) {
+        return
+      }
 
-    setIsLoading(true)
-    setIsError(false)
-    fetcher()
-      .then(preResolveHandler)
-      .catch(preRejectHandler)
-      .finally(() => setIsLoading(false))
-  }, [isLoading, fetcher, preResolveHandler, preRejectHandler])
+      if (!withoutLoading) {
+        setIsLoading(true)
+      }
+      setIsError(false)
+      fetcher()
+        .then(preResolveHandler)
+        .catch(preRejectHandler)
+        .finally(() => setIsLoading(false))
+    },
+    [isLoading, fetcher, preResolveHandler, preRejectHandler]
+  )
 
   function cancel() {
     cancelTokenSource.cancel()

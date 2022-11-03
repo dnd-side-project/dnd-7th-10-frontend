@@ -47,9 +47,10 @@ const TagEmptyText = styled.Text`
 
 interface Props {
   tags: ITag[]
+  onAddPress?: () => void
 }
 
-const TagBar = ({ tags }: Props) => {
+const TagBar = ({ tags, onAddPress }: Props) => {
   return (
     <TagsView>
       <TagListScroll horizontal nestedScrollEnabled>
@@ -63,7 +64,7 @@ const TagBar = ({ tags }: Props) => {
           </TagEmptyView>
         )}
       </TagListScroll>
-      <TagAddButton>
+      <TagAddButton onPress={onAddPress}>
         <TagAddImage source={require('../../assets/images/plus.png')} />
       </TagAddButton>
     </TagsView>

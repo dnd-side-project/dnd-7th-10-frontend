@@ -44,7 +44,7 @@ const FolderContent = ({
   }, [isLoading, isError, folderDetail])
 
   const onFocus = useCallback(() => {
-    refresh()
+    refresh(true)
   }, [refresh])
 
   useEffect(() => {

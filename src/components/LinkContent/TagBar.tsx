@@ -15,14 +15,14 @@ const TagsView = styled.View`
   margin: 4px 0px;
 `
 
-// const TagAddImage = styled.Image`
-//   width: 24px;
-//   height: 24px;
-// `
+const TagAddImage = styled.Image`
+  width: 24px;
+  height: 24px;
+`
 
-// const TagAddButton = styled.TouchableOpacity`
-//   margin-left: 12px;
-// `
+const TagAddButton = styled.TouchableOpacity`
+  margin-left: 12px;
+`
 
 const TagListScroll = styled.ScrollView`
   flex: 1;
@@ -63,9 +63,9 @@ const TagBar = ({ tags }: Props) => {
           </TagEmptyView>
         )}
       </TagListScroll>
-      {/* <TagAddButton>
+      <TagAddButton>
         <TagAddImage source={require('../../assets/images/plus.png')} />
-      </TagAddButton> */}
+      </TagAddButton>
     </TagsView>
   )
 }

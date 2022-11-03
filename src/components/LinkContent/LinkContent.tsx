@@ -24,8 +24,8 @@ const LinkContentView = styled.View`
 const LinkTitle = styled.Text`
   ${fontWithColor('BlueGray_5')}
   ${Typo.Heading1_600}
-  margin-bottom: 10px;
-  height: 30px;
+  margin-bottom: 18px;
+  line-height: 32px;
   overflow: hidden;
 `
 
@@ -33,14 +33,13 @@ const LinkText = styled.Text`
   ${fontWithColor('BlueGray_5')}
   ${Typo.Body2_600}
   line-height: 20px;
-  margin-bottom: 46px;
-  min-height: 15px;
   overflow: hidden;
 `
 
 const LinkBottomView = styled.View`
   width: 100%;
   height: 30px;
+  margin-top: 40px;
   flex-direction: row;
   justify-content: space-between;
 `
@@ -90,8 +89,10 @@ const LinkContent = ({ article, onBookmarkPress }: Props) => {
     <LinkView>
       <LinkImage source={image} resizeMode="cover" />
       <LinkContentView>
-        <LinkTitle>{article.openGraph.linkTitle}</LinkTitle>
-        <LinkText>{article.openGraph.linkDescription}</LinkText>
+        <LinkTitle numberOfLines={5}>{article.openGraph.linkTitle}</LinkTitle>
+        <LinkText numberOfLines={5}>
+          {article.openGraph.linkDescription}
+        </LinkText>
         <LinkBottomView>
           <LinkDate>{date}</LinkDate>
           <LinkButtonView>

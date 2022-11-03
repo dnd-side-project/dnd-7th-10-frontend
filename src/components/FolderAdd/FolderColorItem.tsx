@@ -9,9 +9,10 @@ const FolderColorItemView = styled.View`
   margin-bottom: 20px;
 `
 
-const FolderColorImage = styled.Image`
+const FolderColorImage = styled.Image<{ selected?: boolean }>`
   width: 108px;
   height: 90px;
+  opacity: ${props => (props.selected ? '0.3' : '1')};
 `
 
 const FolderColorText = styled.Text`
@@ -40,7 +41,7 @@ const FolderColorItem = ({ selected, folderColor }: Props) => {
     <FolderColorItemView>
       {!folderColor.fake && folderColor?.source && (
         <>
-          <FolderColorImage source={folderColor?.source} />
+          <FolderColorImage source={folderColor?.source} selected={selected} />
           <FolderColorText>{folderColor?.name}</FolderColorText>
           {selected && (
             <FolderSelectedImage

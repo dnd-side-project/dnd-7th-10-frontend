@@ -33,9 +33,11 @@ async function kakaoLogin(): Promise<[boolean, IAuthResponse | string]> {
         return [true, response.data]
       } catch (e) {
         console.error(JSON.stringify(e))
+        return [false, JSON.stringify(e)]
       }
     } else {
       console.log('get profile failed')
+      return [false, 'get profile failed']
     }
   } else {
     console.log('login failed', message)

@@ -32,8 +32,9 @@ interface TabBarTextProps {
 
 const TabBarText = styled.Text<TabBarTextProps>`
   margin-top: 10px;
-  height: 14px;
+  height: 18px;
   font-size: 12px;
+  overflow: visible;
   color: ${props =>
     props.focused ? ColorPalette.gray_7 : ColorPalette.gray_4};
 `

@@ -102,10 +102,6 @@ const FolderEdit = ({
           showToast(
             createCheckToast('폴더 수정을 완료했어요!', ToastOffset.BottomTab)
           )
-          console.log({
-            folderColor,
-            folderTitle
-          })
           console.log(response.data)
           navigation.goBack()
         }

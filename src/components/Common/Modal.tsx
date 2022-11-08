@@ -44,6 +44,7 @@ const ModalDescriptionText = styled.Text`
   ${Typo.Body2_600}
   min-height: 38px;
   margin-bottom: 40px;
+  text-align: center;
 `
 
 const Modal = () => {

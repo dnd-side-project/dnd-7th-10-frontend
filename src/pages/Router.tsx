@@ -115,17 +115,21 @@ const Router = () => {
 
   const handleAppStateChange = (appState: AppStateStatus) => {
     if (appState === 'active') {
-      Clipboard.getString().then(copiedText => {
-        if (isValidUrl(copiedText) && last !== copiedText) {
-          if (folderIds.length > 0) {
-            setQuicklink({
-              linkUrl: copiedText,
-              folderId: folderIds[0]
-            })
-            setLast(copiedText)
+      Clipboard.getString()
+        .then(copiedText => {
+          if (isValidUrl(copiedText) && last !== copiedText) {
+            if (folderIds.length > 0) {
+              setQuicklink({
+                linkUrl: copiedText,
+                folderId: folderIds[0]
+              })
+              setLast(copiedText)
+            }
           }
-        }
-      })
+        })
+        .catch(() => {
+          console.error('failed to fetch copied text')
+        })
     }
   }
 

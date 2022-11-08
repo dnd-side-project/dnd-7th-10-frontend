@@ -69,9 +69,14 @@ export default function useAuth() {
       }
     })
 
-    keychain.setToken(accessToken, refreshToken).then(result => {
-      console.log('save', result)
-    })
+    keychain
+      .setToken(accessToken, refreshToken)
+      .then(result => {
+        console.log('save', result)
+      })
+      .catch(() => {
+        console.error('failed to save token')
+      })
   }
 
   function loginFromKeychain() {

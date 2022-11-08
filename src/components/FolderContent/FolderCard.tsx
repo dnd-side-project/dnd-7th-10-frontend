@@ -72,7 +72,7 @@ const FolderCard = ({ article, refresh }: Props) => {
 
   return (
     <Card
-      title={article.openGraph.linkTitle}
+      title={article.openGraph.linkTitle || '제목 없음'}
       description={article.openGraph.linkDescription}
       favicon={favicon}
       source={linkImage}

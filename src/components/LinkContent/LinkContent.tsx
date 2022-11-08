@@ -93,7 +93,9 @@ const LinkContent = ({ article, onBookmarkPress }: Props) => {
     <LinkView>
       <LinkImage source={image} resizeMode="cover" />
       <LinkContentView>
-        <LinkTitle numberOfLines={5}>{article.openGraph.linkTitle}</LinkTitle>
+        <LinkTitle numberOfLines={5}>
+          {article.openGraph.linkTitle || '제목 없음'}
+        </LinkTitle>
         <LinkText numberOfLines={5}>
           {article.openGraph.linkDescription}
         </LinkText>

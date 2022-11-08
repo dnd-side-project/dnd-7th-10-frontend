@@ -30,6 +30,7 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import { isValidUrl } from '../lib/urlcheck'
 import useFolderList from '../components/Home/FolderList.hook'
 import FolderEdit from './FolderEdit'
+import RemindingDetail from './RemindingDetail'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -84,6 +85,9 @@ export interface RouterParamList extends ParamListBase {
     | undefined
 
   RemindingNotice: INoticeData
+  RemindingDetail: {
+    remindId: string
+  }
   RemindingList: undefined
   AddMemoPage: {
     article?: IArticle
@@ -155,6 +159,7 @@ const Router = () => {
         <Stack.Screen name="RemindingGather" component={RemindingGather} />
         <Stack.Screen name="RemindingNotice" component={RemindingNotice} />
         <Stack.Screen name="RemindingList" component={RemindingListPage} />
+        <Stack.Screen name="RemindingDetail" component={RemindingDetail} />
         <Stack.Screen name="Browser" component={Browser} />
         <Stack.Screen name="LinkEdit" component={LinkEdit} />
       </Stack.Navigator>

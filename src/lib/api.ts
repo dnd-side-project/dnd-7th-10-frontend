@@ -1,6 +1,4 @@
 import axios, { AxiosInstance, CancelTokenSource, HeadersDefaults } from 'axios'
-import jwtDecode from 'jwt-decode'
-import { IJwtStructure } from '../hooks/useAuth'
 import { IAuthKey } from '../recoil/auth'
 
 interface CustomAxiosInstance extends AxiosInstance {
@@ -51,19 +49,15 @@ const api = (() => {
   }
 
   function refreshToken(callback: (value?: boolean) => void) {
-    const { username } = jwtDecode<IJwtStructure>(_token)
     api
-      // .post<IAuthKey>('/refresh', {
-      //   accessToken: _token,
-      //   refreshToken: _refresh
-      // })
-      .post<IAuthKey>('/kakao', {
-        userEmail: username
+      .post<IAuthKey>('/refresh', {
+        accessToken: _token.split(' ')[1],
+        refreshToken: _refresh.split(' ')[1]
       })
       .then(response => {
         if (response.status === 200) {
-          _token = response.data.accessToken
-          _refresh = response.data.refreshToken
+          _token = 'Bearer ' + response.data.accessToken
+          _refresh = 'Bearer ' + response.data.refreshToken
           if (callback) {
             callback(true)
           }

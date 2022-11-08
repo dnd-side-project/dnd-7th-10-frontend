@@ -19,7 +19,6 @@ const MemoCardView = styled.View<ViewProps>`
 `
 const MemoCardDate = styled.Text`
   position: absolute;
-  width: 65px;
   height: 14px;
   right: 16px;
   top: 16px;
@@ -97,7 +96,7 @@ interface Props {
 
 const MemoCard = ({ memo, main }: Props) => {
   const { content, modifiedDate, folderTitle, openGraph } = memo
-  const date = modifiedDate.split('T')[0]
+  const date = modifiedDate.split('T')[0].split('-').join('.')
   const { linkImage, linkTitle } = openGraph!
 
   return (

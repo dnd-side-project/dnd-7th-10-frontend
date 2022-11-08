@@ -83,6 +83,8 @@ const UrlImg = styled.Image`
   right: 78.26%;
   top: 16.33%;
   bottom: 16.33%;
+  width: 64px;
+  height: 64px;
 
   border: 1px solid ${ColorPalette.BlueGray_2};
   border-radius: 38px;

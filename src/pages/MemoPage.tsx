@@ -65,6 +65,9 @@ const UrlImg = styled.Image`
   top: 16.33%;
   bottom: 16.33%;
 
+  width: 64px;
+  height: 64px;
+
   border: 1px solid ${ColorPalette.BlueGray_2};
   border-radius: 38px;
 `
@@ -73,6 +76,7 @@ const UrlFolder = styled.Text`
   left: 25.6%;
   top: 16.33%;
   bottom: 65.31%;
+  max-width: 40%;
 
   font-family: ${Typo.Detail2_400};
   font-size: 12px;
@@ -354,7 +358,7 @@ const MemoPage = ({
                   : require('../assets/images/cover_small.png')
               }
             />
-            <UrlFolder>{folderTitle}</UrlFolder>
+            <UrlFolder numberOfLines={1}>{folderTitle}</UrlFolder>
             <UrlTitleComponent>
               <UrlTitle numberOfLines={1}>{linkTitle}</UrlTitle>
             </UrlTitleComponent>

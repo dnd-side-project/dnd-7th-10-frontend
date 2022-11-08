@@ -123,7 +123,7 @@ const Input = forwardRef(
           placeholder={placeholder}
           placeholderTextColor={ColorPalette.gray_5}
         />
-        {!noReset && (text || '').length > 0 ? (
+        {!noReset && (text || '').length > 0 && !disabled ? (
           <SearchCloseTouchable
             hitSlop={closeInsets}
             onPress={onClosePress}

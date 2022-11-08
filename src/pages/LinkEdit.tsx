@@ -112,7 +112,7 @@ const LinkEdit = ({
 
   const onPress = () => {
     api
-      .patch<IArticle>('/article', { folderId, linkUrl, tagIds })
+      .patch<IArticle>('/article', { folderId, articleId, tagIds })
       .then(response => {
         if (response.status === 200) {
           fetchFolders()
@@ -212,6 +212,7 @@ const LinkEdit = ({
             <Input
               value={linkUrl}
               onChangeText={setLinkUrl}
+              disabled
               placeholder="링크를 입력해주세요."
             />
           </SectionContent>

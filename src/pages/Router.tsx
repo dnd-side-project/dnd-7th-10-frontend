@@ -29,6 +29,7 @@ import { AppState, AppStateStatus } from 'react-native'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { isValidUrl } from '../lib/urlcheck'
 import useFolderList from '../components/Home/FolderList.hook'
+import FolderEdit from './FolderEdit'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -50,6 +51,9 @@ export interface RouterParamList extends ParamListBase {
     articleId: string
   }
   FolderAdd: undefined
+  FolderEdit: {
+    folderId: string
+  }
   FolderContent: {
     folderId: string
   }
@@ -139,6 +143,7 @@ const Router = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="FolderAdd" component={FolderAdd} />
+        <Stack.Screen name="FolderEdit" component={FolderEdit} />
         <Stack.Screen name="LinkAdd" component={LinkAdd} />
         <Stack.Screen name="FolderContent" component={FolderContent} />
         <Stack.Screen name="RemindMain" component={RemindMain} />

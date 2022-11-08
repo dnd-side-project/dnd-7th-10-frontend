@@ -2,11 +2,12 @@ import React, { PropsWithChildren } from 'react'
 import styled from '@emotion/native'
 import { StyleSheet } from 'react-native'
 
-const BottomButtonView = styled.View`
+const BottomButtonView = styled.View<{ absolute?: boolean }>`
   width: 100%;
   height: 128px;
   background: white;
   padding: 24px;
+  ${props => (props.absolute ? 'position: absolute; bottom: 0; left: 0;' : '')};
 `
 
 const styles = StyleSheet.create({
@@ -19,8 +20,15 @@ const styles = StyleSheet.create({
   }
 })
 
-const BottomButton = ({ children }: PropsWithChildren) => {
-  return <BottomButtonView style={styles.shadow}>{children}</BottomButtonView>
+const BottomButton = ({
+  children,
+  absolute
+}: PropsWithChildren<{ absolute?: boolean }>) => {
+  return (
+    <BottomButtonView style={styles.shadow} absolute={absolute}>
+      {children}
+    </BottomButtonView>
+  )
 }
 
 export default BottomButton

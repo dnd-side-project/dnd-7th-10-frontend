@@ -123,12 +123,12 @@ const LinkContents = ({
           )}
           {isError && <Text>Error</Text>}
         </LinkContentView>
-        {!isLoading && !isError && (
-          <BottomButton>
-            <Button onPress={onWebPress}>웹사이트로 이동하기</Button>
-          </BottomButton>
-        )}
       </LinkContentScroll>
+      {!isLoading && !isError && (
+        <BottomButton>
+          <Button onPress={onWebPress}>웹사이트로 이동하기</Button>
+        </BottomButton>
+      )}
     </LinkView>
   )
 }

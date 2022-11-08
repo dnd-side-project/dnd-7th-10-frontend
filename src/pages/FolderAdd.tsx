@@ -117,7 +117,10 @@ const FolderAdd = () => {
           </SectionContent>
           <SectionTitle title="폴더 컬러 선택" />
           <SectionContent>
-            <FolderColorList onColorChange={setFolderColor} />
+            <FolderColorList
+              color={folderColor}
+              onColorChange={setFolderColor}
+            />
           </SectionContent>
         </FolderAddContent>
         <BottomButton>

@@ -50,10 +50,18 @@ const api = (() => {
 
   function refreshToken(callback: (value?: boolean) => void) {
     api
-      .post<IAuthKey>('/refresh', {
-        accessToken: _token.split(' ')[1],
-        refreshToken: _refresh.split(' ')[1]
-      })
+      .post<IAuthKey>(
+        '/refresh',
+        {
+          accessToken: _token.split(' ')[1],
+          refreshToken: _refresh.split(' ')[1]
+        },
+        {
+          headers: {
+            Authorization: ''
+          }
+        }
+      )
       .then(response => {
         if (response.status === 200) {
           _token = 'Bearer ' + response.data.accessToken

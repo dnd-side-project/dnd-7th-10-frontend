@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from '@emotion/native'
 import { flexWithAlign } from '../../styles/flexbox'
 import FolderColorItem from './FolderColorItem'
@@ -17,6 +17,7 @@ export interface IFolderColor {
 
 interface Props {
   onColorChange?: (color: string) => void
+  color?: string
 }
 
 export const folderColors: IFolderColor[] = [
@@ -46,14 +47,23 @@ export const folderColors: IFolderColor[] = [
   }
 ]
 
-const FolderColorList = ({ onColorChange }: Props) => {
+const FolderColorList = ({ onColorChange, color }: Props) => {
   const [selected, setSelected] = useState<number>(-1)
+
+  useEffect(() => {
+    if (color) {
+      const folderIndex = folderColors.findIndex(
+        ({ name }) => name.toLowerCase() === color.toLowerCase()
+      )
+      setSelected(folderIndex)
+    }
+  }, [color])
 
   const onPress = (index: number) => {
     if (index < folderColors.length - 1) {
-      const color = folderColors[index].name
+      const folderColor = folderColors[index].name
       if (onColorChange) {
-        onColorChange(color)
+        onColorChange(folderColor)
       }
       setSelected(index)
     }

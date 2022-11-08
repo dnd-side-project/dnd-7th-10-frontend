@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from '@emotion/native'
+import { BackHandler } from 'react-native'
 import Header from '../components/Common/Header'
 import SetupTop from '../components/RemindingSetup/SetupTop'
 import { backgroundWithColor } from '../styles/backgrounds'
@@ -9,14 +10,15 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { IArticleSelected } from '../components/RemindingGather/GatherArticleList'
 import api from '../lib/api'
-import { useRecoilValue } from 'recoil'
-import { fcmTokenAtom } from '../recoil/global'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { fcmTokenAtom, modalStateAtom } from '../recoil/global'
 import useToast, {
   createCheckToast,
   createWarnToast,
   ToastOffset
 } from '../hooks/useToast'
 import { RouterNavigationProps } from './Router'
+import useModal from '../hooks/useModal'
 
 const RemindingSetupView = styled.View`
   ${backgroundWithColor('background_1')}
@@ -41,8 +43,11 @@ const RemindingSetup = () => {
   const [scrollLock, setScrollLock] = useState<boolean>(false)
   const [isRemindOn, setIsRemindOff] = useState<boolean>(true)
   const [cron, setCron] = useState<string>('')
+  const [modalShow, setModalShow] = useState<boolean>(false)
   const [articles, setArticles] = useState<IArticleSelected[]>([])
+  const resetModal = useResetRecoilState(modalStateAtom)
   const showToast = useToast()
+  const { showModal } = useModal()
 
   const onFocus = async () => {
     const gathers = await AsyncStorage.getItem('gather-selects')
@@ -53,9 +58,52 @@ const RemindingSetup = () => {
     }
   }
 
-  useFocusEffect(() => {
-    onFocus()
-  })
+  useFocusEffect(
+    useCallback(() => {
+      onFocus()
+      const backAction = () => {
+        if (modalShow) {
+          resetModal()
+          setModalShow(false)
+        } else {
+          handleBackPress()
+        }
+        console.log(modalShow)
+        return true
+      }
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction
+      )
+      return () => {
+        subscription.remove()
+      }
+    }, [modalShow])
+  )
+
+  const handleBackPress = () => {
+    setModalShow(true)
+    showModal(
+      '지금 나가면 저장되지 않아요!',
+      '작성하고 있던 편집을 중단하면\n지금까지 편집한 내용이 사라져요!',
+      '네, 나갈래요',
+      '다시 돌아갈래요'
+    )
+      .then(exit => {
+        if (exit) {
+          navigation.goBack()
+        }
+        console.log('set hide')
+        setModalShow(false)
+      })
+      .catch(() => {
+        console.error('error occured while process modal')
+      })
+      .finally(() => {
+        setModalShow(false)
+      })
+  }
 
   const onSavePress = () => {
     const articleIds = articles.map(({ articleId }) => articleId)
@@ -113,7 +161,7 @@ const RemindingSetup = () => {
 
   return (
     <RemindingSetupView>
-      <Header save onSavePress={onSavePress}>
+      <Header save onSavePress={onSavePress} onBackPress={handleBackPress}>
         알림 설정
       </Header>
       <RemindingSetupScrollView

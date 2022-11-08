@@ -77,9 +77,13 @@ const SetupContent = ({ articles }: Props) => {
             key={article.articleId}
             folderName={article.folderName}
             articleName={article.articleName}
-            source={{
-              uri: article.articleImage || 'https://via.placeholder.com/16x16'
-            }}
+            source={
+              article.articleImage
+                ? {
+                    uri: article.articleImage
+                  }
+                : require('../../assets/images/cover_small.png')
+            }
           />
         ))}
       </RemindList>

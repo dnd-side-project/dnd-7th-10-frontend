@@ -107,9 +107,13 @@ const MemoCard = ({ memo, main }: Props) => {
       <MemoCardText main={main}>{content}</MemoCardText>
       <UrlView main={main}>
         <UrlImg
-          source={{
-            uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
-          }}
+          source={
+            linkImage
+              ? {
+                  uri: linkImage
+                }
+              : require('../../assets/images/cover_small.png')
+          }
         />
         <UrlTextView>
           <UrlFolder main>{folderTitle}</UrlFolder>

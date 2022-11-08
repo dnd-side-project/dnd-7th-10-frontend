@@ -11,6 +11,7 @@ const LinkCardView = styled.View`
   border-radius: 4px;
 `
 const LinkImage = styled.Image`
+  width: 100%;
   height: 120px;
 `
 const LinkDescView = styled.View`
@@ -104,7 +105,11 @@ const LinkCard = ({ link }: Props) => {
   return (
     <LinkCardView>
       <LinkImage
-        source={{ uri: linkImage || 'https://via.placeholder.com/1200x630' }}
+        source={
+          linkImage
+            ? { uri: linkImage }
+            : require('../../assets/images/cover.png')
+        }
       />
       <LinkDescView>
         <LinkTitle numberOfLines={1}>{linkTitle}</LinkTitle>

@@ -20,9 +20,14 @@ const FolderCard = ({ article, refresh }: Props) => {
 
   const linkImage = useMemo(() => {
     if (article.openGraph.linkImage.startsWith('//')) {
-      return `https:${article.openGraph.linkImage}`
+      return { uri: `https:${article.openGraph.linkImage}` }
     }
-    return article.openGraph.linkImage || 'https://via.placeholder.com/1200x630'
+    if (article.openGraph.linkImage) {
+      return {
+        uri: article.openGraph.linkImage
+      }
+    }
+    return require('../../assets/images/cover.png')
   }, [article])
 
   const getFaviconUrl = useCallback(() => {
@@ -70,9 +75,7 @@ const FolderCard = ({ article, refresh }: Props) => {
       title={article.openGraph.linkTitle}
       description={article.openGraph.linkDescription}
       favicon={favicon}
-      source={{
-        uri: linkImage
-      }}
+      source={linkImage}
       tags={tags}
       bookmark
       bookmarked={article.bookmark}

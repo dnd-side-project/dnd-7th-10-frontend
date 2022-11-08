@@ -346,9 +346,13 @@ const MemoPage = ({
           </MemoCardView>
           <UrlView>
             <UrlImg
-              source={{
-                uri: linkImage ? linkImage : 'https://via.placeholder.com/16x16'
-              }}
+              source={
+                linkImage
+                  ? {
+                      uri: linkImage
+                    }
+                  : require('../assets/images/cover_small.png')
+              }
             />
             <UrlFolder>{folderTitle}</UrlFolder>
             <UrlTitleComponent>

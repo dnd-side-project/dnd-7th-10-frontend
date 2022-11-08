@@ -8,7 +8,7 @@ import { flexWithAlign } from '../../styles/flexbox'
 import SVG from '../../assets/images/svg'
 import { useMemo } from 'react'
 
-export const defaultSource = { uri: 'https://via.placeholder.com/1200x630' }
+export const defaultSource = require('../../assets/images/cover.png')
 
 export const CardView = styled.View`
   align-self: stretch;
@@ -17,6 +17,7 @@ export const CardView = styled.View`
   overflow: hidden;
 `
 export const CardCoverImage = styled.Image`
+  width: 100%;
   height: 140px;
 `
 

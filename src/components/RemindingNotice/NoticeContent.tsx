@@ -34,17 +34,19 @@ const NoticeContent = ({ article }: Props) => {
   const [favicon, setFavicon] = useState<ImageSourcePropType | undefined>(
     undefined
   )
-
   const linkImage = useMemo(() => {
     if (article.openGraph.linkImage.startsWith('//')) {
       return `https:${article.openGraph.linkImage}`
     }
-    return article.openGraph.linkImage || 'https://via.placeholder.com/1200x630'
+    if (article.openGraph.linkImage) {
+      return article.openGraph.linkImage
+    }
+    return undefined
   }, [article])
 
   const getFaviconUrl = useCallback(() => {
     if (!article.linkUrl) {
-      return 'https://..'
+      return ''
     }
     const [protocol, url] = article.linkUrl.split('://')
     const [host] = (url || protocol).split('/')
@@ -74,6 +76,7 @@ const NoticeContent = ({ article }: Props) => {
         source={linkImage}
         tags={article.tags.map(({ tagName }) => tagName)}
         bookmark
+        bookmarked
         memo={article.memos.length > 0}
         favicon={favicon}
       />

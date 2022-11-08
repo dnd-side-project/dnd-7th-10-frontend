@@ -47,7 +47,7 @@ const RemindItem = ({ source, articleName, folderName }: Props) => {
   return (
     <RemindItemView style={shadowShallow}>
       <RemindImage
-        source={source || { uri: 'https://via.placeholder.com/40x40' }}
+        source={source || require('../../assets/images/cover_small.png')}
       />
       <RemindContent>
         <RemindFolderText numberOfLines={1}>{folderName}</RemindFolderText>

@@ -13,6 +13,7 @@ const LinkView = styled.View`
 `
 
 const LinkImage = styled.Image`
+  width: 100%;
   height: 260px;
 `
 
@@ -71,7 +72,10 @@ const LinkContent = ({ article, onBookmarkPress }: Props) => {
 
   const image = useMemo(() => {
     const source = article.openGraph.linkImage
-    let uri = source || 'https://via.placeholder.com/1200x630'
+    if (!source) {
+      return require('../../assets/images/cover.png')
+    }
+    let uri = source
     if (source.startsWith('//')) {
       uri = 'https:' + uri
     }

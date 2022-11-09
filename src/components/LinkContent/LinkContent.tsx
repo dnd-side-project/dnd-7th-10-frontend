@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { IArticle } from '../../recoil/folders'
@@ -6,7 +6,7 @@ import { fontWithColor } from '../../styles/fonts'
 import SVG from '../../assets/images/svg'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import Clipboard from '@react-native-clipboard/clipboard'
-import useToast, { createCheckToast } from '../../hooks/useToast'
+// import useToast, { createCheckToast } from '../../hooks/useToast'
 
 const LinkView = styled.View`
   ${backgroundWithColor('White')}
@@ -20,6 +20,7 @@ const LinkImage = styled.Image`
 const LinkContentView = styled.View`
   padding: 24px 24px 32px;
   overflow: hidden;
+  position: relative;
 `
 
 const LinkTitle = styled.Text`
@@ -48,6 +49,7 @@ const LinkBottomView = styled.View`
 const LinkButtonView = styled.View`
   display: flex;
   flex-direction: row;
+  position: relative;
 `
 
 const LinkDate = styled.Text`
@@ -61,6 +63,33 @@ const LinkChain = styled.TouchableOpacity`
   margin-left: 24px;
 `
 
+const LinkUrlView = styled.View`
+  flex-direction: column;
+  height: 40px;
+  text-align: center;
+  padding: 0 24px;
+  position: absolute;
+  right: 16px;
+  bottom: 72px;
+  ${backgroundWithColor('background_1')};
+  border-radius: 4px;
+  border: 1px solid ${ColorPalette.LinkkleLightBlueGray};
+`
+
+const LinkUrlText = styled.Text`
+  ${Typo.Body2_600}
+  color: ${ColorPalette.BlueGray_4};
+  line-height: 38px;
+`
+
+const LinkUrlTriangle = styled.Image`
+  width: 10px;
+  height: 8px;
+  align-self: flex-end;
+  margin-right: -8px;
+  /* position: absolute; */
+`
+
 interface Props {
   article: IArticle
   onBookmarkPress: () => void
@@ -68,7 +97,8 @@ interface Props {
 
 const LinkContent = ({ article, onBookmarkPress }: Props) => {
   const date = article.registerDate.split('T')[0].split('-').join('.')
-  const showToast = useToast()
+  // const showToast = useToast()
+  const [showLink, setShowLink] = useState<boolean>(false)
 
   const image = useMemo(() => {
     const source = article.openGraph.linkImage
@@ -86,7 +116,11 @@ const LinkContent = ({ article, onBookmarkPress }: Props) => {
 
   const handleLinkClick = () => {
     Clipboard.setString(article.linkUrl)
-    showToast(createCheckToast(article.linkUrl))
+    // showToast(createCheckToast(article.linkUrl))
+    setShowLink(true)
+    setTimeout(() => {
+      setShowLink(false)
+    }, 3000)
   }
 
   return (
@@ -114,6 +148,15 @@ const LinkContent = ({ article, onBookmarkPress }: Props) => {
             </LinkChain>
           </LinkButtonView>
         </LinkBottomView>
+        {showLink && (
+          <LinkUrlView>
+            <LinkUrlText numberOfLines={1}>{article.linkUrl}</LinkUrlText>
+            <LinkUrlTriangle
+              source={require('../../assets/images/triangle.png')}
+              resizeMode="stretch"
+            />
+          </LinkUrlView>
+        )}
       </LinkContentView>
     </LinkView>
   )

@@ -19,7 +19,7 @@ import useFolderList from '../components/Home/FolderList.hook'
 import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types'
 import { ITag } from '../recoil/tags'
 import useToast, { createWarnToast, ToastOffset } from '../hooks/useToast'
-import { Platform, TextInput } from 'react-native'
+import { Platform, ScrollView, TextInput } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { quicklinkAtom } from '../recoil/global'
 import { isValidUrl } from '../lib/urlcheck'
@@ -75,6 +75,7 @@ const LinkAdd = ({
   const [quickLink, setQuickLink] = useRecoilState(quicklinkAtom)
 
   const inputRef = useRef<TextInput>(null)
+  const scrollRef = useRef<ScrollView>(null)
   const showToast = useToast()
 
   const isCreatable = useMemo(
@@ -120,6 +121,7 @@ const LinkAdd = ({
     setTimeout(() => {
       if (!isInputShow) {
         inputRef.current?.focus()
+        scrollRef.current?.scrollToEnd({ animated: true })
       }
     }, 500)
   }
@@ -186,7 +188,7 @@ const LinkAdd = ({
   return (
     <LinkAddPageView>
       <Header>링크추가</Header>
-      <LinkContentScroll contentContainerStyle={containerStyle}>
+      <LinkContentScroll ref={scrollRef} contentContainerStyle={containerStyle}>
         <LinkAddContentView
           behavior={Platform.OS === 'android' ? 'padding' : 'height'}
         >

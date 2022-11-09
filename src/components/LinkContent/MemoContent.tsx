@@ -4,10 +4,11 @@ import styled from '@emotion/native'
 import MemoTop from './MemoTop'
 import Memo from './Memo'
 import { backgroundWithColor } from '../../styles/backgrounds'
-import { IArticle, IMemo } from '../../recoil/folders'
+import { foldersAtom, IArticle, IMemo } from '../../recoil/folders'
 import Empty from '../Common/Empty'
 import { useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
+import { useRecoilValue } from 'recoil'
 
 const MemoContentView = styled.View`
   ${backgroundWithColor('White')}
@@ -30,6 +31,7 @@ interface Props {
 
 const MemoContent = ({ memos, article }: Props) => {
   const navigation = useNavigation<RouterNavigationProps>()
+  const folders = useRecoilValue(foldersAtom)
 
   return (
     <MemoContentView>
@@ -40,11 +42,16 @@ const MemoContent = ({ memos, article }: Props) => {
             <TouchableOpacity
               key={memo.id}
               onPress={() => {
+                const folderTitle = folders.find(
+                  ({ folderId }) => folderId === article.folderId
+                )?.folderTitle
                 const newMemo = {
                   ...memo,
                   openGraph: {
                     ...article.openGraph
-                  }
+                  },
+                  articleId: article.id,
+                  folderTitle
                 }
 
                 navigation.navigate('MemoPage', {

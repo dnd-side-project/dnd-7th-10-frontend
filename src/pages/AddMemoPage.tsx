@@ -6,7 +6,8 @@ import {
   ScrollView,
   TextInput,
   NativeSyntheticEvent,
-  TextInputContentSizeChangeEventData
+  TextInputContentSizeChangeEventData,
+  Pressable
 } from 'react-native'
 import { ColorPalette, Typo } from '../styles/variable'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -17,6 +18,8 @@ import { backgroundWithColor } from '../styles/backgrounds'
 import useToast, { createWarnToast } from '../hooks/useToast'
 import { IMemo } from '../recoil/folders'
 import { StackActions } from '@react-navigation/native'
+import SVG from '../assets/images/svg'
+import useFolderDetail from '../hooks/useFolderDetail'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -130,8 +133,7 @@ const UrlTitle = styled.Text`
 const UrlDate = styled.Text`
   position: absolute;
   left: 25.6%;
-  top: 70.41%;
-  bottom: 11.22%;
+  bottom: 16px;
 
   font-family: ${Typo.Detail2_400};
   font-size: 12px;
@@ -161,6 +163,8 @@ interface Props {
   memoId?: string
 }
 
+const chevronStyle = { marginLeft: 8 }
+
 const MemoPage = ({
   route,
   navigation
@@ -171,6 +175,7 @@ const MemoPage = ({
   const [edit, setEdit] = useState(true)
   const [text, setText] = useState('')
   const [height, setHeight] = useState(320)
+  const { recoilValue: folder } = useFolderDetail(article?.folderId || '', true)
 
   const postMemo = ({ articleId, content }: Props) => {
     api
@@ -224,6 +229,14 @@ const MemoPage = ({
     setText(newText)
   }
 
+  function handleLinkPress() {
+    if (article && article.id) {
+      navigation.navigate('LinkContents', { articleId: article.id })
+    } else {
+      showToast(createWarnToast('링크 정보를 찾을 수 없습니다.'))
+    }
+  }
+
   return (
     <MemoMainView>
       <Header
@@ -274,11 +287,17 @@ const MemoPage = ({
                   : require('../assets/images/cover_small.png')
               }
             />
-            <UrlFolder>{article?.folderTitle}</UrlFolder>
+            <UrlFolder>{folder.folderTitle}</UrlFolder>
             <UrlTitleComponent>
               <UrlTitle numberOfLines={1}>
                 {article?.openGraph.linkTitle}
               </UrlTitle>
+              <Pressable onPress={handleLinkPress}>
+                <SVG.ChevronRight
+                  stroke={ColorPalette.BlueGray_4}
+                  style={chevronStyle}
+                />
+              </Pressable>
             </UrlTitleComponent>
             <UrlDate>{article?.registerDate.split('T')[0]}</UrlDate>
           </UrlView>

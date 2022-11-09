@@ -24,6 +24,7 @@ export interface IMemo {
   content: string
   folderTitle?: string
   openGraph?: IOpenGraph
+  articleId?: string
 }
 
 export interface IArticle {

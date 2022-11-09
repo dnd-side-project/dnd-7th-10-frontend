@@ -7,7 +7,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   NativeSyntheticEvent,
-  TextInputContentSizeChangeEventData
+  TextInputContentSizeChangeEventData,
+  Pressable
 } from 'react-native'
 import { ColorPalette, Typo } from '../styles/variable'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -22,6 +23,7 @@ import { IMemo } from '../recoil/folders'
 import { backgroundWithColor } from '../styles/backgrounds'
 import { useResetRecoilState } from 'recoil'
 import { modalStateAtom } from '../recoil/global'
+import SVG from '../assets/images/svg'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -113,8 +115,7 @@ const UrlTitle = styled.Text`
 const UrlDate = styled.Text`
   position: absolute;
   left: 25.6%;
-  top: 70.41%;
-  bottom: 11.22%;
+  bottom: 16px;
 
   font-family: ${Typo.Detail2_400};
   font-size: 12px;
@@ -167,12 +168,14 @@ interface Props {
   memoContent?: string
 }
 
+const chevronStyle = { marginLeft: 8 }
+
 const MemoPage = ({
   route,
   navigation
 }: NativeStackScreenProps<RouterParamList, 'MemoPage'>) => {
   const { memo } = route.params
-  const { id, content, folderTitle, openGraph, registerDate } = memo
+  const { id, articleId, folderTitle, content, openGraph, registerDate } = memo
   const { linkTitle, linkImage } = openGraph!
   const date = registerDate.split('T')[0]
   const inputRef = useRef<TextInput | null>(null)
@@ -312,6 +315,14 @@ const MemoPage = ({
     setHeight(newHeight)
   }
 
+  function handleLinkPress() {
+    if (articleId) {
+      navigation.navigate('LinkContents', { articleId })
+    } else {
+      showToast(createWarnToast('링크 정보를 찾을 수 없습니다.'))
+    }
+  }
+
   return (
     <MemoMainView>
       <Header
@@ -366,6 +377,12 @@ const MemoPage = ({
             <UrlFolder numberOfLines={1}>{folderTitle}</UrlFolder>
             <UrlTitleComponent>
               <UrlTitle numberOfLines={1}>{linkTitle}</UrlTitle>
+              <Pressable onPress={handleLinkPress}>
+                <SVG.ChevronRight
+                  stroke={ColorPalette.BlueGray_4}
+                  style={chevronStyle}
+                />
+              </Pressable>
             </UrlTitleComponent>
             <UrlDate>{date}</UrlDate>
           </UrlView>

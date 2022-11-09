@@ -147,6 +147,9 @@ const MemoTextLength = styled.Text<{ exceed?: boolean }>`
   color: ${props =>
     props.exceed ? ColorPalette.system_red : ColorPalette.BlueGray_5};
 `
+const MemoGap = styled.View`
+  height: 66px;
+`
 
 const iconButtons: IIconButton[] = [
   {
@@ -365,6 +368,7 @@ const MemoPage = ({
             <UrlDate>{date}</UrlDate>
           </UrlView>
         </MemoCardsView>
+        <MemoGap />
       </ScrollView>
     </MemoMainView>
   )

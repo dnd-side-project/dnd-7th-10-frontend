@@ -140,6 +140,10 @@ const UrlDate = styled.Text`
   color: ${ColorPalette.BlueGray_3};
 `
 
+const MemoGap = styled.View`
+  height: 66px;
+`
+
 const iconButtons: IIconButton[] = [
   // {
   //   name: 'trash',
@@ -277,6 +281,7 @@ const MemoPage = ({
             <UrlDate>{article?.registerDate.split('T')[0]}</UrlDate>
           </UrlView>
         </MemoCardsView>
+        <MemoGap />
       </ScrollView>
     </MemoMainView>
   )

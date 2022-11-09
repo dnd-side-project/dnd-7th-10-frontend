@@ -248,6 +248,8 @@ const MemoPage = ({
                   textAlignVertical={'top'}
                   onChangeText={handleTextChange}
                   height={height}
+                  placeholderTextColor={ColorPalette.BlueGray_3}
+                  placeholder={'기억하고 싶은 내용과 생각을 메모해보세요!'}
                   value={text}
                   onContentSizeChange={handleContentSizeChange}
                 />

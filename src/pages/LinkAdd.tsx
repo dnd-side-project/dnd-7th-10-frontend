@@ -213,7 +213,7 @@ const LinkAdd = ({
             <TagGuide />
             {!isTagLoading && (
               <TagList
-                remove={isInputShow}
+                remove
                 tags={tags}
                 selectedIds={tagIds}
                 onTagPress={onTagPress}

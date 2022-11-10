@@ -7,7 +7,7 @@ import {
   useIsFocused,
   useNavigation
 } from '@react-navigation/native'
-import { Pressable } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { RouterNavigationProps } from '../../pages/Router'
 import api from '../../lib/api'
 import { ILink } from './LinkCard'
@@ -39,7 +39,6 @@ const AlarmCardBar = styled.ScrollView`
   position: absolute;
   height: 200px;
   top: 72px;
-  padding: 0 16px;
 `
 
 const AddIconBtn = styled.TouchableOpacity`
@@ -53,6 +52,11 @@ const AddIconBtn = styled.TouchableOpacity`
 const AddIcon = styled.Image`
   height: 24px;
   width: 24px;
+`
+
+const AlarmCardView = styled.View`
+  padding: 0 16px;
+  flex-direction: row;
 `
 
 interface LinkList extends Array<ILink> {}
@@ -112,11 +116,16 @@ const Notice = () => {
       </TopView>
       {reminds.length !== 0 ? (
         <AlarmCardBar horizontal={true}>
-          {reminds.map((remind, idx) => (
-            <Pressable onPress={() => handleAlarmPress(remind)} key={idx}>
-              <AlarmCard remind={remind} />
-            </Pressable>
-          ))}
+          <AlarmCardView>
+            {reminds.map((remind, idx) => (
+              <TouchableOpacity
+                onPress={() => handleAlarmPress(remind)}
+                key={idx}
+              >
+                <AlarmCard remind={remind} />
+              </TouchableOpacity>
+            ))}
+          </AlarmCardView>
         </AlarmCardBar>
       ) : (
         <Empty

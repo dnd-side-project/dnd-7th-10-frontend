@@ -7,6 +7,7 @@ import {
   useIsFocused,
   useNavigation
 } from '@react-navigation/native'
+import { Pressable } from 'react-native'
 import { RouterNavigationProps } from '../../pages/Router'
 import api from '../../lib/api'
 import { ILink } from './LinkCard'
@@ -67,7 +68,7 @@ export interface IRemind {
 
 const Notice = () => {
   const navigation = useNavigation<RouterNavigationProps>()
-  const [reminds, setReminds] = useState([])
+  const [reminds, setReminds] = useState<IRemind[]>([])
 
   const onAddPress = () => {
     navigation.navigate('RemindingSetup')
@@ -94,6 +95,10 @@ const Notice = () => {
     }
   }, [])
 
+  function handleAlarmPress(remind: IRemind) {
+    navigation.navigate('RemindingDetail', { remind })
+  }
+
   return (
     <NoticeView>
       <TopView>
@@ -108,7 +113,9 @@ const Notice = () => {
       {reminds.length !== 0 ? (
         <AlarmCardBar horizontal={true}>
           {reminds.map((remind, idx) => (
-            <AlarmCard remind={remind} key={idx} />
+            <Pressable onPress={() => handleAlarmPress(remind)} key={idx}>
+              <AlarmCard remind={remind} />
+            </Pressable>
           ))}
         </AlarmCardBar>
       ) : (

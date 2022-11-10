@@ -31,6 +31,7 @@ import { isValidUrl } from '../lib/urlcheck'
 import useFolderList from '../components/Home/FolderList.hook'
 import FolderEdit from './FolderEdit'
 import RemindingDetail from './RemindingDetail'
+import { IRemind } from '../components/Remind/Notice'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -86,7 +87,7 @@ export interface RouterParamList extends ParamListBase {
 
   RemindingNotice: INoticeData
   RemindingDetail: {
-    remindId: string
+    remind: IRemind
   }
   RemindingList: undefined
   AddMemoPage: {

@@ -63,9 +63,6 @@ const RemindingDetailInfo = ({ cron }: Props) => {
     if (hour > 12) {
       hour -= 12
     }
-    if (hour === 0) {
-      hour += 1
-    }
     const HOUR = hour < 10 ? '0' + hour : '' + hour
     const MIN = min < 10 ? '0' + min : '' + min
     const timeText = `${AMPM} ${HOUR}:${MIN}`

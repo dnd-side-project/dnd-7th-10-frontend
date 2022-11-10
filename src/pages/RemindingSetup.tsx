@@ -103,6 +103,23 @@ const RemindingSetup = () => {
       })
   }
 
+  function moveToRemind() {
+    api
+      .get('/remind')
+      .then(response => {
+        if (response.status === 200) {
+          const remind = response.data[response.data.length - 1]
+          navigation.goBack()
+          navigation.navigate('RemindingDetail', {
+            remind
+          })
+        }
+      })
+      .catch(() => {
+        showToast(createWarnToast('리마인드로 이동할 수 없습니다.'))
+      })
+  }
+
   const onSavePress = () => {
     const articleIds = articles.map(({ articleId }) => articleId)
     if (isLoading) {
@@ -136,7 +153,7 @@ const RemindingSetup = () => {
               ToastOffset.BottomTab
             )
           )
-          navigation.goBack()
+          moveToRemind()
         } else {
           showToast(
             createWarnToast(

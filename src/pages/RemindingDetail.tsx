@@ -1,11 +1,11 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import styled from '@emotion/native'
-import Header from '../components/Common/Header'
+import Header, { IIconButton } from '../components/Common/Header'
 import SetupTop from '../components/RemindingSetup/SetupTop'
 import { backgroundWithColor } from '../styles/backgrounds'
 import SetupContent from '../components/RemindingSetup/SetupContent'
 import { useFocusEffect } from '@react-navigation/native'
-
+import { BackHandler } from 'react-native'
 import { RouterParamList } from './Router'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import api from '../lib/api'
@@ -13,8 +13,12 @@ import { IRemind } from '../components/Remind/Notice'
 import RemindingDetailInfo from '../components/RemindingDetail/RemindingDetailInfo'
 import { IArticleSelected } from '../components/RemindingGather/GatherArticleList'
 import { foldersDetailFamily, IArticle } from '../recoil/folders'
-import { useRecoilCallback } from 'recoil'
+import { useRecoilCallback, useRecoilValue, useResetRecoilState } from 'recoil'
 import useFolderList from '../components/Home/FolderList.hook'
+import useModal from '../hooks/useModal'
+import useHeaderEvent from '../hooks/useHeaderEvent'
+import { fcmTokenAtom, modalStateAtom } from '../recoil/global'
+import useToast, { createCheckToast, createWarnToast } from '../hooks/useToast'
 
 const RemindingDetailView = styled.View`
   ${backgroundWithColor('background_1')}
@@ -31,15 +35,71 @@ const RemindingDetailContent = styled.View`
 
 const containerStyle = { flexGrow: 1 }
 
+const iconButtons: IIconButton[] = [
+  {
+    name: 'remind-detail-trash',
+    source: require('../assets/images/trash.png')
+  },
+  {
+    name: 'remind-detail-edit',
+    source: require('../assets/images/edit.png')
+  }
+]
+
 const RemindingDetail = ({
-  route
+  route,
+  navigation
 }: NativeStackScreenProps<RouterParamList, 'RemindingDetail'>) => {
   const [remind] = useState<IRemind>(route.params.remind)
+  const targetToken = useRecoilValue(fcmTokenAtom)
   const [articles, setArticles] = useState<IArticleSelected[]>([])
   const [, fetchFolders] = useFolderList()
+  const { showModal } = useModal()
+  const showToast = useToast()
+  const [modalShow, setModalShow] = useState<boolean>(false)
+  const resetModal = useResetRecoilState(modalStateAtom)
 
   function fetchRemind() {
     api.get('/remind')
+  }
+
+  function handleDeletePress() {
+    setModalShow(true)
+    showModal(
+      '해당 알림을 삭제하시겠어요?',
+      '작성하신 알림을 삭제하면\n다신 이 알림을 확인해 볼 수 없어요!',
+      '삭제할래요',
+      '수정할래요'
+    )
+      .then(value => {
+        if (value) {
+          deleteRemind()
+        } else {
+          moveToEdit()
+        }
+      })
+      .catch()
+      .finally(() => setModalShow(false))
+  }
+
+  function deleteRemind() {
+    api
+      .post('/quartz', {
+        cron: remind.cron,
+        mode: 'delete',
+        modifiedCron: '',
+        targetToken,
+        articleIds: []
+      })
+      .then(response => {
+        if (response.status === 200) {
+          showToast(createCheckToast('해당 알림을 삭제했어요!'))
+        }
+      })
+      .catch(e => {
+        console.error(e)
+        showToast(createWarnToast('해당 알림을 삭제하지 못했어요.'))
+      })
   }
 
   const fetchArticles = useRecoilCallback(
@@ -93,17 +153,63 @@ const RemindingDetail = ({
     [remind]
   )
 
+  function onClick(name: string) {
+    if (name === 'remind-detail-trash') {
+      handleDeletePress()
+    } else if (name === 'remind-detail-edit') {
+      moveToEdit()
+    }
+  }
+
+  function moveToEdit() {
+    if (!fcmTokenAtom) {
+      showToast(createWarnToast('푸시 토큰을 발급 받을 수 없습니다.'))
+      return
+    }
+
+    navigation.navigate('RemindingEdit')
+  }
+
+  const { addEventListener, removeEventListener } = useHeaderEvent()
+
+  useEffect(() => {
+    addEventListener(onClick)
+    return () => {
+      removeEventListener(onClick)
+    }
+  }, [addEventListener, onClick, removeEventListener])
+
+  const exitBehavior = () => {
+    if (modalShow) {
+      setModalShow(false)
+      resetModal()
+    } else {
+      navigation.goBack()
+    }
+  }
+
   useFocusEffect(
     useCallback(() => {
       fetchFolders()
       fetchRemind()
       fetchArticles()
-    }, [])
+
+      const backAction = () => {
+        exitBehavior()
+        return true
+      }
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction
+      )
+      return () => subscription.remove()
+    }, [modalShow])
   )
 
   return (
     <RemindingDetailView>
-      <Header>알림 설정</Header>
+      <Header iconButtons={iconButtons}>알림 설정</Header>
       <RemindingDetailScrollView contentContainerStyle={containerStyle}>
         <RemindingDetailContent>
           <SetupTop isRemindOn setIsRemindOn={() => {}} />

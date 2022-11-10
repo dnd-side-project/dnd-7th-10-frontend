@@ -32,6 +32,8 @@ import useFolderList from '../components/Home/FolderList.hook'
 import FolderEdit from './FolderEdit'
 import RemindingDetail from './RemindingDetail'
 import { IRemind } from '../components/Remind/Notice'
+import api from '../lib/api'
+import useToast from '../hooks/useToast'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -103,6 +105,11 @@ const Router = () => {
   const [last, setLast] = useRecoilState(quicklinkLastAtom)
   const [folderIds] = useFolderList()
   const setQuicklink = useSetRecoilState(quicklinkAtom)
+  const showToast = useToast()
+
+  useEffect(() => {
+    api.setShowToast!(showToast)
+  }, [])
 
   useEffect(() => {
     if (notice) {

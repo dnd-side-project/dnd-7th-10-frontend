@@ -68,7 +68,6 @@ const RemindingSetup = () => {
         } else {
           handleBackPress()
         }
-        console.log(modalShow)
         return true
       }
 
@@ -94,7 +93,6 @@ const RemindingSetup = () => {
         if (exit) {
           navigation.goBack()
         }
-        console.log('set hide')
         setModalShow(false)
       })
       .catch(() => {

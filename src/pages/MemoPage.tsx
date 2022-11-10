@@ -259,7 +259,6 @@ const MemoPage = ({
   }, [addEventListener, onClick, removeEventListener])
 
   const exitBehavior = () => {
-    console.log('')
     if (edit) {
       showModal(
         '지금 나가면 저장되지 않아요!',

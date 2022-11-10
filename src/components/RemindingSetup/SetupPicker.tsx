@@ -38,7 +38,6 @@ const SetupPicker = ({ onScrollChange, onCronChange }: Props) => {
   const cron = useMemo(() => {
     const [hour, minute] = time
     const expression = `0 ${minute} ${hour} ? * ${days || '*'} *`
-    console.log(expression)
     return expression
   }, [time, days])
 

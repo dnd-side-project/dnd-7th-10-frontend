@@ -61,7 +61,6 @@ const RemindingDetail = ({
                         foldersDetailFamily(article.folderId)
                       )
                       if (folder) {
-                        console.log(folder, folder.folderTitle)
                         return {
                           articleName:
                             article?.openGraph?.linkTitle || '제목 없음',

@@ -14,6 +14,7 @@ import RemindingDetailInfo from '../components/RemindingDetail/RemindingDetailIn
 import { IArticleSelected } from '../components/RemindingGather/GatherArticleList'
 import { foldersDetailFamily, IArticle } from '../recoil/folders'
 import { useRecoilCallback } from 'recoil'
+import useFolderList from '../components/Home/FolderList.hook'
 
 const RemindingDetailView = styled.View`
   ${backgroundWithColor('background_1')}
@@ -35,6 +36,7 @@ const RemindingDetail = ({
 }: NativeStackScreenProps<RouterParamList, 'RemindingDetail'>) => {
   const [remind] = useState<IRemind>(route.params.remind)
   const [articles, setArticles] = useState<IArticleSelected[]>([])
+  const [, fetchFolders] = useFolderList()
 
   function fetchRemind() {
     api.get('/remind')
@@ -93,6 +95,7 @@ const RemindingDetail = ({
 
   useFocusEffect(
     useCallback(() => {
+      fetchFolders()
       fetchRemind()
       fetchArticles()
     }, [])

@@ -75,7 +75,7 @@ const SetupContent = ({ articles }: Props) => {
         {articles.map(article => (
           <RemindItem
             key={article.articleId}
-            folderName={article.folderName}
+            folderName={article.folderName || '기본 폴더'}
             articleName={article.articleName}
             source={
               article.articleImage

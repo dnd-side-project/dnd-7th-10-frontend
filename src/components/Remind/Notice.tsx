@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import AlarmCard from './AlarmCard'
 import { ColorPalette, Typo } from '../../styles/variable'
@@ -78,7 +78,8 @@ const Notice = () => {
     navigation.navigate('RemindingSetup')
   }
 
-  const getReminds = () => {
+  const getReminds = useCallback(() => {
+    console.log('refresh remind')
     api
       .get<IRemind>('/remind')
       .then(response => {
@@ -89,7 +90,20 @@ const Notice = () => {
       .catch(err => {
         console.error(err)
       })
-  }
+    setTimeout(() => {
+      api
+        .get<IRemind>('/remind')
+        .then(response => {
+          if (response.status === 200) {
+            setReminds(response.data.filter(el => el.cron !== null))
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }, 3000)
+  }, [setReminds])
+
   useFocusEffect(getReminds)
 
   const isFocused = useIsFocused()

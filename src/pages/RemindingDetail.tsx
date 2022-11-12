@@ -83,6 +83,7 @@ const RemindingDetail = ({
   }
 
   function deleteRemind() {
+    console.log(remind.cron)
     api
       .post('/quartz', {
         cron: remind.cron,
@@ -94,6 +95,7 @@ const RemindingDetail = ({
       .then(response => {
         if (response.status === 200) {
           showToast(createCheckToast('해당 알림을 삭제했어요!'))
+          navigation.goBack()
         }
       })
       .catch(e => {

@@ -11,24 +11,7 @@ const AlarmCardView = styled.View`
   border-radius: 4px;
   margin: 8px;
 `
-const Toggle = styled.View`
-  position: absolute;
-  width: 32px;
-  height: 20px;
-  right: 16px;
-  top: 16px;
-  background: #ff5216;
-  border-radius: 200px;
-`
-const Circle = styled.TouchableOpacity`
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  right: 2px;
-  top: 2px;
-  border-radius: 20px;
-  background: #ffffff;
-`
+
 const AlarmText = styled.Text`
   position: absolute;
   width: 88px;
@@ -135,16 +118,16 @@ const AlarmCard = ({ remind }: Props) => {
     })
   }, [])
 
-  const onPress = () => {
-    /* console.log('press') */
-  }
+  // const onPress = () => {
+  //   /* console.log('press') */
+  // }
 
   //초 분 시
   return (
     <AlarmCardView>
-      <Toggle>
+      {/* <Toggle>
         <Circle onPress={onPress} />
-      </Toggle>
+      </Toggle> */}
       <AlarmText>{time}</AlarmText>
       <DayText>{dayList}</DayText>
       <LinkNum>{remind.articleList.length + '개'}</LinkNum>

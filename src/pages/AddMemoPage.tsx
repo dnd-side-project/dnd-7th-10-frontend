@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styled from '@emotion/native'
 import Header from '../components/Common/Header'
 import { IIconButton } from '../components/Common/Header'
@@ -7,7 +7,8 @@ import {
   TextInput,
   NativeSyntheticEvent,
   TextInputContentSizeChangeEventData,
-  Pressable
+  Pressable,
+  BackHandler
 } from 'react-native'
 import { ColorPalette, Typo } from '../styles/variable'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -17,9 +18,12 @@ import useHeaderEvent from '../hooks/useHeaderEvent'
 import { backgroundWithColor } from '../styles/backgrounds'
 import useToast, { createWarnToast } from '../hooks/useToast'
 import { IMemo } from '../recoil/folders'
-import { StackActions } from '@react-navigation/native'
+import { StackActions, useFocusEffect } from '@react-navigation/native'
 import SVG from '../assets/images/svg'
 import useFolderDetail from '../hooks/useFolderDetail'
+import useModal from '../hooks/useModal'
+import { useResetRecoilState } from 'recoil'
+import { modalStateAtom } from '../recoil/global'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -176,6 +180,9 @@ const MemoPage = ({
   const [text, setText] = useState('')
   const [height, setHeight] = useState(320)
   const { recoilValue: folder } = useFolderDetail(article?.folderId || '', true)
+  const { showModal } = useModal()
+  const [modalShow, setModalShow] = useState<boolean>(false)
+  const resetModal = useResetRecoilState(modalStateAtom)
 
   const postMemo = ({ articleId, content }: Props) => {
     api
@@ -237,9 +244,53 @@ const MemoPage = ({
     }
   }
 
+  const exitBehavior = () => {
+    if (edit) {
+      if (modalShow) {
+        resetModal()
+        setModalShow(false)
+      } else {
+        setModalShow(true)
+        showModal(
+          '지금 나가면 저장되지 않아요!',
+          '지금 페이지에서 이동하면\n편집하신 메모 내용이 저장되지 않아요.',
+          '네, 나갈래요',
+          '다시 돌아갈래요'
+        )
+          .then(value => {
+            if (value) {
+              navigation.goBack()
+            }
+          })
+          .catch()
+          .finally(() => setModalShow(false))
+      }
+      return
+    }
+    navigation.goBack()
+
+    console.log(edit, modalShow)
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      const backAction = () => {
+        exitBehavior()
+        return true
+      }
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction
+      )
+      return () => subscription.remove()
+    }, [edit, modalShow])
+  )
+
   return (
     <MemoMainView>
       <Header
+        onBackPress={exitBehavior}
         iconButtons={edit ? undefined : iconButtons}
         save={edit ? true : false}
         onSavePress={() => {

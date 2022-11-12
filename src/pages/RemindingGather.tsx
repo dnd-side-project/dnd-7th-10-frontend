@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import styled from '@emotion/native'
 import GatherFolderList from '../components/RemindingGather/GatherFolderList'
 import Header from '../components/Common/Header'
@@ -11,6 +11,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RouterParamList } from './Router'
 import useModal from '../hooks/useModal'
+import { useFocusEffect } from '@react-navigation/native'
+import { BackHandler } from 'react-native'
+import { useResetRecoilState } from 'recoil'
+import { modalStateAtom } from '../recoil/global'
 
 const RemindingGatherView = styled.View`
   flex: 1;
@@ -27,6 +31,8 @@ const RemindingGather = ({
   const [selectedArticles, setSelectedArticles] = useState<ISelectedFromFolder>(
     {}
   )
+  const [modalShow, setModalShow] = useState<boolean>(false)
+  const resetModal = useResetRecoilState(modalStateAtom)
 
   const onArticlePress = (selectedArticle: IArticleSelected) => {
     setSelectedArticles(articles => {
@@ -63,21 +69,46 @@ const RemindingGather = ({
 
   const { showModal } = useModal()
 
-  const onBackPress = async () => {
-    const accept = await showModal(
-      '지금 나가면 저장되지 않아요!',
-      '변경하고있던 링크 모으기를 중단하면 지금까지 변경한 내용이 사라져요!',
-      '수정할래요',
-      '네, 나갈래요'
-    )
-    if (!accept) {
-      navigation.goBack()
+  const exitBehavior = async () => {
+    if (modalShow) {
+      resetModal()
+      setModalShow(false)
+    } else {
+      setModalShow(true)
+      showModal(
+        '지금 나가면 저장되지 않아요!',
+        '변경하고있던 링크 모으기를 중단하면 지금까지 변경한 내용이 사라져요!',
+        '네, 나갈래요',
+        '수정할래요'
+      )
+        .then(accept => {
+          if (accept) {
+            navigation.goBack()
+          }
+        })
+        .catch()
+        .finally(() => setModalShow(false))
     }
   }
 
+  useFocusEffect(
+    useCallback(() => {
+      const backAction = () => {
+        exitBehavior()
+        return true
+      }
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction
+      )
+      return () => subscription.remove()
+    }, [modalShow])
+  )
+
   return (
     <RemindingGatherView>
-      <Header onBackPress={onBackPress}>링크 모으기</Header>
+      <Header onBackPress={exitBehavior}>링크 모으기</Header>
       <GatherFolderList
         onChange={setFolderId}
         selectedArticles={selectedArticles}

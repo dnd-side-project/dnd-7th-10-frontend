@@ -8,6 +8,8 @@ import { useRecoilValue } from 'recoil'
 import { foldersDetailFamily, IArticle } from '../../recoil/folders'
 import { ISelectedFromFolder } from '../../pages/RemindingGather'
 import { useCallback } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { RouterNavigationProps } from '../../pages/Router'
 
 const GatherArticleListView = styled.ScrollView`
   ${backgroundWithColor('background_1')}
@@ -50,6 +52,7 @@ const GatherArticleList = ({
   onSelectedChange
 }: Props) => {
   const folder = useRecoilValue(foldersDetailFamily(folderId))
+  const navigation = useNavigation<RouterNavigationProps>()
 
   const articles = useMemo(() => {
     if (folder && folder.articles) {
@@ -84,6 +87,12 @@ const GatherArticleList = ({
     [selectedArticles, folderId]
   )
 
+  const handleBackPress = () => {
+    navigation.navigate('FolderContent', {
+      folderId
+    })
+  }
+
   return (
     <>
       {articles.length === 0 ? (
@@ -91,7 +100,9 @@ const GatherArticleList = ({
           icon
           source={require('../../assets/images/alert-circle-normal.png')}
           button
+          buttonText="폴더로 이동하기"
           text={'북마크한 링크들이 없어요!\n리마인딩할 링크들을 모아볼까요?'}
+          onButtonPress={handleBackPress}
         />
       ) : (
         <GatherArticleListView contentContainerStyle={containerStyle}>

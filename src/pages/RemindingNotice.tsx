@@ -63,6 +63,7 @@ const RemindingNotice = ({
   }
 
   useEffect(() => {
+    console.log('remind opened')
     setNotice(null)
   }, [])
 

@@ -1,9 +1,10 @@
 import jwtDecode from 'jwt-decode'
+import { useEffect, useState } from 'react'
 import { resetGenericPassword } from 'react-native-keychain'
 import { useRecoilState } from 'recoil'
 import api from '../lib/api'
 import keychain from '../lib/keychain'
-import { authAtom } from '../recoil/auth'
+import { authAtom, IAuth } from '../recoil/auth'
 import useToast, { createWarnToast } from './useToast'
 
 export interface IAuthResponse {
@@ -23,8 +24,15 @@ export interface LoginResult {
   code?: number
 }
 
+interface LoginCallback {
+  (auth: IAuth): void
+}
+
+let authOccur = false
+
 export default function useAuth() {
   const [auth, setAuth] = useRecoilState(authAtom)
+  const [callback, setCallback] = useState<LoginCallback | null>(null)
   const showToast = useToast()
 
   async function login(name: string, password: string) {
@@ -59,13 +67,16 @@ export default function useAuth() {
     console.log(accessToken)
     console.log(refreshToken)
 
-    setAuth({
-      user: {
-        username
-      },
-      authKey: {
-        accessToken,
-        refreshToken
+    setAuth(() => {
+      authOccur = true
+      return {
+        user: {
+          username
+        },
+        authKey: {
+          accessToken,
+          refreshToken
+        }
       }
     })
 
@@ -78,6 +89,15 @@ export default function useAuth() {
         console.error('failed to save token')
       })
   }
+
+  useEffect(() => {
+    if (authOccur) {
+      if (callback) {
+        callback(auth)
+      }
+      authOccur = false
+    }
+  }, [auth])
 
   function loginFromKeychain() {
     console.log('try to login with keychain')
@@ -110,6 +130,7 @@ export default function useAuth() {
     auth,
     login,
     setLoggedin,
-    loginFromKeychain
+    loginFromKeychain,
+    setCallback
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/native'
 import KakaoLoginButton from '../components/Login/KakaoLoginButton'
 import { backgroundWithColor } from '../styles/backgrounds'
@@ -11,6 +11,7 @@ import kakao from '../lib/kakao'
 import { useRecoilValue } from 'recoil'
 import { noticeAtom } from '../recoil/global'
 import Clipboard from '@react-native-clipboard/clipboard'
+import { IAuth } from '../recoil/auth'
 
 const LoginBox = styled.View`
   ${backgroundWithColor('main_1')}
@@ -63,23 +64,39 @@ const Login = () => {
   const navigation = useNavigation<RouterNavigationProps>()
   const notice = useRecoilValue(noticeAtom)
   const showToast = useToast()
-
-  const { auth, login, setLoggedin, loginFromKeychain } = useAuth()
+  const { setLoggedin, loginFromKeychain, setCallback } = useAuth()
 
   useEffect(() => {
     loginFromKeychain()
   }, [])
 
-  useEffect(() => {
-    if (auth.user) {
-      showToast(createToast('logged in with ' + auth.user.username))
-      if (notice) {
-        navigation.navigate('RemindingNotice', notice)
-      } else {
+  const handleLogin = useCallback(
+    (userAuth: IAuth) => {
+      if (userAuth.user) {
+        showToast(createToast('logged in with ' + userAuth.user.username))
+
         navigation.dispatch(StackActions.replace('Main'))
       }
-    }
-  }, [auth, login, navigation, showToast])
+    },
+    [notice, navigation, showToast]
+  )
+
+  useEffect(() => {
+    setCallback(() => handleLogin)
+  }, [])
+
+  // useEffect(() => {
+  //   if (auth.user) {
+  //     showToast(createToast('logged in with ' + auth.user.username))
+  //     if (notice) {
+  //       navigation.navigate('RemindingNotice', notice)
+  //     } else {
+  //       if (!checkNotice()) {
+  //         navigation.dispatch(StackActions.replace('Main'))
+  //       }
+  //     }
+  //   }
+  // }, [auth, login, navigation, showToast, notice])
 
   useEffect(() => {
     setTimeout(() => {

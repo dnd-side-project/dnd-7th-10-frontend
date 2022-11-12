@@ -13,11 +13,6 @@ const SafeArea = styled.SafeAreaView`
   flex: 1;
 `
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  // console.log('Message handled in background', remoteMessage)
-  console.log(JSON.stringify(remoteMessage, null, 2))
-})
-
 const App = () => {
   const navigation = useNavigation<RouterNavigationProps>()
 
@@ -39,6 +34,7 @@ const App = () => {
         remindId: '',
         ...(remoteMessage.data as Partial<INoticeData>)
       }
+      console.log('message inline2', noticeData)
       setNotice(noticeData)
     })
     messagingInstance.getInitialNotification().then(remoteMessage => {
@@ -57,6 +53,7 @@ const App = () => {
         remindId: '',
         ...(remoteMessage.data as Partial<INoticeData>)
       }
+      console.log('message inline', noticeData)
       navigation.navigate('RemindingNotice', noticeData)
     })
 

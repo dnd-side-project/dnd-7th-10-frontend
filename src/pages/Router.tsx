@@ -1,8 +1,4 @@
-import {
-  NavigationProp,
-  ParamListBase,
-  useNavigation
-} from '@react-navigation/native'
+import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React, { useEffect } from 'react'
 import Modal from '../components/Common/Modal'
@@ -21,7 +17,7 @@ import AddMemoPage from './AddMemoPage'
 import Browser from './Browser'
 import RemindingNotice from './RemindingNotice'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { noticeAtom, quicklinkAtom, quicklinkLastAtom } from '../recoil/global'
+import { quicklinkAtom, quicklinkLastAtom } from '../recoil/global'
 import RemindingListPage from './RemindingListPage'
 import LinkEdit from './LinkEdit'
 import { IArticle, IMemo } from '../recoil/folders'
@@ -100,8 +96,6 @@ export interface RouterParamList extends ParamListBase {
 export type RouterNavigationProps = NavigationProp<RouterParamList>
 
 const Router = () => {
-  const [notice, setNotice] = useRecoilState(noticeAtom)
-  const navigation = useNavigation<RouterNavigationProps>()
   const [last, setLast] = useRecoilState(quicklinkLastAtom)
   const [folderIds] = useFolderList()
   const setQuicklink = useSetRecoilState(quicklinkAtom)
@@ -110,14 +104,6 @@ const Router = () => {
   useEffect(() => {
     api.setShowToast!(showToast)
   }, [])
-
-  useEffect(() => {
-    if (notice) {
-      if (navigation.getState()) {
-        navigation.navigate('RemindingNotice', notice)
-      }
-    }
-  }, [notice, setNotice, navigation])
 
   useEffect(() => {
     const subscription = AppState.addEventListener(

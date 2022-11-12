@@ -180,6 +180,11 @@ const LinkAdd = ({
       .then(response => {
         if (response.status === 200) {
           fetchTagList()
+          const index = tagIds.indexOf(tagId)
+          if (index > -1) {
+            tagIds.splice(index, 1)
+            setTagIds([...tagIds])
+          }
         }
       })
       .catch(error => console.error(error))

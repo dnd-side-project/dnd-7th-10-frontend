@@ -169,7 +169,9 @@ const RemindingDetail = ({
       return
     }
 
-    navigation.navigate('RemindingEdit')
+    navigation.navigate('RemindingEdit', {
+      remind
+    })
   }
 
   const { addEventListener, removeEventListener } = useHeaderEvent()

@@ -31,31 +31,51 @@ export type ITime = [number, number]
 
 interface Props {
   onChange?: (time: ITime) => void
+  defaultCron?: string
 }
 
-const TimePicker = ({ onChange }: Props) => {
+const TimePicker = ({ onChange, defaultCron }: Props) => {
   const [ampm, setAmpm] = useState<string>('AM')
   const [hour, setHour] = useState<string>('01')
   const [minute, setMinute] = useState<string>('00')
+  const [alreadySet, setAlreadySet] = useState<boolean>(false)
 
   useEffect(() => {
-    const date = new Date()
-    let h = date.getHours()
-    if (h === 0) {
-      h = 24
+    if (!alreadySet) {
+      if (defaultCron && defaultCron !== '') {
+        const splittedCron = defaultCron.split(' ')
+        const min = parseInt(splittedCron[1], 10)
+        let hr = parseInt(splittedCron[2], 10)
+        const apm = hr < 12 ? 'AM' : 'PM'
+        if (hr > 12) {
+          hr -= 12
+        }
+        const HOUR = hr < 10 ? '0' + hour : '' + hour
+        const MIN = min < 10 ? '0' + min : '' + min
+        setAmpm(apm)
+        setHour(HOUR)
+        setMinute(MIN)
+        console.log('w')
+      } else {
+        const date = new Date()
+        let h = date.getHours()
+        if (h === 0) {
+          h = 24
+        }
+        const APM = h < 13 ? 'AM' : 'PM'
+        if (h > 12) {
+          h -= 12
+        }
+        const HOUR = h < 10 ? '0' + h : '' + h
+        const m = date.getMinutes()
+        const MINUTE = m < 10 ? '0' + m : '' + m
+        setAmpm(APM)
+        setHour(HOUR)
+        setMinute(MINUTE)
+      }
     }
-    const APM = h < 13 ? 'AM' : 'PM'
-    if (h > 12) {
-      h -= 12
-    }
-    const HOUR = h < 10 ? '0' + h : '' + h
-    const m = date.getMinutes()
-    const MINUTE = m < 10 ? '0' + m : '' + m
-    setAmpm(APM)
-    setHour(HOUR)
-    setMinute(MINUTE)
-    console.log(APM, h, HOUR, MINUTE)
-  }, [])
+    setAlreadySet(true)
+  }, [defaultCron, alreadySet])
 
   const time = useMemo(() => {
     const remindHour = (parseInt(hour, 10) + (ampm === 'PM' ? 12 : 0)) % 24

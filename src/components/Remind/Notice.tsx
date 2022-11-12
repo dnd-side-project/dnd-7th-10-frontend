@@ -137,10 +137,10 @@ const Notice = () => {
       {reminds.length !== 0 ? (
         <AlarmCardBar horizontal={true}>
           <AlarmCardView>
-            {reminds.map((remind, idx) => (
+            {reminds.map(remind => (
               <TouchableOpacity
                 onPress={() => handleAlarmPress(remind)}
-                key={idx}
+                key={remind.remindId}
               >
                 <AlarmCard remind={remind} />
               </TouchableOpacity>

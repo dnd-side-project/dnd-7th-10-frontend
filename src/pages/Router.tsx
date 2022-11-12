@@ -30,6 +30,7 @@ import RemindingDetail from './RemindingDetail'
 import { IRemind } from '../components/Remind/Notice'
 import api from '../lib/api'
 import useToast from '../hooks/useToast'
+import RemindingEdit from './RemindingEdit'
 
 const Stack = createNativeStackNavigator<RouterParamList>()
 
@@ -64,11 +65,12 @@ export interface RouterParamList extends ParamListBase {
   LinkContents: {
     articleId: string
   }
-  RemindingSetup:
+  RemindingEdit:
     | {
-        remindId: string
+        remind: IRemind
       }
     | undefined
+  RemindingSetup: undefined
   RemindingGather:
     | {
         remindId: string
@@ -150,6 +152,7 @@ const Router = () => {
         <Stack.Screen name="AddMemoPage" component={AddMemoPage} />
         <Stack.Screen name="LinkContents" component={LinkContents} />
         <Stack.Screen name="RemindingSetup" component={RemindingSetup} />
+        <Stack.Screen name="RemindingEdit" component={RemindingEdit} />
         <Stack.Screen name="RemindingGather" component={RemindingGather} />
         <Stack.Screen name="RemindingNotice" component={RemindingNotice} />
         <Stack.Screen name="RemindingList" component={RemindingListPage} />

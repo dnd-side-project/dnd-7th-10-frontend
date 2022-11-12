@@ -17,9 +17,10 @@ const SetupPickerDivide = styled.View`
 interface Props {
   onScrollChange?: (value: boolean) => void
   onCronChange?: (value: string) => void
+  defaultCron?: string
 }
 
-const SetupPicker = ({ onScrollChange, onCronChange }: Props) => {
+const SetupPicker = ({ defaultCron, onScrollChange, onCronChange }: Props) => {
   const [time, setTime] = useState<ITime>([1, 0])
   const [days, setDays] = useState<string>('')
 
@@ -49,9 +50,9 @@ const SetupPicker = ({ onScrollChange, onCronChange }: Props) => {
 
   return (
     <SetupPickerView onTouchStart={onStart} onTouchEnd={onEnd}>
-      <TimePicker onChange={setTime} />
+      <TimePicker defaultCron={defaultCron} onChange={setTime} />
       <SetupPickerDivide />
-      <DayPicker onChange={setDays} />
+      <DayPicker defaultCron={defaultCron} onChange={setDays} />
     </SetupPickerView>
   )
 }

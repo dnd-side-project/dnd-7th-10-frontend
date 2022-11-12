@@ -47,28 +47,50 @@ const QUARTZ_DAYS = 'SUN,MON,TUE,WED,THU,FRI,SAT'.split(',')
 
 interface Props {
   onChange: (cron: string) => void
+  defaultCron?: string
 }
 
-const DayPicker = ({ onChange }: Props) => {
-  const [days, setDays] = useState<IDay>([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ])
+const DAY_MAP = {
+  MON: '월',
+  TUE: '화',
+  WED: '수',
+  THU: '목',
+  FRI: '금',
+  SAT: '토',
+  SUN: '일'
+}
+type DAY_MAP_KEY = keyof typeof DAY_MAP
+
+const defaultDays: IDay = [false, false, false, false, false, false, false]
+
+const DayPicker = ({ defaultCron, onChange }: Props) => {
+  const [alreadySet, setAlreadySet] = useState<boolean>(false)
+  const [days, setDays] = useState<IDay>(defaultDays)
 
   useEffect(() => {
-    const date = new Date()
-    onPress(date.getDay())
-  }, [])
+    if (!alreadySet) {
+      if (defaultCron && defaultCron !== '') {
+        const indexes = defaultCron
+          .split(' ')[5]
+          .split(',')
+          .map(day => {
+            const dayText = DAY_MAP[day as DAY_MAP_KEY]
+            const dayIndex = DAYS.indexOf(dayText)
+            return dayIndex
+          })
+        onPress(...indexes)
+      } else {
+        const date = new Date()
+        onPress(date.getDay())
+      }
+    }
+    setAlreadySet(true)
+  }, [alreadySet, defaultCron])
 
-  const onPress = (index: number) => {
+  const onPress = (...indexes: number[]) => {
     setDays(oldDays => {
       const newDays: IDay = [...oldDays]
-      newDays[index] = !newDays[index]
+      indexes.forEach(index => (newDays[index] = !newDays[index]))
       const cron = newDays
         .map((day, dayIndex) => (day ? dayIndex : -1))
         .filter(day => day > -1)

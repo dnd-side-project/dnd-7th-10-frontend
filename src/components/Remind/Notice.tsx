@@ -21,9 +21,15 @@ const NoticeView = styled.View`
 const TopView = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  align-self: stretch;
+  height: 60px;
+  min-height: 30px;
+`
+
+const EmptyView = styled.View`
+  height: 200px;
 `
 const TopText = styled.Text`
-  width: 95px;
   height: 27px;
   left: 24px;
   top: 24px;
@@ -42,7 +48,7 @@ const AlarmCardBar = styled.ScrollView`
 `
 
 const AddIconBtn = styled.TouchableOpacity`
-  position: absolute;
+  /* position: absolute; */
   height: 24px;
   width: 24px;
   right: 24px;
@@ -142,13 +148,15 @@ const Notice = () => {
           </AlarmCardView>
         </AlarmCardBar>
       ) : (
-        <Empty
-          text={`알림이 설정되지 않았어요!${'\n'}꾸준한 리마인딩을 받아보세요.`}
-          button
-          buttonText="알림 추가하기"
-          background="White"
-          onButtonPress={onAddPress}
-        />
+        <EmptyView>
+          <Empty
+            text={`알림이 설정되지 않았어요!${'\n'}꾸준한 리마인딩을 받아보세요.`}
+            button
+            buttonText="알림 추가하기"
+            background="White"
+            onButtonPress={onAddPress}
+          />
+        </EmptyView>
       )}
     </NoticeView>
   )

@@ -15,19 +15,23 @@ const MemoCollectionView = styled.View`
   flex: none;
   flex-grow: 0;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 `
+
+const TopView = styled.View`
+  height: 60px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: stretch;
+`
+
 const TopText = styled.Text`
-  position: absolute;
   left: 24px;
   top: 22px;
-  width: 113px;
   height: 27px;
   font-family: ${Typo.Heading3_600};
   font-size: 18px;
   line-height: 27px;
-  display: flex;
-  align-items: flex-end;
   letter-spacing: -0.6px;
   color: ${ColorPalette.BlueGray_4};
 `
@@ -49,7 +53,6 @@ const MemoView = styled.View`
 `
 
 const MemoBtn = styled.TouchableOpacity`
-  position: absolute;
   width: 24px;
   height: 24px;
   right: 24px;
@@ -77,10 +80,12 @@ const MemoCollection = ({ onPress, memos }: Props) => {
 
   return (
     <MemoCollectionView>
-      <TopText>메모 모음</TopText>
-      <MemoBtn onPress={onPress}>
-        <RightArrow source={require('../../assets/images/icon_more.png')} />
-      </MemoBtn>
+      <TopView>
+        <TopText>메모 모음</TopText>
+        <MemoBtn onPress={onPress}>
+          <RightArrow source={require('../../assets/images/icon_more.png')} />
+        </MemoBtn>
+      </TopView>
       {memos.length === 0 ? (
         <Empty
           text={`아직 작성된 메모가 없어요!${'\n'}링크를 읽고 간단히 정리해 볼까요?`}

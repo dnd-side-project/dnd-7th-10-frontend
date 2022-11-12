@@ -13,6 +13,7 @@ import { shadowShallow } from '../../styles/backgrounds'
 import SVG from '../../assets/images/svg'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { fontWithColor } from '../../styles/fonts'
+import { appendHttps } from '../../lib/urlcheck'
 
 const GatherArticleItemView = styled.View`
   min-width: 130px;
@@ -67,7 +68,7 @@ const GatherArticleItem = ({
     <GatherArticleItemView>
       <CardView style={shadowShallow}>
         <CardCoverImage
-          source={{ uri: source || defaultSource.uri }}
+          source={{ uri: appendHttps(source || defaultSource.uri) }}
           resizeMode="cover"
         />
         <CardCoverOverlay />

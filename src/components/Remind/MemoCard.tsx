@@ -3,6 +3,7 @@ import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { backgroundWithColor } from '../../styles/backgrounds'
 import { IMemo } from '../../recoil/folders'
+import { appendHttps } from '../../lib/urlcheck'
 
 type ViewProps = {
   main: boolean
@@ -109,7 +110,7 @@ const MemoCard = ({ memo, main }: Props) => {
           source={
             linkImage
               ? {
-                  uri: linkImage
+                  uri: appendHttps(linkImage)
                 }
               : require('../../assets/images/cover_small.png')
           }

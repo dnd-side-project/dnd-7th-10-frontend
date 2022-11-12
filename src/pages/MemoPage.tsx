@@ -24,6 +24,7 @@ import { backgroundWithColor } from '../styles/backgrounds'
 import { useResetRecoilState } from 'recoil'
 import { modalStateAtom } from '../recoil/global'
 import SVG from '../assets/images/svg'
+import { appendHttps } from '../lib/urlcheck'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -177,6 +178,7 @@ const MemoPage = ({
   const { memo } = route.params
   const { id, articleId, folderTitle, content, openGraph, registerDate } = memo
   const { linkTitle, linkImage } = openGraph!
+  console.log(linkImage)
   const date = registerDate.split('T')[0]
   const inputRef = useRef<TextInput | null>(null)
 
@@ -368,7 +370,7 @@ const MemoPage = ({
               source={
                 linkImage
                   ? {
-                      uri: linkImage
+                      uri: appendHttps(linkImage)
                     }
                   : require('../assets/images/cover_small.png')
               }

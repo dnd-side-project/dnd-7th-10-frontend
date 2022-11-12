@@ -10,6 +10,7 @@ import RemindItem from './RemindItem'
 import { useNavigation } from '@react-navigation/native'
 import { RouterNavigationProps } from '../../pages/Router'
 import { IArticleSelected } from '../RemindingGather/GatherArticleList'
+import { appendHttps } from '../../lib/urlcheck'
 
 const SetupContentView = styled.View`
   ${backgroundWithColor('White')}
@@ -80,7 +81,7 @@ const SetupContent = ({ articles }: Props) => {
             source={
               article.articleImage
                 ? {
-                    uri: article.articleImage
+                    uri: appendHttps(article.articleImage)
                   }
                 : require('../../assets/images/cover_small.png')
             }

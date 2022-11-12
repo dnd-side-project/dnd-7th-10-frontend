@@ -3,6 +3,7 @@ import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { backgroundWithColor, shadow } from '../../styles/backgrounds'
 import SVG from '../../assets/images/svg'
+import { appendHttps } from '../../lib/urlcheck'
 
 const LinkCardView = styled.View`
   ${backgroundWithColor('White')}
@@ -125,7 +126,7 @@ const LinkCard = ({ link }: Props) => {
       <LinkImage
         source={
           linkImage
-            ? { uri: linkImage }
+            ? { uri: appendHttps(linkImage) }
             : require('../../assets/images/cover.png')
         }
       />

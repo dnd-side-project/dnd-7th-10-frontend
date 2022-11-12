@@ -24,6 +24,7 @@ import useFolderDetail from '../hooks/useFolderDetail'
 import useModal from '../hooks/useModal'
 import { useResetRecoilState } from 'recoil'
 import { modalStateAtom } from '../recoil/global'
+import { appendHttps } from '../lib/urlcheck'
 
 const MemoMainView = styled.View`
   background-color: '#f5f5f5';
@@ -333,7 +334,7 @@ const MemoPage = ({
               source={
                 article?.openGraph.linkImage
                   ? {
-                      uri: article?.openGraph.linkImage
+                      uri: appendHttps(article?.openGraph.linkImage)
                     }
                   : require('../assets/images/cover_small.png')
               }

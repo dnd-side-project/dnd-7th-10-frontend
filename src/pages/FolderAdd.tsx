@@ -47,6 +47,7 @@ const FolderAdd = () => {
   const [folders, fetchFolders] = useFolderList()
   const navigation = useNavigation()
   const showToast = useToast()
+  const [nameError, setNameError] = useState<boolean>(false)
 
   const isCreatable = useMemo(() => {
     return folderTitle.trim().length > 0 && folderColor
@@ -72,6 +73,10 @@ const FolderAdd = () => {
   function onPress() {
     const trimmedTitle = folderTitle.trim()
     if (trimmedTitle.length > 25) {
+      setNameError(true)
+      setTimeout(() => {
+        setNameError(false)
+      }, 2000)
       showToast(
         createWarnToast(
           '폴더 명 입력은 최대 25자입니다.',
@@ -110,6 +115,7 @@ const FolderAdd = () => {
           <SectionTitle title="폴더 명" />
           <SectionContent>
             <Input
+              error={nameError}
               value={folderTitle}
               onChangeText={onChangeText}
               placeholder="폴더 명을 입력해주세요."

@@ -8,13 +8,18 @@ import { forwardRef } from 'react'
 
 interface InputViewProps {
   focused: boolean
+  error?: boolean
   small?: boolean
 }
 
 const InputView = styled.View<InputViewProps>`
   ${backgroundWithColor('background_1')}
   border: 1px solid ${props =>
-    props.focused ? ColorPalette.LinkkleOrange : ColorPalette.gray_3};
+    props.error
+      ? ColorPalette.LinkkleOrange
+      : props.focused
+      ? ColorPalette.LinkkleBlueGray
+      : ColorPalette.gray_3};
   border-radius: 4px;
   padding: ${props => (props.small ? '0 8px' : '0 12px')};
   line-height: ${props => (props.small ? '44px' : '56px')};
@@ -58,6 +63,7 @@ interface Props {
   style?: StyleProp<ViewStyle>
   placeholder?: string
   search?: boolean
+  error?: boolean
   noReset?: boolean
 }
 
@@ -74,7 +80,8 @@ const Input = forwardRef(
       style,
       placeholder,
       search,
-      noReset
+      noReset,
+      error
     }: Props,
     ref: Ref<TextInput>
   ) => {
@@ -109,7 +116,7 @@ const Input = forwardRef(
     }
 
     return (
-      <InputView focused={focused} small={small} style={style}>
+      <InputView focused={focused} small={small} style={style} error={error}>
         <InputTextInput
           ref={ref}
           onFocus={handleFocusOn}

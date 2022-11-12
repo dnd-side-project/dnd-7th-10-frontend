@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/native'
 import { ColorPalette, Typo } from '../../styles/variable'
 import { backgroundWithColor, shadow } from '../../styles/backgrounds'
+import SVG from '../../assets/images/svg'
 
 const LinkCardView = styled.View`
   ${backgroundWithColor('White')}
@@ -59,6 +60,23 @@ const TagText = styled.Text`
   color: white;
 `
 
+const BookmarkBack = styled.View`
+  position: absolute;
+  padding: 16px;
+  justify-content: flex-start;
+  align-items: flex-end;
+  opacity: 0.3;
+  background-color: rgb(30, 30, 30);
+  width: 100%;
+  height: 120px;
+`
+
+const Bookmark = styled.View`
+  position: absolute;
+  right: 16px;
+  top: 16px;
+`
+
 interface tag {
   tagName: string
   tagId: string
@@ -113,13 +131,18 @@ const LinkCard = ({ link }: Props) => {
       />
       <LinkDescView>
         <LinkTitle numberOfLines={1}>{linkTitle}</LinkTitle>
-        <LinkDesc>{linkDescription}</LinkDesc>
+        <LinkDesc numberOfLines={1}>{linkDescription}</LinkDesc>
         <TagBar>
           {tags.map((tag, idx) => (
             <TagView text={tag.tagName} key={idx} />
           ))}
         </TagBar>
       </LinkDescView>
+
+      <BookmarkBack />
+      <Bookmark>
+        <SVG.BookmarkFilled stroke={ColorPalette.White} />
+      </Bookmark>
     </LinkCardView>
   )
 }

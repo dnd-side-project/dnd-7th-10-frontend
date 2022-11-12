@@ -13,3 +13,10 @@ export function isValidUrl(url: string) {
   }
   return url
 }
+
+export function appendHttps(url: string) {
+  if (url.startsWith('//')) {
+    return `https:${url}`
+  }
+  return url
+}

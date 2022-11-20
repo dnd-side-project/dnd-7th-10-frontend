@@ -73,7 +73,7 @@ const Login = () => {
   const handleLogin = useCallback(
     (userAuth: IAuth) => {
       if (userAuth.user) {
-        showToast(createToast('logged in with ' + userAuth.user.username))
+        // showToast(createToast('logged in with ' + userAuth.user.username))
 
         navigation.dispatch(StackActions.replace('Main'))
       }
